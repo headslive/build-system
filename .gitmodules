@@ -1,0 +1,3 @@
+[submodule "live-sdk"]
+	path = live-sdk
+	url = https://git.devuan.org/sdk/live-sdk.git
