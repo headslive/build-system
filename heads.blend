@@ -375,6 +375,8 @@ chown :input /usr/bin/Xorg
 chmod g+s /usr/bin/Xorg
 gpasswd -a luther input
 gpasswd -a luther video
+chsh -s /bin/zsh luther
+chsh -s /bin/zsh root
 EOF
 	chroot-script finalize || zerr
 }
