@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Copyright (c) 2016 Dyne.org Foundation
+# Copyright (c) 2016-2017 Dyne.org Foundation
 #
 # heads.blend is written and maintained by Ivan J. <parazyd@dyne.org>
 #
@@ -19,8 +19,85 @@
 ## libdevuansdk build script for heads
 
 blend_name="heads"
+blend_vers="0.0"
+image_name="${blend_name}-${blend_ver}-${arch}"
 
-blend_packages=()
+kernelver="4.8.17"
+kernelurl="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${kernelver}.tar.xz"
+
+icecatver="45.5.1"
+
+torver="0.3.0.3-alpha"
+
+extra_packages+=(
+	## interface
+	awesome
+	#mate-desktop-environment
+	xserver-xorg
+	xfonts-terminus
+	xinit
+	zenity
+
+	## -dev
+	autoconf
+	automake
+	build-essential
+	bc
+	ncurses-dev
+	### tor build deps
+	libevent-dev
+	libssl-dev
+	### torsocks build deps
+	libtool
+	libtool-bin
+	### tomb build deps
+	libgcrypt20-dev
+
+	## system
+	cryptsetup
+	curl
+	#ferm
+	haveged
+	openssh-client
+	pax-utils
+	paxctl
+	rfkill
+	sshfs
+	traceroute
+	jq
+
+	## 1337
+	aircrack-ng
+	macchanger
+	reaver
+
+	## utils
+	#apt-transport-tor
+	apg
+	gnupg2
+	keychain
+	openvpn
+	p7zip
+	pinentry-gtk2
+	ssss
+	wipe
+	wpagui
+	terminology
+
+	## progs
+	enigmail
+	mupdf
+	feh
+	gimp
+	icedove
+	keepassx
+	pass
+	vlc
+)
+
+purge_packages+=(
+	openssh-server
+)
 
 blend_preinst() {
 	fn blend_preinst
@@ -28,6 +105,8 @@ blend_preinst() {
 	ckreq || return 1
 
 	notice "executing $blend_name preinst"
+
+	add-user luther luther
 }
 
 blend_postinst() {
@@ -36,4 +115,267 @@ blend_postinst() {
 	ckreq || return 1
 
 	notice "executing $blend_name postinst"
+
+	blend_install_ferm
+	blend_install_tomb
+	blend_install_jaromail
+	blend_install_tor
+	blend_install_torsocks
+	blend_install_icecat
+
+	notice "grabbing rootfs-overlay"
+	pushd "$strapdir"
+
+	sudo git clone https://git.devuan.org/heads/rootfs-overlay || zerr
+	sudo mv -v   rootfs-overlay/.git . || zerr
+	sudo cp -rav rootfs-overlay/* .    || zerr
+	sudo rm -rf  rootfs-overlay
+
+	fixpax
+
+	blend_finalize
+
+	popd
 }
+
+build_kernel_amd64() {
+	fn build_kernel_amd64
+	req=(R kernelver gitkernel gitbranch strapdir)
+	ckreq || return 1
+
+	func "override libdevuansdk's build_kernel_amd64"
+
+	[[ -d $R/tmp/kernels/linux-${kernelver} ]] || {
+		notice "downloading linux kernel $kernelver"
+		mkdir -p "$R/tmp/kernels/linux-${kernelver}"
+		pushd "$R/tmp/kernels/"
+		curl -L -O "$kernelurl" || zerr
+		notice "extracting..."
+		tar xf linux-${kernelver}.tar.xz
+		popd
+	}
+
+
+	notice "grabbing hardened-patches from gentoo"
+
+	pushd "$R/tmp/kernels/linux-${kernelver}"
+	curl -L -o hardened-patches.tbz2 \
+		"http://dev.gentoo.org/~blueness/hardened-sources/hardened-patches/hardened-patches-${kernelver}-3.extras.tar.bz2"
+	tar xvf hardened-patches.tbz2
+
+	notice "patching kernel..."
+	kernelpatches="$(printf %s\\n ./${kernelver}/*.patch)"
+	for i in $kernelpatches; do
+		patch -p1 < $i || zerr
+	done
+
+	notice "deblobbing the kernel"
+	for i in 4.8 check main; do
+		curl -O http://linux-libre.fsfla.org/pub/linux-libre/releases/${kernelver}-gnu/deblob-${i}
+		chmod +x deblob-${i} || zerr
+	done
+	./deblob-4.8 || zerr
+
+	cp -f "$R/../extra/kernel/${kernelver}.config" .config || zerr
+
+	make $MAKEOPTS || zerr
+	sudo -E make INSTALL_PATH=$strapdir/boot  install         || zerr
+	sudo -E make INSTALL_MOD_PATH=$strapdir   modules_install || zerr
+
+	popd
+}
+
+## {{{ fixpax()
+fixpax() {
+	fn fixpax
+	req=(strapdir)
+	ckreq || return 1
+
+	notice "fixing up pax markings"
+
+	cat <<EOF | sudo tee ${strapdir}/fixpax >/dev/null
+#!/bin/sh
+
+## icedove
+paxctl -c /usr/bin/icedove
+paxctl -m /usr/bin/icedove
+
+## icecat
+paxctl -c /usr/local/icecat/icecat
+paxctl -m /usr/local/icecat/icecat
+EOF
+	chroot-script fixpax
+}
+## }}}
+## {{{ blend_install_gradm()
+blend_install_gradm() {
+	fn blend_install_gradm
+
+	notice "grabbing gradm 3.1"
+	local gradmsrc="https://dev.gentoo.org/~blueness/hardened-sources/gradm/gradm-3.1-201608131257.tar.gz"
+	#local gradmsrc="gradm-3.1-201608131257.tar.gz"
+
+	mkdir -p $strapdir/tmp
+	pushd $strapdir/tmp
+	curl -L -O $gradmsrc || zerr
+	tar xf gradm-3.1-201608131257.tar.gz
+
+	pushd gradm
+	make || zerr
+	sudo -E make DESTDIR=$strapdir install || zerr
+	popd
+}
+## }}}
+## {{{ blend_install_tomb()
+blend_install_tomb() {
+	fn blend_install_tomb
+	req=(strapdir)
+	ckreq || return 1
+
+	notice "installing tomb in $strapdir"
+
+	sudo git clone https://github.com/dyne/tomb.git $strapdir/root/tomb
+	sudo git clone https://github.com/parazyd/gtomb.git $strapdir/root/gtomb
+
+	cat <<EOF | sudo tee ${strapdir}/install-tomb >/dev/null
+#!/bin/sh
+cd /root/tomb
+make install
+
+cd extras/kdf-keys
+make
+make install
+
+cd /root/gtomb
+PREFIX=/usr make install
+cd /
+
+rm -rf /root/tomb
+rm -rf /root/gtomb
+EOF
+	chroot-script install-tomb
+}
+## }}}
+## {{{ blend_install_ferm()
+blend_install_ferm() {
+	fn blend_install_ferm
+	req=(strapdir)
+	ckreq || return 1
+
+	notice "installing ferm in $strapdir"
+	sudo git clone https://github.com/MaxKellermann/ferm.git $strapdir/root/ferm || zerr
+
+	cat <<EOF | sudo tee ${strapdir}/install-ferm >/dev/null
+#!/bin/sh
+cd /root/ferm
+make
+make install
+cd /
+rm -fr /root/ferm
+EOF
+	chroot-script install-ferm || zerr
+}
+## }}}
+## {{{ blend_install_jaromail()
+blend_install_jaromail() {
+	fn blend_install_jaromail
+}
+## }}}
+## {{{ blend_install_tor()
+blend_install_tor() {
+	fn blend_install_tor
+	req=(strapdir)
+	ckreq || return 1
+
+	notice "installing tor in $strapdir"
+
+	notice "downloading tor"
+	sudo curl -L -o $strapdir/root/tor.tgz https://dist.torproject.org/tor-$torver.tar.gz
+	cat <<EOF | sudo tee ${strapdir}/install-tor >/dev/null
+#!/bin/sh
+cd /root
+tar xvf tor.tgz
+cd tor-${torver}
+
+./configure \
+	--prefix=/usr \
+	--disable-system-torrc \
+	--disable-systemd
+
+make
+make install
+
+cd /root
+
+rm -rf tor*
+EOF
+	chroot-script install-tor || zerr
+}
+## }}}
+## {{{ blend_install_torsocks()
+blend_install_torsocks() {
+	fn blend_install_torsocks
+	req=(strapdir)
+	ckreq || return 1
+
+	notice "installing torsocks in $strapdir"
+
+	notice "cloning torsocks"
+	sudo git clone https://git.torproject.org/torsocks.git $strapdir/root/torsocks
+	cat <<EOF | sudo tee ${strapdir}/install-torsocks >/dev/null
+#!/bin/sh
+cd /root/torsocks
+git checkout v2.2.0
+./autogen.sh
+./configure --prefix=/usr
+make
+make install
+
+cd ..
+rm -rf /root/torsocks
+EOF
+	chroot-script install-torsocks || zerr
+}
+## }}}
+## {{{ blend_install_icecat()
+blend_install_icecat() {
+	fn blend_install_icecat
+	req=(strapdir)
+	ckreq || return 1
+
+	notice "installing GNU Icecat in $strapdir"
+
+	case $arch in
+		amd64) icecaturl="https://ftp.gnu.org/gnu/gnuzilla/$icecatver/icecat-$icecatver.en-US.linux-x86_64.tar.bz2"
+				;;
+		i386)  icecaturl="https://ftp.gnu.org/gnu/gnuzilla/$icecatver/icecat-$icecatver.en-US.linux-i686.tar.bz2"
+				;;
+	esac
+
+	notice "downloading GNU Icecat..."
+	sudo curl -L -o $strapdir/root/icecat.tbz2 $icecaturl || zerr
+
+	notice "extracting GNU Icecat"
+	pushd $strapdir/usr/local
+		sudo tar xfp $strapdir/root/icecat.tbz2
+		sudo rm -f   $strapdir/root/icecat.tbz2
+	popd
+}
+## }}}
+## {{{ blend_finalize()
+blend_finalize() {
+	fn blend_finalize
+	req=(strapdir)
+	ckreq || return 1
+
+	cat <<EOF | sudo tee ${strapdir}/finalize >/dev/null
+#!/bin/sh
+## rootless xorg
+chown :input /usr/bin/Xorg
+chmod g+s /usr/bin/Xorg
+gpasswd -a luther input
+gpasswd -a luther video
+EOF
+	chroot-script finalize || zerr
+}
+## }}}
