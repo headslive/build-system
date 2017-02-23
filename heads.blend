@@ -176,7 +176,7 @@ build_kernel_amd64() {
 	done
 	./deblob-4.8 || zerr
 
-	cp -f "$R/../extra/kernel/${kernelver}.config" .config || zerr
+	cp -f "$R/../extra/${kernelver}.config" .config || zerr
 
 	make $MAKEOPTS || zerr
 	sudo -E make INSTALL_PATH=$strapdir/boot  install         || zerr
