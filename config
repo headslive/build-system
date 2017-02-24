@@ -4,6 +4,7 @@ blend_name="heads"
 blend_vers="0.0"
 image_name="${blend_name}-${blend_vers}-${arch}"
 
+MAKEOPTS="-j$(grep -c 'processor' /proc/cpuinfo)"
 
 kernel_minor="4.4"
 kernel_version="4.4.45"
