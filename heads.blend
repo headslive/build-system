@@ -37,14 +37,14 @@ blend_postinst() {
 
 	notice "executing $blend_name postinst"
 
-	local nopackage=(ferm tomb jaromail tor torsocks icecat)
+	local nopackage=(ferm gradm tomb jaromail tor torsocks icecat)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
 	done
 
 	notice "grabbing rootfs-overlay"
 	pushd "$strapdir"
-	sudo git clone https://git.devuan.org/heads/rootfs-overlay || zerr
+	sudo git clone "$rootfs_overlay" || zerr
 	sudo mv -v   rootfs-overlay/.git . || zerr
 	sudo cp -rav rootfs-overlay/* .    || zerr
 	sudo rm -rf  rootfs-overlay
@@ -65,18 +65,21 @@ build_kernel_amd64() {
 
 	[[ -d $R/tmp/kernels/$arch/linux-${kernel_minor} ]] || {
 		notice "downloading linux $kernel_minor"
+		mkdir -p "$R/tmp/kernels/$arch"
 		pushd "$R/tmp/kernels/$arch"
 		curl -L -O "$kernel_url_main" || zerr
 		act "extracting..."
 		tar xf $(basename $kernel_url_main)
+
 		pushd linux-${kernel_minor}
 		notice "downloading $kernel_version patch"
 		curl -L -O "$kernel_url_patch" || zerr
 		act "extracting..."
 		xz -d $(basename $kernel_url_patch)
 		act "patching..."
-		patch -p1 < $(basename $kernel_url_patch) || zerr
+		patch -p1 < $(basename -s .xz $kernel_url_patch) || zerr
 		act "done!"
+
 		notice "downloading grsec patch"
 		curl -L -o grsec.patch "$kernel_grsec" || zerr
 		act "patching..."
@@ -85,20 +88,22 @@ build_kernel_amd64() {
 
 		notice "grabbing linux-libre scripts"
 		for i in ${kernel_minor} check main; do
-			curl -O http://linux-libre.fsfla.org/pub/linux-libre/releases/${kernel_version}-gnu/deblob-${i} || zerr
+			curl -O "$linux_libre_url/deblob-${i}" || zerr
 			chmod +x deblob-${i}
 		done
 		notice "deblobbing kernel..."
-		./deblob-4.4 || zerr
+		./deblob-${kernel_minor} || zerr
 		popd
 		popd
 	}
 
 	notice "compiling kernel ${kernel_version}"
+	pushd "$R/tmp/kernels/$arch/linux-${kernel_minor}"
 	cp -f "$R/../extra/${kernel_version}-${arch}.config" .config || zerr
 	make $MAKEOPTS || zerr
 	sudo -E make INSTALL_PATH=$strapdir/boot  install         || zerr
 	sudo -E make INSTALL_MOD_PATH=$strapdir   modules_install || zerr
+	popd
 }
 
 ## {{{ blend_fixpax()
@@ -123,6 +128,29 @@ EOF
 	chroot-script fixpax
 }
 ## }}}
+## {{{ blend_install_ferm()
+blend_install_ferm() {
+	fn blend_install_ferm
+	req=(strapdir ferm_version ferm_url)
+	ckreq || return 1
+
+	notice "cloning ferm git"
+	sudo git clone "$ferm_url" "$strapdir/root/ferm" || zerr
+
+	notice "installing ferm in $strapdir"
+
+	cat <<EOF | sudo tee ${strapdir}/install-ferm >/dev/null
+#!/bin/sh
+cd /root/ferm
+git checkout ${ferm_version}
+make
+make install
+cd ..
+rm -rf ferm
+EOF
+	chroot-script install-ferm || zerr
+}
+## }}}
 ## {{{ blend_install_gradm()
 blend_install_gradm() {
 	fn blend_install_gradm
@@ -131,19 +159,21 @@ blend_install_gradm() {
 
 	notice "grabbing gradm ${gradm_version}"
 
-	pushd $strapdir/root
-	sudo curl -L -O "$gradm_url" || zerr
-	sudo tar xf $(basename $gradm_url) || zerr
+	sudo curl -L -o "$strapdir/root/gradm.tgz" "$gradm_url" || zerr
 
 	notice "compiling..."
-	pushd gradm
-	sudo make || zerr
-	sudo -E make DESTDIR=$strapdir install || zerr
-	popd
 
-	sudo rm -rf gradm*
-
-	popd
+	cat <<EOF | sudo tee ${strapdir}/install-gradm >/dev/null
+#!/bin/sh
+cd /root
+tar xvf gradm.tgz
+cd gradm
+make
+make install
+cd ..
+rm -rf gradm*
+EOF
+	chroot-script install-gradm || zerr
 }
 ## }}}
 ## {{{ blend_install_tomb()
@@ -154,8 +184,8 @@ blend_install_tomb() {
 	ckreq || return 1
 
 	notice "cloning tomb gits"
-	sudo git clone $tomb_url  $strapdir/root/tomb  || zerr
-	sudo git clone $gtomb_url $strapdir/root/gtomb || zerr
+	sudo git clone "$tomb_url"  "$strapdir/root/tomb"  || zerr
+	sudo git clone "$gtomb_url" "$strapdir/root/gtomb" || zerr
 
 	notice "installing tomb in $strapdir"
 
@@ -180,29 +210,6 @@ EOF
 	chroot-script install-tomb
 }
 ## }}}
-## {{{ blend_install_ferm()
-blend_install_ferm() {
-	fn blend_install_ferm
-	req=(strapdir ferm_version ferm_url)
-	ckreq || return 1
-
-	notice "cloning ferm git"
-	sudo git clone $ferm_url  $strapdir/root/ferm || zerr
-
-	notice "installing ferm in $strapdir"
-
-	cat <<EOF | sudo tee ${strapdir}/install-ferm >/dev/null
-#!/bin/sh
-cd /root/ferm
-git checkout ${ferm_version}
-make
-make install
-cd ..
-rm -rf ferm
-EOF
-	chroot-script install-ferm || zerr
-}
-## }}}
 ## {{{ blend_install_jaromail()
 blend_install_jaromail() {
 	fn blend_install_jaromail
@@ -217,7 +224,7 @@ blend_install_tor() {
 	notice "installing tor in $strapdir"
 
 	notice "downloading tor..."
-	sudo curl -L -o $strapdir/root/tor.tgz $tor_url
+	sudo curl -L -o "$strapdir/root/tor.tgz" "$tor_url"
 
 	cat <<EOF | sudo tee ${strapdir}/install-tor >/dev/null
 #!/bin/sh
@@ -249,7 +256,7 @@ blend_install_torsocks() {
 	notice "installing torsocks in $strapdir"
 
 	notice "cloning torsocks"
-	sudo git clone $torsocks_url $strapdir/root/torsocks
+	sudo git clone "$torsocks_url" "$strapdir/root/torsocks"
 
 	notice "installing torsocks in $strapdir"
 	cat <<EOF | sudo tee ${strapdir}/install-torsocks >/dev/null
@@ -275,7 +282,7 @@ blend_install_icecat() {
 
 
 	notice "downloading GNU Icecat..."
-	sudo curl -L -o $strapdir/root/icecat.tbz2 $icecat_url || zerr
+	sudo curl -L -o "$strapdir/root/icecat.tbz2" "$icecat_url" || zerr
 
 	notice "installing GNU Icecat in $strapdir"
 	pushd $strapdir/usr/local

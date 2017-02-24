@@ -2,7 +2,7 @@
 
 blend_name="heads"
 blend_vers="0.0"
-image_name="${blend_name}-${blend_ver}-${arch}"
+image_name="${blend_name}-${blend_vers}-${arch}"
 
 
 kernel_minor="4.4"
@@ -11,12 +11,15 @@ kernel_url_main="http://ftp.kernel.org/pub/linux/kernel/v4.x/linux-${kernel_mino
 kernel_url_patch="http://ftp.kernel.org/pub/linux/kernel/v4.x/patch-${kernel_version}.xz"
 kernel_grsec="http://dev.alpinelinux.org/~ncopa/grsec/grsecurity-3.1-${kernel_version}-201604252206-alpine.patch"
 
+linux_libre_url="http://linux-libre.fsfla.org/pub/linux-libre/releases/${kernel_version}-gnu"
+
+rootfs_overlay="https://git.devuan.org/heads/rootfs-overlay"
 
 ferm_version="v2.3.1"
 ferm_url="https://github.com/MaxKellermann/ferm.git"
 
 icecat_version="45.5.1"
-icecat_url="https://ftp.gnu.org/gnu/gnuzilla/$icecat_version/icecat-${icecat_version}.en-US.linux-$earch}.tar.bz2"
+icecat_url="https://ftp.gnu.org/gnu/gnuzilla/$icecat_version/icecat-${icecat_version}.en-US.linux-${earch}.tar.bz2"
 
 tor_version="0.3.0.3-alpha"
 tor_url="https://dist.torproject.org/tor-${tor_version}.tar.gz"
@@ -87,6 +90,7 @@ extra_packages+=(
 	libevent-dev
 	libssl-dev
 	libgcrypt20-dev
+	libseccomp-dev
 )
 
 purge_packages+=(
