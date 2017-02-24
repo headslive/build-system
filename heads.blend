@@ -37,7 +37,7 @@ blend_postinst() {
 
 	notice "executing $blend_name postinst"
 
-	local nopackage=(ferm gradm tomb jaromail tor torsocks icecat)
+	nopackage=(ferm gradm tomb jaromail tor torsocks icecat)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
 	done
@@ -143,7 +143,7 @@ blend_install_ferm() {
 #!/bin/sh
 cd /root/ferm
 git checkout ${ferm_version}
-make
+make ${MAKEOPTS}
 make install
 cd ..
 rm -rf ferm
@@ -168,7 +168,7 @@ blend_install_gradm() {
 cd /root
 tar xvf gradm.tgz
 cd gradm
-make
+make ${MAKEOPTS}
 make install
 cd ..
 rm -rf gradm*
@@ -237,7 +237,7 @@ cd tor-${tor_version}
 	--disable-system-torrc \
 	--disable-systemd
 
-make
+make ${MAKEOPTS}
 make install
 
 cd /root
@@ -265,7 +265,7 @@ cd /root/torsocks
 git checkout ${torsocks_version}
 ./autogen.sh
 ./configure --prefix=/usr
-make
+make ${MAKEOPTS}
 make install
 
 cd ..
