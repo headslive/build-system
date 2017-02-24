@@ -1,0 +1,94 @@
+#!/usr/bin/env zsh
+
+blend_name="heads"
+blend_vers="0.0"
+image_name="${blend_name}-${blend_ver}-${arch}"
+
+
+kernel_minor="4.4"
+kernel_version="4.4.45"
+kernel_url_main="http://ftp.kernel.org/pub/linux/kernel/v4.x/linux-${kernel_minor}.tar.xz"
+kernel_url_patch="http://ftp.kernel.org/pub/linux/kernel/v4.x/patch-${kernel_version}.xz"
+kernel_grsec="http://dev.alpinelinux.org/~ncopa/grsec/grsecurity-3.1-${kernel_version}-201604252206-alpine.patch"
+
+
+ferm_version="v2.3.1"
+ferm_url="https://github.com/MaxKellermann/ferm.git"
+
+icecat_version="45.5.1"
+icecat_url="https://ftp.gnu.org/gnu/gnuzilla/$icecat_version/icecat-${icecat_version}.en-US.linux-$earch}.tar.bz2"
+
+tor_version="0.3.0.3-alpha"
+tor_url="https://dist.torproject.org/tor-${tor_version}.tar.gz"
+
+torsocks_version="v2.2.0"
+torsocks_url="https://git.torproject.org/torsocks.git"
+
+gradm_version="3.1-201608131257"
+gradm_url="https://dev.gentoo.org/~blueness/hardened-sources/gradm/gradm-${gradm_version}.tar.gz"
+
+tomb_version="v2.3"
+tomb_url="https://github.com/dyne/tomb.git"
+
+gtomb_version="0.9"
+gtomb_url="https://github.com/parazyd/gtomb.git"
+
+
+extra_packages+=(
+	## desktop
+	xserver-xorg
+	xinit
+	awesome
+	xfonts-terminus
+	zenity
+	pinentry-gtk2
+
+	## system
+	cryptsetup
+	curl
+	openssh-client
+	sshfs
+	pax-utils
+	paxctl
+	rfkill
+	traceroute
+
+	## utils
+	apg
+	gnupg2
+	keychain
+	openvpn
+	p7zip
+	ssss
+	wpagui
+	terminology
+	macchanger
+	aircrack-ng
+	reaver
+
+	## misc
+	mupdf
+	feh
+	gimp
+	icedove
+	enigmail
+	keepassx
+	pass
+	vlc
+
+	## dev
+	bc
+	autoconf
+	automake
+	build-essential
+	ncurses-dev
+	libtool-bin
+	libtool
+	libevent-dev
+	libssl-dev
+	libgcrypt20-dev
+)
+
+purge_packages+=(
+	openssh-server
+)
