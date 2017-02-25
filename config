@@ -8,7 +8,7 @@ MAKEOPTS="-j$(grep -c 'processor' /proc/cpuinfo)"
 
 kernel_heads_git="https://gogs.dyne.org/heads/linux-heads"
 
-rootfs_overlay="https://git.devuan.org/heads/rootfs-overlay"
+rootfs_overlay="https://gogs.dyne.org/heads/rootfs-overlay"
 
 ferm_version="v2.3.1"
 ferm_url="https://github.com/MaxKellermann/ferm.git"
