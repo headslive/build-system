@@ -11,7 +11,7 @@ kernel_heads_git="https://gogs.dyne.org/heads/linux-heads"
 rootfs_overlay="https://gogs.dyne.org/heads/rootfs-overlay"
 
 ferm_version="v2.3.1"
-ferm_url="https://github.com/MaxKellermann/ferm.git"
+ferm_url="https://gogs.dyne.org/heads/ferm"
 
 icecat_version="45.5.1"
 icecat_url="https://ftp.gnu.org/gnu/gnuzilla/$icecat_version/icecat-${icecat_version}.en-US.linux-${earch}.tar.bz2"

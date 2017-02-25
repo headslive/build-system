@@ -70,10 +70,10 @@ build_kernel_amd64() {
 		popd
 	}
 
-	notice "compiling kernel ${kernel_version}"
-	pushd "$R/tmp/kernels/$arch/linux-${kernel_minor}"
+	notice "compiling linux-heads"
+	pushd "$R/tmp/kernels/$arch/linux-heads" || zerr
 	git pull origin master
-	cp -f "$R/../extra/${kernel_version}-${arch}.config" .config || zerr
+	cp -f "$R/../extra/heads-${arch}.config" .config || zerr
 	make $MAKEOPTS || zerr
 	sudo -E make INSTALL_MOD_PATH=$strapdir   modules_install || zerr
 	sudo -E make INSTALL_PATH=$strapdir/boot  install         || zerr
