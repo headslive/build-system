@@ -6,13 +6,7 @@ image_name="${blend_name}-${blend_vers}-${arch}"
 
 MAKEOPTS="-j$(grep -c 'processor' /proc/cpuinfo)"
 
-kernel_minor="4.4"
-kernel_version="4.4.45"
-kernel_url_main="http://ftp.kernel.org/pub/linux/kernel/v4.x/linux-${kernel_minor}.tar.xz"
-kernel_url_patch="http://ftp.kernel.org/pub/linux/kernel/v4.x/patch-${kernel_version}.xz"
-kernel_grsec="http://dev.alpinelinux.org/~ncopa/grsec/grsecurity-3.1-${kernel_version}-201604252206-alpine.patch"
-
-linux_libre_url="http://linux-libre.fsfla.org/pub/linux-libre/releases/${kernel_version}-gnu"
+kernel_heads_git="https://gogs.dyne.org/heads/linux-heads"
 
 rootfs_overlay="https://git.devuan.org/heads/rootfs-overlay"
 
@@ -82,6 +76,7 @@ extra_packages+=(
 
 	## dev
 	bc
+	aufs-tools
 	autoconf
 	automake
 	build-essential

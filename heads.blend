@@ -56,49 +56,23 @@ blend_postinst() {
 
 build_kernel_amd64() {
 	fn build_kernel_amd64
-	req=(R arch kernel_minor kernel_version)
-	req+=(kernel_url_main kernel_url_patch)
-	req+=(kernel_grsec)
+	req=(R arch)
+	req+=(kernel_heads_git)
 	ckreq || return 1
 
 	func "override libdevuansdk's build_kernel_amd64"
 
-	[[ -d $R/tmp/kernels/$arch/linux-${kernel_minor} ]] || {
-		notice "downloading linux $kernel_minor"
+	[[ -d $R/tmp/kernels/$arch/linux-heads ]] || {
+		notice "cloning linux-heads..."
 		mkdir -p "$R/tmp/kernels/$arch"
 		pushd "$R/tmp/kernels/$arch"
-		curl -L -O "$kernel_url_main" || zerr
-		act "extracting..."
-		tar xf $(basename $kernel_url_main)
-
-		pushd linux-${kernel_minor}
-		notice "downloading $kernel_version patch"
-		curl -L -O "$kernel_url_patch" || zerr
-		act "extracting..."
-		xz -d $(basename $kernel_url_patch)
-		act "patching..."
-		patch -p1 < $(basename -s .xz $kernel_url_patch) || zerr
-		act "done!"
-
-		notice "downloading grsec patch"
-		curl -L -o grsec.patch "$kernel_grsec" || zerr
-		act "patching..."
-		patch -p1 < grsec.patch || zerr
-		act "done!"
-
-		notice "grabbing linux-libre scripts"
-		for i in ${kernel_minor} check main; do
-			curl -O "$linux_libre_url/deblob-${i}" || zerr
-			chmod +x deblob-${i}
-		done
-		notice "deblobbing kernel..."
-		./deblob-${kernel_minor} || zerr
-		popd
+		git clone "$kernel_heads_git" || zerr
 		popd
 	}
 
 	notice "compiling kernel ${kernel_version}"
 	pushd "$R/tmp/kernels/$arch/linux-${kernel_minor}"
+	git pull origin master
 	cp -f "$R/../extra/${kernel_version}-${arch}.config" .config || zerr
 	make $MAKEOPTS || zerr
 	sudo -E make INSTALL_PATH=$strapdir/boot  install         || zerr
