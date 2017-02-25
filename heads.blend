@@ -75,8 +75,8 @@ build_kernel_amd64() {
 	git pull origin master
 	cp -f "$R/../extra/${kernel_version}-${arch}.config" .config || zerr
 	make $MAKEOPTS || zerr
-	sudo -E make INSTALL_PATH=$strapdir/boot  install         || zerr
 	sudo -E make INSTALL_MOD_PATH=$strapdir   modules_install || zerr
+	sudo -E make INSTALL_PATH=$strapdir/boot  install         || zerr
 	popd
 }
 
