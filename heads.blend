@@ -79,7 +79,29 @@ build_kernel_amd64() {
 	sudo -E make INSTALL_PATH=$strapdir/boot  install         || zerr
 	popd
 }
+##{{{ iso_write_isolinux_cfg()
+iso_write_isolinux_cfg() {
+	fn iso_write_isolinux_cfg "(override)"
+	req=(workdir arch)
+	ckreq || return 1
 
+	notice "writing isolinux configuration"
+	cat <<EOF | sudo tee ${workdir}/binary/isolinux/isolinux.cfg >/dev/null
+ui vesamenu.c32
+prompt 0
+menu title heads boot menu
+timeout 300
+
+label live-${arch}
+menu label ^heads live (${arch})
+menu default
+linux /live/vmlinuz
+append initrd=/live/initrd boot=live net.ifnames=0
+
+endtext
+EOF
+}
+##}}}
 ## {{{ blend_fixpax()
 blend_fixpax() {
 	fn blend_fixpax
@@ -276,11 +298,24 @@ blend_finalize() {
 ## rootless xorg
 chown :input /usr/bin/Xorg
 chmod g+s /usr/bin/Xorg
-gpasswd -a luther input
-gpasswd -a luther video
+for i in input video audio users; do
+	gpasswd -a luther \${i}
+done
 ## shells
 chsh -s /bin/zsh luther
 chsh -s /bin/zsh root
+## perms
+chown -R 1000:1000 /home/luther
+## misc
+rm -rf /usr/local/share/zsh/site-functions
+adduser --system --quiet --group clearnet # for a clearnet browser
+## tor
+groupadd -g 124 debian-tor
+useradd -u 118 -g debian-tor -M -d /var/lib/tor -s /bin/false debian-tor
+mkdir -p /var/lib/tor
+chown -R debian-tor:debian-tor /var/lib/tor
+mkdir -p /var/log/tor
+chown debian-tor:adm /var/log/tor
 EOF
 	chroot-script finalize || zerr
 }
