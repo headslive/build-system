@@ -90,6 +90,7 @@ extra_packages+=(
 	dunst
 	adwaita-icon-theme
 	pmount
+	mlocate
 
 	## dev
 	bc
@@ -113,6 +114,7 @@ extra_packages+=(
 	lua5.1
 	liblua5.1.0-dev
 	gir1.2-freedesktop
+	gir1.2-pango-1.0
 	libdbus-1-dev
 	libgdk-pixbuf2.0-dev
 	libcairo2-dev

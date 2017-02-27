@@ -172,8 +172,10 @@ make install
 cd /root
 tar xvf awesome.tbz2
 cd awesome-${awesome_version}
-AWESOME_IGNORE_LGI=1 make
-AWESOME_IGNORE_LGI=1 make package
+#AWESOME_IGNORE_LGI=1 make
+#AWESOME_IGNORE_LGI=1 make package
+make
+make package
 find . -name '*.deb' | sed 1q | xargs dpkg -i || return 1
 cd /root
 rm -rf awesome* xrm* xcb*
@@ -343,6 +345,7 @@ chown -R 1000:1000 /home/luther
 ## misc
 rm -rf /usr/local/share/zsh/site-functions
 adduser --system --quiet --group clearnet # for a clearnet browser
+sed -i -e 's/devuan/heads/' /etc/hosts
 ## tor
 groupadd -g 124 debian-tor
 useradd -u 118 -g debian-tor -M -d /var/lib/tor -s /bin/false debian-tor
@@ -353,6 +356,8 @@ chown debian-tor:adm /var/log/tor
 update-rc.d tor defaults
 ## cleanup
 #apt purge ${finalize_purge_packages}
+apt-get clean
+updatedb
 EOF
 	chroot-script finalize || zerr
 }
