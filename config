@@ -74,7 +74,7 @@ extra_packages+=(
 	## misc
 	zathura
 	zathura-djvu
-	zathura-postscript
+	zathura-ps
 	feh
 	gimp
 	icedove
