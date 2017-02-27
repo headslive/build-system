@@ -37,7 +37,8 @@ blend_postinst() {
 
 	notice "executing $blend_name postinst"
 
-	nopackage=(awesome gradm tomb jaromail tor torsocks icecat sup)
+	#nopackage=(awesome gradm tomb jaromail tor torsocks arm icecat sup)
+	nopackage=(awesome tomb tor torsocks arm icecat sup)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
 	done || zerr
