@@ -99,7 +99,7 @@ deb ${mirror} ${release}-proposed ${section}
 #deb-src ${mirror} ${release}-security ${section}
 #deb-src ${mirror} ${release}-backports ${section}
 #deb-src ${mirror} ${release}-proposed ${section}
-
+EOF
 }
 ##}}}
 ##{{{ iso_write_isolinux_cfg()
