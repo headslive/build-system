@@ -37,7 +37,7 @@ blend_postinst() {
 
 	notice "executing $blend_name postinst"
 
-	nopackage=(ferm gradm tomb jaromail tor torsocks icecat)
+	nopackage=(awesome gradm tomb jaromail tor torsocks icecat)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
 	done
@@ -147,6 +147,39 @@ EOF
 	chroot-script install-ferm || zerr
 }
 ## }}}
+## {{{ blend_install_awesome()
+blend_install_awesome() {
+	fn blend_install_awesome
+	req=(strapdir awesome_version awesome_url)
+	ckreq || return 1
+
+	notice "downloading awesomewm"
+
+	sudo curl -L p "$strapdir/root/awesome.tbz2" "$awesome_url" || zerr
+
+	notice "compiling..."
+
+	cat <<EOF | sudo tee ${strapdir}/install-awesome >/dev/null
+#!/bin/sh
+cd /root
+tar xvf awesome.tbz2
+cd awesome-${awesome_version}
+curl -L -O https://github.com/Airblader/xcb-util-xrm/releases/download/v1.2/xcb-util-xrm-1.2.tar.bz2 || return 1
+tar xvf xcb-util-xrm-1.2.tar.bz2
+cd xcb-util-xrm-1.2
+./configure
+make
+make install
+cd ..
+AWESOME_IGNORE_LGI=1 make
+make package
+find . -name '*.deb' | sed 1q | xargs dpkg -i || return 1
+cd /root
+rm -rf awesome*
+EOF
+	chroot-script install-awesome || zerr
+}
+## }}}
 ## {{{ blend_install_gradm()
 blend_install_gradm() {
 	fn blend_install_gradm
@@ -196,8 +229,8 @@ make
 make install
 
 cd /root/gtomb
-git checkout ${gtomb_version}
-PREFIX=/usr make install
+cp gtomb /usr/local/bin/gtomb
+chmod 755 /usr/local/bin/gtomb
 cd ..
 
 rm -rf tomb
@@ -296,11 +329,11 @@ blend_finalize() {
 	cat <<EOF | sudo tee ${strapdir}/finalize >/dev/null
 #!/bin/sh
 ## rootless xorg
-chown :input /usr/bin/Xorg
-chmod g+s /usr/bin/Xorg
-for i in input video audio users; do
-	gpasswd -a luther \${i}
-done
+#chown :input /usr/bin/Xorg
+#chmod g+s /usr/bin/Xorg
+#for i in input video audio users; do
+#	gpasswd -a luther \${i}
+#done
 ## shells
 chsh -s /bin/zsh luther
 chsh -s /bin/zsh root
@@ -316,6 +349,9 @@ mkdir -p /var/lib/tor
 chown -R debian-tor:debian-tor /var/lib/tor
 mkdir -p /var/log/tor
 chown debian-tor:adm /var/log/tor
+update-rc.d tor defaults
+## cleanup
+#apt purge ${finalize_purge_packages}
 EOF
 	chroot-script finalize || zerr
 }

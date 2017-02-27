@@ -10,8 +10,11 @@ kernel_heads_git="https://gogs.dyne.org/heads/linux-heads"
 
 rootfs_overlay="https://gogs.dyne.org/heads/rootfs-overlay"
 
-ferm_version="v2.3.1"
-ferm_url="https://gogs.dyne.org/heads/ferm"
+#ferm_version="v2.3.1"
+#ferm_url="https://gogs.dyne.org/heads/ferm"
+
+awesome_version="4.0"
+awesome_url="https://github.com/awesomeWM/awesome/releases/download/v${awesome_version}/awesome-${awesome_version}.tar.bz2"
 
 icecat_version="45.5.1"
 icecat_url="https://ftp.gnu.org/gnu/gnuzilla/$icecat_version/icecat-${icecat_version}.en-US.linux-${earch}.tar.bz2"
@@ -36,7 +39,6 @@ extra_packages+=(
 	## desktop
 	xserver-xorg
 	xinit
-	awesome
 	xfonts-terminus
 	zenity
 	pinentry-gtk2
@@ -50,6 +52,9 @@ extra_packages+=(
 	paxctl
 	rfkill
 	traceroute
+	network-manager
+	network-manager-openvpn
+	network-manager-pptp
 
 	## utils
 	apg
@@ -58,14 +63,18 @@ extra_packages+=(
 	openvpn
 	p7zip
 	ssss
-	wpagui
+	monkeysphere
 	terminology
 	macchanger
 	aircrack-ng
 	reaver
+	leafpad
+	surf
 
 	## misc
-	mupdf
+	zathura
+	zathura-djvu
+	zathura-postscript
 	feh
 	gimp
 	icedove
@@ -73,6 +82,11 @@ extra_packages+=(
 	keepassx
 	pass
 	vlc
+	tig
+	tabbed
+	imagemagick
+	dunst
+	adwaita-icon-theme
 
 	## dev
 	bc
@@ -87,8 +101,28 @@ extra_packages+=(
 	libtool
 	libevent-dev
 	libssl-dev
+	libgcrypt20
 	libgcrypt20-dev
+	libseccomp2
 	libseccomp-dev
+	### awesomewm
+	liblua5.1.0-dev
+	libcairo2-dev
+	libxcb-cursor-dev
+	libxcb-randr0-dev
+	libxcb-xtest0-dev
+	libxcb-xinerama0-dev
+	libxcb-shape0-dev
+	libxcb-util0-dev
+	libxcb-keysyms1-dev
+	libxcb-icccm4-dev
+	libxcb-xkb-dev
+	libxkbcommon-x11-dev
+	libxkbcommon-dev
+	libstartup-notification0-dev
+	libxdg-basedir-dev
+	lua-lgi-dev
+	###
 )
 
 purge_packages+=(
