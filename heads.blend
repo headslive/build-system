@@ -185,6 +185,9 @@ make
 make package
 find . -name '*.deb' | sed 1q | xargs dpkg -i || return 1
 cd /root
+sed -i /usr/local/share/awesome/themes/zenburn/theme.lua \
+	-e 's@^theme.wallpaper.*@theme.wallpaper = "/home/luther/.config/awesome/background.jpg"@' \
+	-e 's/sans/Terminus/'
 rm -rf awesome* xrm* xcb*
 EOF
 	chroot-script install-awesome || zerr
