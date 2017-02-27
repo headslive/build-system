@@ -27,6 +27,9 @@ tor_url="https://dist.torproject.org/tor-${tor_version}.tar.gz"
 torsocks_version="v2.2.0"
 torsocks_url="https://git.torproject.org/torsocks.git"
 
+arm_version="1.4.5.0"
+arm_url="https://www.atagar.com/arm/resources/static/arm-${arm_version}.tar.bz2"
+
 gradm_version="3.1-201608131257"
 gradm_url="https://dev.gentoo.org/~blueness/hardened-sources/gradm/gradm-${gradm_version}.tar.gz"
 

@@ -310,6 +310,32 @@ EOF
 	chroot-script install-torsocks || zerr
 }
 ## }}}
+## {{{ blend_install_arm()
+blend_install_arm() {
+	fn blend_install_arm
+	req=(strapdir arm_url arm_version)
+	ckreq || return 1
+
+	notice "installing arm in $strapdir"
+
+	notice "downloading arm..."
+	sudo curl -L -o "$strapdir/root/arm.tbz2" "$arm_url"
+
+	cat <<EOF | sudo tee ${strapdir}/install-arm >/dev/null
+#!/bin/sh
+cd /root
+tar xvf arm.tbz2
+cd arm-${arm_version}
+
+./install
+
+cd /root
+
+rm -rf arm*
+EOF
+	chroot-script install-arm || zerr
+}
+## }}}
 ## {{{ blend_install_icecat()
 blend_install_icecat() {
 	fn blend_install_icecat
@@ -353,6 +379,7 @@ blend_finalize() {
 	cat <<EOF | sudo tee ${strapdir}/finalize >/dev/null
 #!/bin/sh
 ## rootless xorg
+groupadd wheel
 chown -v :input /usr/bin/Xorg
 chmod -v g+s /usr/bin/Xorg
 for i in input video audio users plugdev wheel; do
