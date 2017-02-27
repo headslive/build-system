@@ -52,9 +52,9 @@ extra_packages+=(
 	paxctl
 	rfkill
 	traceroute
-	network-manager
-	network-manager-openvpn
-	network-manager-pptp
+	#network-manager
+	#network-manager-openvpn
+	#network-manager-pptp
 
 	## utils
 	apg
@@ -125,6 +125,8 @@ extra_packages+=(
 	###
 )
 
-purge_packages+=(
+purge_packages=(
 	openssh-server
+	openssh-sftp-server
+	rsyslog
 )
