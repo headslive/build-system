@@ -77,7 +77,7 @@ extra_packages+=(
 
 	## misc
 	acpid
-	acpi-tools
+	acpitool
 	zathura
 	zathura-djvu
 	zathura-ps
