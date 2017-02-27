@@ -85,12 +85,15 @@ extra_packages+=(
 	python-qt4
 	python-pip
 
-	## misc
+	## misc ## TODO: sort this out
 	acpi
 	acpid
 	zathura
 	zathura-djvu
 	zathura-ps
+	hexchat
+	psi-plus
+	psi-plus-plugins
 	feh
 	gimp
 	icedove
@@ -110,6 +113,15 @@ extra_packages+=(
 	mlocate
 	miscfiles
 	gettext
+	arandr
+	xclip
+	i3lock # TODO: hotkey/menu
+	compton
+	ncdu
+	whois
+	nmap
+	python-markdown
+	python-passlib
 
 	## dev
 	bc
