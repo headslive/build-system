@@ -38,7 +38,7 @@ blend_postinst() {
 	notice "executing $blend_name postinst"
 
 	#nopackage=(awesome gradm tomb jaromail tor torsocks arm icecat sup)
-	nopackage=(awesome tomb tor torsocks arm icecat sup)
+	nopackage=(awesome tomb tor torsocks arm icecat)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
 	done || zerr
@@ -50,6 +50,8 @@ blend_postinst() {
 	sudo cp -rav rootfs-overlay/* .    || zerr
 	sudo rm -rf  rootfs-overlay
 	popd
+
+	blend_install_sup || zerr
 
 	blend_fixpax   || zerr
 	blend_finalize || zerr
@@ -326,12 +328,9 @@ blend_install_arm() {
 #!/bin/sh
 cd /root
 tar xvf arm.tbz2
-cd arm-${arm_version}
-
+cd arm
 ./install
-
 cd /root
-
 rm -rf arm*
 EOF
 	chroot-script install-arm || zerr
