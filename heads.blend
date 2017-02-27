@@ -40,7 +40,7 @@ blend_postinst() {
 	nopackage=(awesome gradm tomb jaromail tor torsocks icecat)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
-	done
+	done || zerr
 
 	notice "grabbing rootfs-overlay"
 	pushd "$strapdir"
@@ -79,29 +79,6 @@ build_kernel_amd64() {
 	sudo -E make INSTALL_PATH=$strapdir/boot  install         || zerr
 	popd
 }
-##{{{ conf_print_sourceslist()
-conf_print_sourceslist() {
-	fn conf_print_sourceslist "(override)"
-	req=(mirror release section)
-	ckreq || return 1
-
-	cat <<EOF
-## package repositories
-deb ${mirror} ${release} ${section}
-deb ${mirror} ${release}-updates ${section}
-deb ${mirror} ${release}-security ${section}
-#deb ${mirror} ${release}-backports ${section}
-deb ${mirror} ${release}-proposed ${section}
-
-## source repositories
-#deb-src ${mirror} ${release} ${section}
-#deb-src ${mirror} ${release}-updates ${section}
-#deb-src ${mirror} ${release}-security ${section}
-#deb-src ${mirror} ${release}-backports ${section}
-#deb-src ${mirror} ${release}-proposed ${section}
-EOF
-}
-##}}}
 ##{{{ iso_write_isolinux_cfg()
 iso_write_isolinux_cfg() {
 	fn iso_write_isolinux_cfg "(override)"
@@ -119,7 +96,7 @@ label live-${arch}
 menu label ^heads live (${arch})
 menu default
 linux /live/vmlinuz
-append initrd=/live/initrd boot=live net.ifnames=0
+append initrd=/live/initrd boot=live net.ifnames=0 nomodeset
 
 endtext
 EOF
@@ -174,31 +151,32 @@ EOF
 blend_install_awesome() {
 	fn blend_install_awesome
 	req=(strapdir awesome_version awesome_url)
+	req+=(xcb_xrm_version xcb_xrm_url)
 	ckreq || return 1
 
 	notice "downloading awesomewm"
 
-	sudo curl -L p "$strapdir/root/awesome.tbz2" "$awesome_url" || zerr
+	sudo curl -L -o "$strapdir/root/xrm.tbz2"     "$xcb_xrm_url" || zerr
+	sudo curl -L -o "$strapdir/root/awesome.tbz2" "$awesome_url" || zerr
 
 	notice "compiling..."
 
 	cat <<EOF | sudo tee ${strapdir}/install-awesome >/dev/null
 #!/bin/sh
 cd /root
-tar xvf awesome.tbz2
-cd awesome-${awesome_version}
-curl -L -O https://github.com/Airblader/xcb-util-xrm/releases/download/v1.2/xcb-util-xrm-1.2.tar.bz2 || return 1
-tar xvf xcb-util-xrm-1.2.tar.bz2
-cd xcb-util-xrm-1.2
-./configure
+tar xvf xrm.tbz2
+cd xcb-util-xrm-${xcb_xrm_version}
+./configure --prefix=/usr --enable-shared --enable-static
 make
 make install
-cd ..
+cd /root
+tar xvf awesome.tbz2
+cd awesome-${awesome_version}
 AWESOME_IGNORE_LGI=1 make
-make package
+AWESOME_IGNORE_LGI=1 make package
 find . -name '*.deb' | sed 1q | xargs dpkg -i || return 1
 cd /root
-rm -rf awesome*
+rm -rf awesome* xrm* xcb*
 EOF
 	chroot-script install-awesome || zerr
 }

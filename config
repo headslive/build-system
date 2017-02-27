@@ -15,6 +15,8 @@ rootfs_overlay="https://gogs.dyne.org/heads/rootfs-overlay"
 
 awesome_version="4.0"
 awesome_url="https://github.com/awesomeWM/awesome/releases/download/v${awesome_version}/awesome-${awesome_version}.tar.bz2"
+xcb_xrm_version="1.2"
+xcb_xrm_url="https://github.com/Airblader/xcb-util-xrm/releases/download/v${xcb_xrm_version}/xcb-util-xrm-${xcb_xrm_version}.tar.bz2"
 
 icecat_version="45.5.1"
 icecat_url="https://ftp.gnu.org/gnu/gnuzilla/$icecat_version/icecat-${icecat_version}.en-US.linux-${earch}.tar.bz2"
@@ -87,6 +89,7 @@ extra_packages+=(
 	imagemagick
 	dunst
 	adwaita-icon-theme
+	pmount
 
 	## dev
 	bc
@@ -106,7 +109,12 @@ extra_packages+=(
 	libseccomp2
 	libseccomp-dev
 	### awesomewm
+	cmake
+	lua5.1
 	liblua5.1.0-dev
+	gir1.2-freedesktop
+	libdbus-1-dev
+	libgdk-pixbuf2.0-dev
 	libcairo2-dev
 	libxcb-cursor-dev
 	libxcb-randr0-dev
