@@ -79,8 +79,8 @@ extra_packages+=(
 	surf
 
 	## misc
+	acpi
 	acpid
-	acpitool
 	zathura
 	zathura-djvu
 	zathura-ps
