@@ -152,3 +152,10 @@ purge_packages=(
 	openssh-sftp-server
 	rsyslog
 )
+
+finalize_purge_packages=(
+	cmake
+	automake
+	flex
+	libbison-dev
+)

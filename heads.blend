@@ -403,7 +403,8 @@ chown debian-tor:adm /var/log/tor
 #update-rc.d tor defaults
 update-rc.d acpid defaults
 ## cleanup
-#apt purge ${finalize_purge_packages}
+apt-get --yes --force-yes purge ${finalize_purge_packages}
+apt-get --yes --force-yes autoremove
 apt-get clean
 updatedb
 EOF
