@@ -37,7 +37,7 @@ blend_postinst() {
 
 	notice "executing $blend_name postinst"
 
-	nopackage=(awesome gradm tomb jaromail tor torsocks icecat)
+	nopackage=(awesome gradm tomb jaromail tor torsocks icecat sup)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
 	done || zerr
@@ -323,6 +323,23 @@ blend_install_icecat() {
 	popd
 }
 ## }}}
+## {{{ blend_install_sup()
+blend_install_sup() {
+	fn blend_install_sup
+	req=(strapdir)
+	ckreq || return 1
+
+
+	notice "installing sup..."
+	cat <<EOF | sudo tee ${strapdir}/install-sup >/dev/null
+#!/bin/sh
+cd /usr/src/sup
+make
+make install
+EOF
+	chroot-script install-sup || zerr
+}
+## }}}
 ## {{{ blend_finalize()
 blend_finalize() {
 	fn blend_finalize
@@ -332,11 +349,11 @@ blend_finalize() {
 	cat <<EOF | sudo tee ${strapdir}/finalize >/dev/null
 #!/bin/sh
 ## rootless xorg
-#chown :input /usr/bin/Xorg
-#chmod g+s /usr/bin/Xorg
-#for i in input video audio users; do
-#	gpasswd -a luther \${i}
-#done
+chown -v :input /usr/bin/Xorg
+chmod -v g+s /usr/bin/Xorg
+for i in input video audio users plugdev wheel; do
+	gpasswd -a luther \${i}
+done
 ## shells
 chsh -s /bin/zsh luther
 chsh -s /bin/zsh root
@@ -353,7 +370,8 @@ mkdir -p /var/lib/tor
 chown -R debian-tor:debian-tor /var/lib/tor
 mkdir -p /var/log/tor
 chown debian-tor:adm /var/log/tor
-update-rc.d tor defaults
+#update-rc.d tor defaults
+update-rc.d acpid defaults
 ## cleanup
 #apt purge ${finalize_purge_packages}
 apt-get clean

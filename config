@@ -62,7 +62,9 @@ extra_packages+=(
 	apg
 	gnupg2
 	keychain
+	wpagui
 	openvpn
+	htop
 	p7zip
 	ssss
 	monkeysphere
@@ -74,6 +76,8 @@ extra_packages+=(
 	surf
 
 	## misc
+	acpid
+	acpi-tools
 	zathura
 	zathura-djvu
 	zathura-ps
@@ -88,8 +92,12 @@ extra_packages+=(
 	tabbed
 	imagemagick
 	dunst
+	libnotify-bin
+	scrot
 	adwaita-icon-theme
-	pmount
+	murrine-themes
+	lxappearance
+	thunar
 	mlocate
 
 	## dev
