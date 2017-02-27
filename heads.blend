@@ -120,6 +120,10 @@ paxctl -m /usr/bin/icedove
 ## icecat
 paxctl -c /usr/local/icecat/icecat
 paxctl -m /usr/local/icecat/icecat
+
+## surf
+paxctl -c /usr/bin/surf
+paxctl -m /usr/bin/surf
 EOF
 	chroot-script fixpax
 }
