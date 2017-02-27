@@ -79,6 +79,29 @@ build_kernel_amd64() {
 	sudo -E make INSTALL_PATH=$strapdir/boot  install         || zerr
 	popd
 }
+##{{{ conf_print_sourceslist()
+conf_print_sourceslist() {
+	fn conf_print_sourceslist "(override)"
+	req=(mirror release section)
+	ckreq || return 1
+
+	cat <<EOF
+## package repositories
+deb ${mirror} ${release} ${section}
+deb ${mirror} ${release}-updates ${section}
+deb ${mirror} ${release}-security ${section}
+#deb ${mirror} ${release}-backports ${section}
+deb ${mirror} ${release}-proposed ${section}
+
+## source repositories
+#deb-src ${mirror} ${release} ${section}
+#deb-src ${mirror} ${release}-updates ${section}
+#deb-src ${mirror} ${release}-security ${section}
+#deb-src ${mirror} ${release}-backports ${section}
+#deb-src ${mirror} ${release}-proposed ${section}
+
+}
+##}}}
 ##{{{ iso_write_isolinux_cfg()
 iso_write_isolinux_cfg() {
 	fn iso_write_isolinux_cfg "(override)"
