@@ -360,7 +360,6 @@ blend_install_sup() {
 	req=(strapdir)
 	ckreq || return 1
 
-
 	notice "installing sup..."
 	cat <<EOF | sudo tee ${strapdir}/install-sup >/dev/null
 #!/bin/sh

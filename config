@@ -94,14 +94,15 @@ extra_packages+=(
 	tig
 	tabbed
 	imagemagick
-	dunst
 	libnotify-bin
 	scrot
 	adwaita-icon-theme
 	murrine-themes
 	lxappearance
 	thunar
+	pmount
 	mlocate
+	miscfiles
 
 	## dev
 	bc
