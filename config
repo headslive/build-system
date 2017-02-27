@@ -40,6 +40,9 @@ tomb_url="https://github.com/dyne/tomb.git"
 gtomb_version="0.9"
 gtomb_url="https://github.com/parazyd/gtomb.git"
 
+electrum_version="2.7.18"
+electrum_url="https://download.electrum.org/${electrum_version}/Electrum-${electrum_version}.tar.gz"
+
 
 extra_packages+=(
 	## desktop
@@ -58,9 +61,6 @@ extra_packages+=(
 	paxctl
 	rfkill
 	traceroute
-	#network-manager
-	#network-manager-openvpn
-	#network-manager-pptp
 
 	## utils
 	apg
@@ -78,6 +78,12 @@ extra_packages+=(
 	reaver
 	leafpad
 	surf
+	qrencode
+	steghide
+
+	# electrum
+	python-qt4
+	python-pip
 
 	## misc
 	acpi
@@ -100,9 +106,10 @@ extra_packages+=(
 	adwaita-icon-theme
 	murrine-themes
 	lxappearance
-	thunar
+	pcmanfm
 	mlocate
 	miscfiles
+	gettext
 
 	## dev
 	bc
@@ -155,6 +162,7 @@ purge_packages=(
 
 finalize_purge_packages=(
 	cmake
+	autoconf
 	automake
 	flex
 	libbison-dev

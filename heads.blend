@@ -38,7 +38,7 @@ blend_postinst() {
 	notice "executing $blend_name postinst"
 
 	#nopackage=(awesome gradm tomb jaromail tor torsocks arm icecat sup)
-	nopackage=(awesome tomb tor torsocks arm icecat)
+	nopackage=(awesome tomb tor torsocks arm icecat electrum)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
 	done || zerr
@@ -356,6 +356,21 @@ blend_install_icecat() {
 	popd
 }
 ## }}}
+## {{{ blend_install_electrum()
+blend_install_electrum() {
+	fn blend_install_electrum
+	req=(strapdir)
+	ckreq || return 1
+
+
+	notice "installing electrum..."
+	cat <<EOF | sudo tee ${strapdir}/install-electrum >/dev/null
+#!/bin/sh
+sudo pip install ${electrum_url} || return 1
+EOF
+	chroot-script install-electrum || zerr
+}
+## }}}
 ## {{{ blend_install_sup()
 blend_install_sup() {
 	fn blend_install_sup
@@ -392,6 +407,10 @@ chsh -s /bin/zsh luther
 chsh -s /bin/zsh root
 ## perms
 chown -R 1000:1000 /home/luther
+echo "Defaults rootpw" > /etc/sudoers.d/heads
+echo "Defaults insulsts" >> /etc/sudoers.d/heads
+echo "luther heads = NOPASSWD: /usr/local/bin/tomb" >> /etc/sudoers.d/heads
+chmod 0440 /etc/sudoers.d/heads
 ## misc
 rm -rf /usr/local/share/zsh/site-functions
 adduser --system --quiet --group clearnet # for a clearnet browser
