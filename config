@@ -122,6 +122,7 @@ extra_packages+=(
 	nmap
 	python-markdown
 	python-passlib
+	connect-proxy
 
 	## dev
 	bc
