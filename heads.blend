@@ -304,7 +304,7 @@ blend_install_torsocks() {
 	cat <<EOF | sudo tee ${strapdir}/install-torsocks >/dev/null
 #!/bin/sh
 cd /root/torsocks
-git checkout ${torsocks_version}
+#git checkout ${torsocks_version}
 ./autogen.sh
 ./configure --prefix=/usr
 make ${MAKEOPTS}
