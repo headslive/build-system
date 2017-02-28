@@ -366,9 +366,11 @@ blend_install_electrum() {
 	notice "installing electrum..."
 	cat <<EOF | sudo tee ${strapdir}/install-electrum >/dev/null
 #!/bin/sh
-sudo pip install ${electrum_url} || return 1
+pip install ${electrum_url} || return 1
 EOF
+	devprocsys mount $strapdir     || zerr
 	chroot-script install-electrum || zerr
+	devprocsys umount $strapdir    || zerr
 }
 ## }}}
 ## {{{ blend_install_sup()
