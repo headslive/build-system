@@ -111,6 +111,8 @@ blend_fixpax() {
 	req=(strapdir)
 	ckreq || return 1
 
+	## XXX: not really a fix, rather a hack
+
 	notice "fixing up pax markings"
 
 	cat <<EOF | sudo tee ${strapdir}/fixpax >/dev/null
@@ -127,6 +129,10 @@ paxctl -m /usr/local/icecat/icecat
 ## surf
 paxctl -c /usr/bin/surf
 paxctl -m /usr/bin/surf
+
+## python
+paxctl -c /usr/bin/python2.7
+paxctl -m /usr/bin/python2.7
 EOF
 	chroot-script fixpax
 }
@@ -373,6 +379,26 @@ EOF
 	devprocsys umount $strapdir    || zerr
 }
 ## }}}
+## {{{ blend_install_tinfoil()
+blend_install_tinfoil() {
+	fn blend_install_tinfoil
+	req=(strapdir tinfoil_version tinfoil_url)
+	ckreq || return 1
+
+	notice "cloning tinfoil git"
+	sudo git clone -b "$tinfoil_version" "$tinfoil_url" "$strapdir/root/tomb"  --recursive || zerr
+
+	notice "installing tinfoil in $strapdir"
+	cat <<EOF | sudo tee ${strapdir}/install-tinfoil >/dev/null
+#!/bin/sh
+cd /root/tinfoil
+make install
+cd ..
+rm -rf tinfoil
+EOF
+	chroot-script install-tinfoil
+}
+## }}}
 ## {{{ blend_install_sup()
 blend_install_sup() {
 	fn blend_install_sup
@@ -410,7 +436,7 @@ chsh -s /bin/zsh root
 ## perms
 chown -R 1000:1000 /home/luther
 echo "Defaults rootpw" > /etc/sudoers.d/heads
-echo "Defaults insulsts" >> /etc/sudoers.d/heads
+echo "Defaults insults" >> /etc/sudoers.d/heads
 echo "luther heads = NOPASSWD: /usr/local/bin/tomb" >> /etc/sudoers.d/heads
 chmod 0440 /etc/sudoers.d/heads
 ## misc
@@ -426,6 +452,7 @@ mkdir -p /var/log/tor
 chown debian-tor:adm /var/log/tor
 #update-rc.d tor defaults
 update-rc.d acpid defaults
+update-rc.d openntpd remove
 ## cleanup
 apt-get --yes --force-yes purge ${finalize_purge_packages}
 apt-get --yes --force-yes autoremove

@@ -43,6 +43,9 @@ gtomb_url="https://github.com/parazyd/gtomb.git"
 electrum_version="2.7.18"
 electrum_url="https://download.electrum.org/${electrum_version}/Electrum-${electrum_version}.tar.gz"
 
+tinfoil_version="master"
+tinfoil_url="https://github.com/dyne/tinfoil.git"
+
 
 extra_packages+=(
 	## desktop
@@ -88,9 +91,8 @@ extra_packages+=(
 	## misc ## TODO: sort this out
 	acpi
 	acpid
-	zathura
-	zathura-djvu
-	zathura-ps
+	abiword
+	evince
 	hexchat
 	psi-plus
 	psi-plus-plugins
@@ -108,7 +110,7 @@ extra_packages+=(
 	scrot
 	adwaita-icon-theme
 	murrine-themes
-	lxappearance
+	#lxappearance
 	pcmanfm
 	mlocate
 	miscfiles
@@ -125,7 +127,20 @@ extra_packages+=(
 	connect-proxy
 	xarchiver
 
+	bastet
+	bsdgames
+	cavezofphear
+	curseofwar
+	gnuchess
+	xboard
+	matanza
+	nethack-console
+	hasciicam
+	jhead
+	sox
+
 	## dev
+	idle-python2.7
 	bc
 	aufs-tools
 	autoconf
@@ -180,4 +195,7 @@ finalize_purge_packages=(
 	automake
 	flex
 	libbison-dev
+	policykit-1
+	policykit-1-gnome
+	consolekit
 )
