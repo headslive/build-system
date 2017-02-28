@@ -17,10 +17,12 @@ gpa_version="0.9.10"
 gpa_url="https://gnupg.org/ftp/gcrypt/gpa/gpa-${gpa_version}.tar.bz2"
 
 awesome_version="4.0"
-awesome_url="https://github.com/awesomeWM/awesome/releases/download/v${awesome_version}/awesome-${awesome_version}.tar.bz2"
+#awesome_url="https://github.com/awesomeWM/awesome/releases/download/v${awesome_version}/awesome-${awesome_version}.tar.bz2"
+awesome_url="https://mirror.leaseweb.com/gentoo/distfiles/awesome-${awesome_version}.tar.xz"
 
 xcb_xrm_version="1.2"
-xcb_xrm_url="https://github.com/Airblader/xcb-util-xrm/releases/download/v${xcb_xrm_version}/xcb-util-xrm-${xcb_xrm_version}.tar.bz2"
+#xcb_xrm_url="https://github.com/Airblader/xcb-util-xrm/releases/download/v${xcb_xrm_version}/xcb-util-xrm-${xcb_xrm_version}.tar.bz2"
+xcb_xrm_url="https://mirror.leaseweb.com/gentoo/distfiles/xcb-util-xrm-${xcb_xrm_version}.tar.bz2"
 
 icecat_version="45.5.1"
 icecat_url="https://ftp.gnu.org/gnu/gnuzilla/$icecat_version/icecat-${icecat_version}.en-US.linux-${earch}.tar.bz2"
@@ -38,10 +40,10 @@ gradm_version="3.1-201608131257"
 gradm_url="https://dev.gentoo.org/~blueness/hardened-sources/gradm/gradm-${gradm_version}.tar.gz"
 
 tomb_version="v2.3"
-tomb_url="https://github.com/dyne/tomb.git"
+tomb_url="https://gogs.dyne.org/dyne/tomb.git"
 
 gtomb_version="0.9"
-gtomb_url="https://github.com/parazyd/gtomb.git"
+gtomb_url="git://git.parazyd.cf/gtomb.git"
 
 electrum_version="2.7.18"
 electrum_url="https://download.electrum.org/${electrum_version}/Electrum-${electrum_version}.tar.gz"
