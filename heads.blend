@@ -38,7 +38,7 @@ blend_postinst() {
 	notice "executing $blend_name postinst"
 
 	#nopackage=(awesome gradm tomb jaromail tor torsocks arm icecat sup)
-	nopackage=(awesome tomb tor torsocks arm icecat electrum)
+	nopackage=(awesome tomb tor torsocks arm icecat electrum connect)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
 	done || zerr
@@ -359,7 +359,7 @@ blend_install_icecat() {
 ## {{{ blend_install_electrum()
 blend_install_electrum() {
 	fn blend_install_electrum
-	req=(strapdir)
+	req=(strapdir electrum_url)
 	ckreq || return 1
 
 
@@ -369,6 +369,29 @@ blend_install_electrum() {
 sudo pip install ${electrum_url} || return 1
 EOF
 	chroot-script install-electrum || zerr
+}
+## }}}
+## {{{ blend_install_connect()
+blend_install_connect() {
+	fn blend_install_connect
+	req=(strapdir)
+	ckreq || return 1
+
+
+	notice "installing connect helper..."
+
+	sudo git clone https://bitbucket.org/gotoh/connect $strapdir/root/connect || zerr
+
+	cat <<EOF | sudo tee ${strapdir}/install-connect >/dev/null
+#!/bin/sh
+cd /root/connect
+make
+cp -f connect /usr/bin/connect
+chmod 755 /usr/bin/connect
+cd /root
+rm -rf connect
+EOF
+	chroot-script install-connect || zerr
 }
 ## }}}
 ## {{{ blend_install_sup()
