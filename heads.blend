@@ -38,7 +38,7 @@ blend_postinst() {
 	notice "executing $blend_name postinst"
 
 	#nopackage=(awesome gradm tomb jaromail tor torsocks arm icecat sup)
-	nopackage=(awesome tomb tor torsocks arm icecat electrum)
+	nopackage=(awesome tomb tor torsocks arm icecat electrum gpa)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
 	done || zerr
@@ -82,6 +82,33 @@ build_kernel_amd64() {
 	sudo -E make INSTALL_PATH=$strapdir/boot  install         || zerr
 	popd
 }
+
+build_kernel_i386() {
+	fn build_kernel_i386
+	req=(R arch)
+	req+=(kernel_heads_git)
+	ckreq || return 1
+
+	func "override libdevuansdk's build_kernel_i386"
+
+	[[ -d $R/tmp/kernels/$arch/linux-heads ]] || {
+		notice "cloning linux-heads..."
+		mkdir -p "$R/tmp/kernels/$arch"
+		pushd "$R/tmp/kernels/$arch"
+		git clone "$kernel_heads_git" || zerr
+		popd
+	}
+
+	notice "compiling linux-heads"
+	pushd "$R/tmp/kernels/$arch/linux-heads" || zerr
+	git pull origin master
+	cp -f "$R/../extra/heads-${arch}.config" .config || zerr
+	make $MAKEOPTS || zerr
+	sudo -E make INSTALL_MOD_PATH=$strapdir   modules_install || zerr
+	sudo -E make INSTALL_PATH=$strapdir/boot  install         || zerr
+	popd
+}
+
 ##{{{ iso_write_isolinux_cfg()
 iso_write_isolinux_cfg() {
 	fn iso_write_isolinux_cfg "(override)"
@@ -93,7 +120,7 @@ iso_write_isolinux_cfg() {
 ui vesamenu.c32
 prompt 0
 menu title heads boot menu
-timeout 300
+timeout 30
 
 label live-${arch}
 menu label ^heads live (${arch})

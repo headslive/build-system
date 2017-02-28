@@ -13,6 +13,9 @@ rootfs_overlay="https://gogs.dyne.org/heads/rootfs-overlay"
 #ferm_version="v2.3.1"
 #ferm_url="https://gogs.dyne.org/heads/ferm"
 
+gpa_version="0.9.10"
+gpa_url="https://gnupg.org/ftp/gcrypt/gpa/gpa-${gpa_version}.tar.bz2"
+
 awesome_version="4.0"
 awesome_url="https://github.com/awesomeWM/awesome/releases/download/v${awesome_version}/awesome-${awesome_version}.tar.bz2"
 
@@ -66,7 +69,6 @@ extra_packages+=(
 	traceroute
 
 	## utils
-	apg
 	gnupg2
 	keychain
 	wpagui
@@ -125,6 +127,8 @@ extra_packages+=(
 	python-markdown
 	python-passlib
 	connect-proxy
+	pciutils
+	usbutils
 	xarchiver
 
 	bastet
