@@ -38,7 +38,7 @@ blend_postinst() {
 	notice "executing $blend_name postinst"
 
 	#nopackage=(awesome gradm tomb jaromail tor torsocks arm icecat sup)
-	nopackage=(awesome tomb tor torsocks arm icecat electrum)
+	nopackage=(awesome tomb tor torsocks arm icecat electrum tbb)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
 	done || zerr
@@ -152,6 +152,10 @@ paxctl -m /usr/bin/icedove
 ## icecat
 paxctl -c /usr/local/icecat/icecat
 paxctl -m /usr/local/icecat/icecat
+
+## tbb
+paxctl -c /home/luther/Browser/firefox
+paxctl -m /home/luther/Browser/firefox
 
 ## surf
 paxctl -c /usr/bin/surf
@@ -375,7 +379,7 @@ EOF
 ## {{{ blend_install_icecat()
 blend_install_icecat() {
 	fn blend_install_icecat
-	req=(strapdir)
+	req=(strapdir icecat_version icecat_url)
 	ckreq || return 1
 
 
@@ -386,6 +390,24 @@ blend_install_icecat() {
 	pushd $strapdir/usr/local
 		sudo tar xfp $strapdir/root/icecat.tbz2
 		sudo rm -f   $strapdir/root/icecat.tbz2
+	popd
+}
+## }}}
+## {{{ blend_install_tbb()
+blend_install_tbb() {
+	fn blend_install_tbb
+	req=(strapdir tbb_version tbb_url)
+	ckreq || return 1
+
+	notice "downloading Tor Browser Bundle..."
+	sudo curl -L -o "$strapdir/home/luther/tbb.txz" "$tbb_url" || zerr
+
+	notice "installing Tor Browser Bundle in $strapdir"
+	pushd $strapdir/home/luther
+		sudo tar xfv tbb.txz
+		sudo chown -R 1000:1000 tor-browser_en-US
+		sudo mv tor-browser_en-US/* .
+		sudo rm -fv tbb.txz tor-browser_en-US
 	popd
 }
 ## }}}

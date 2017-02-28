@@ -49,6 +49,12 @@ electrum_url="https://download.electrum.org/${electrum_version}/Electrum-${elect
 tinfoil_version="master"
 tinfoil_url="https://github.com/dyne/tinfoil.git"
 
+tbb_version="6.5"
+case $arch in
+	amd64) aa="64";;
+	i386)  aa="32";;
+esac
+tbb_url="https://www.torproject.org/dist/torbrowser/${tbb_version}/tor-browser-linux${aa}-${tbb_version}_en-US.tar.xz"
 
 extra_packages+=(
 	## desktop
@@ -102,7 +108,7 @@ extra_packages+=(
 	gimp
 	icedove
 	enigmail
-	keepassx
+	keepassx ## replace with qtpass when out of testing
 	pass
 	vlc
 	tig
@@ -114,6 +120,7 @@ extra_packages+=(
 	murrine-themes
 	#lxappearance
 	pcmanfm
+	dunst
 	mlocate
 	miscfiles
 	gettext
