@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 blend_name="heads"
-blend_vers="0.0"
+blend_vers="0.0.1"
 image_name="${blend_name}-${blend_vers}-${arch}"
 
 MAKEOPTS="-j$(grep -c 'processor' /proc/cpuinfo)"
@@ -27,7 +27,7 @@ xcb_xrm_url="https://mirror.leaseweb.com/gentoo/distfiles/xcb-util-xrm-${xcb_xrm
 icecat_version="45.5.1"
 icecat_url="https://ftp.gnu.org/gnu/gnuzilla/$icecat_version/icecat-${icecat_version}.en-US.linux-${earch}.tar.bz2"
 
-tor_version="0.3.0.3-alpha"
+tor_version="0.3.0.4_rc"
 tor_url="https://dist.torproject.org/tor-${tor_version}.tar.gz"
 
 torsocks_version="v2.2.0"
@@ -102,6 +102,7 @@ extra_packages+=(
 	acpi
 	acpid
 	abiword
+	mtr-tiny
 	evince
 	hexchat
 	psi-plus
