@@ -1,0 +1,32 @@
+\subsection{From start to finish}
+\paragraph \\
+The basic workflow of functions to bootstrap an entire system is the
+following (the functions whose names don't start with "blend" are either
+parts of live-sdk or libdevuansdk):
+\begin{verbatim}
+bootstrap_complete_base
+blend_preinst
+iso_prepare_strap
+build_kernel_${arch}
+iso_setup_isolinux
+iso_write_isolinux_cfg
+blend_postinst
+iso_squash_strap
+iso_xorriso_build
+\end{verbatim}
+
+I will not cover the foreign functions here, only the blend-specific.
+
+\paragraph \\
+Currently in \emph{blend\_preinst} there is only the creation of the user
+"luther", so that's that.
+
+\paragraph \\
+\emph{build\_kernel\_arch} is architecture specific (i386/amd64) and will be
+explained in the kernel chapter.
+
+\paragraph \\
+In \emph{blend\_postinst} there is more magic happening. Here we compile and
+install packages from source to the system, clone the \emph{rootfs overlay}
+and do the final fixes and hacks. The rootfs overlay is also a chapter of its
+own.

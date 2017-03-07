@@ -1,0 +1,47 @@
+\section{The heads blend}
+\paragraph \\
+At the core of the heads build system is a file called
+\textbf{heads.blend}. A \emph{blend} is a concept I developed for
+libdevuansdk\footnotemark. Since you probably have no idea what
+libdevuansdk even is, I'll start by getting a bit into that one first.
+
+\subsection{libdevuansdk}
+\paragraph \\
+\emph{libdevuansdk} is a shell script library that emerged when I began
+maintaining the Devuan SDK\footnotemark. The Devuan SDK\footnotemark
+is a small framework written in zsh, and currently consists of libdevuansdk
+as such, and wrappers that are supposed to be written around it. Currently:
+\emph{arm-sdk}, \emph{live-sdk}, and \emph{vm-sdk}. heads' build system
+utilizes the live-sdk.
+
+\paragraph \\
+libdevuansdk gathers common knowledge that is utilized by the beforementioned
+sdks, and as the name says - is a common library of sorts. All functions that
+are not declared in the heads blend, are either a part of live-sdk or
+libdevuansdk. The concept is such that the blend can override functions of what
+is above it (live-sdk, and then libdevuansdk). live-sdk does the same. This
+makes it easy to do situation-specific overrides while not breaking the API.
+
+\subsection{Configuration}
+\paragraph \\
+The first thing the blend does is sourcing a config file. The config file is
+where all the software versions, their locations, list of packages to install
+and remove are kept.
+
+\paragraph \\
+\textbf{extra\_packages} is an array of Devuan package names that we append to
+because it is already a part of libdevuansdk and live-sdk. This array holds
+all software installed in heads that exists as a package in the Devuan
+repositories.
+
+\paragraph \\
+\textbf{purge\_packages} is an array of packages that should be purged from the
+system when it's the time to do it (in a certain step of libdevuansdk).
+
+\paragraph \\
+\textbf{finalize\_purge\_packages} is an array of packages that should be purged
+from the system at the final blend step. It is an array specific to the blend.
+
+\footnotetext[4]{\url{https://git.devuan.org/sdk/libdevuansdk}}
+\footnotetext[5]{\url{https://git.devuan.org/sdk/}}
+\footnotetext[6]{Simple Distro Kit}

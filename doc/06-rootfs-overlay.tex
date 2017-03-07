@@ -1,0 +1,59 @@
+\section{The rootfs overlay}
+\paragraph \\
+If the blend is the brains of heads, then the rootfs overlay is the heart of
+heads\footnotemark . This overlay is a git repository residing in the root
+directory of heads' filesystem. It holds all specific configuration files,
+scripts, sources, and other miscellaneous files that are a part of heads.
+\url{https://git.devuan.org/heads/rootfs-overlay}
+
+\subsection{Scripts}
+\paragraph \\
+heads-specific scripts usually reside in \emph{/usr/local/bin/heads-*}.
+They are mostly small helper scripts that I will document here for the
+sake of reference.
+
+\subsubsection{heads-generate-passphrase}
+\paragraph \\
+Generates a random passphrase for the root user on every boot. Drops it once
+in luther's .zshrc and shows it when one logs in. It is never shown again
+and is lost unless it's remembered or changed. Executed by \emph{/etc/rc.local}.
+
+\subsubsection{heads-init}
+\paragraph \\
+A tiny case clause, used by shutdown-menu to either shut down or reboot.
+
+\subsubsection{heads-shutdown-menu}
+\paragraph \\
+A script that utilizes zenity\footnotemark to give a graphical shutdown
+menu from AwesomeWM.
+
+\subsubsection{heads-torify}
+\paragraph \\
+Our iptables black magic we use to route all network traffic through Tor.
+Executed by \emph{/etc/rc.local}.
+
+\subsubsection{heads-update}
+\paragraph \\
+A script to update the system. Explained in the \emph{updating heads} section.
+
+
+\subsection{Updating heads}
+\paragraph \\
+As mentioned, the rootfs overlay is a git repository. We can utilize this to
+provide seamless updates to users, by pushing commits to the rootfs overlay git
+repository. Keep in mind heads as such is \textbf{never} going to phone
+home\footnotemark , but it's up to the user to choose if they will update or
+not. In any case, these will mostly be minor updates from heads' side, and if
+there are any important (read: security) updates, we will rather roll out a new
+release than relying on people updating their rootfs overlay.
+
+\paragraph \\
+However, since git is awesome (read: decentralized), it's easy to host
+one's own rootfs overlay if one wants to customize their heads setup, have a
+certain kind of persistence in the system or just easily grab files when
+one boots into the live system. The possibilites are endless.
+
+
+\footnotetext[9]{such organs, much anatomy}
+\footnotetext[10]{\url{https://help.gnome.org/users/zenity/stable/}}
+\footnotetext[11]{\url{https://en.wikipedia.org/wiki/Phoning_home}}

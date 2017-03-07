@@ -1,0 +1,102 @@
+\section{Building heads}
+\paragraph \\
+A little bit of spoonfeeding is always nice. Let's go through the process
+of building a heads ISO... Learning this process is essential, but don't
+worry, it's the easiest process in the world of building ISOs.
+
+\subsection{Obtaining the build-system}
+
+\paragraph \\
+I use a Devuan based system to bootstrap heads images, and I can't promise
+it's going to work anywhere else (It should, but I haven't tried it ever,
+nor do I plan to). So let's dive into this beautiful process of obtaining
+the heads build system and baking our ISO :)
+
+\paragraph \\
+First off, we need to grab the \emph{build-system} git repository. It
+contains git submodules, so we append --recursive to the args:
+\begin{verbatim}
+$ git clone https://git.devuan.org/heads/build-system.git --recursive
+\end{verbatim}
+
+This will give us all we need. Check out the README to find out what
+dependencies you need to install to run it on your system. If you are
+on the master git branch, you are using the development version - that's
+what you should use for testing and development, but if you require an
+image for daily usage, you should probably checkout the latest tag you
+can find in the git history.
+
+\subsection{Firing up live-sdk}
+\paragraph \\
+Okay, so once we got our git repo cloned and possibly checked out, we
+go into the \emph{live-sdk} directory of the repo. From there you start
+a vanilla zsh shell, source live-sdk to enter its environment and initialize
+the blend to build heads:
+\begin{verbatim}
+$ cd live-sdk
+$ zsh -f
+$ source sdk
+$ load devuan amd64 heads
+\end{verbatim}
+
+Once done, you will be notified all is loaded and ready to run. There is a
+helper command that will run the following functions in sequence, and exit
+if one of them exits. It is called \textbf{build\_iso\_dist}.
+
+\subsubsection{bootstrap\_complete\_base}
+\paragraph \\
+This function is the one that provides us with a vanilla base system that
+is as minimal as it can be, and then we build up upon it. It uses our
+\emph{extra\_packages} array and installs our packages. The function also
+creates a tarball of the minimal system so it is not needed to debootstrap
+for every build. If the tarball is found when starting a build, it will be
+extracted and updated.
+
+\subsubsection{blend\_preinst}
+\paragraph \\
+This one was mentioned before. It is blend-specific, and currently only adds
+the "luther" user.
+
+\subsubsection{iso\_prepare\_strap}
+\paragraph \\
+A function that will install the packages needed for a liveCD to function
+properly using \emph{apt}.
+
+\subsubsection{build\_kernel\_arch}
+\paragraph \\
+Mentioned before as well. This will clone (or update) the latest
+\emph{linux-heads} sources, compile them, and install them into the heads
+bootstrap directory (our filesystem). The function exists in libdevuansdk,
+but is overriden with the heads blend.
+
+\subsubsection{iso\_setup\_isolinux}
+\paragraph \\
+After the kernel is installed, we have to copy it for isolinux to use it.
+This function also copies the needed isolinux binaries where they have to
+be.
+
+\subsubsection{iso\_write\_isolinux\_cfg}
+\paragraph \\
+This function drops the isolinux configuration file into the isolinux directory.
+Exists in libdevuansdk, but is overriden with the blend because of branding.
+
+\subsubsection{blend\_postinst}
+\paragraph \\
+Mentioned in an earlier chapter. This function calls other
+\emph{blend\_install\_software} functions to compile and install specific
+software like Tor, GNU IceCat and such from source, because their packages
+aren't provided in Devuan. It also clones the \emph{rootfs-overlay} and sets
+it up. Finally, it executes the hacks and fixes that can be found in the
+\emph{blend\_finalize} function, and cleans up the filesystem, making it ready
+for packing. The function is blend-specific.
+
+\subsubsection{iso\_squash\_strap}
+\paragraph \\
+After our filesystem is ready, this will create a SquashFS from the bootstrap
+directory. This is what holds our read-only live system.
+
+\subsubsection{iso\_xorriso\_build}
+\paragraph \\
+Finally, this function creates a bootable ISO from our SquashFS and the ISOLINUX
+files we have copied earlier. The ISO can be found in \emph{dist/} after xorriso
+is finished.
