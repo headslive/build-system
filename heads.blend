@@ -57,57 +57,68 @@ blend_postinst() {
 	blend_finalize || zerr
 }
 
-build_kernel_amd64() {
-	fn build_kernel_amd64
-	req=(R arch)
+build_kernel_${arch}() {
+	fn build_kernel_${arch}
+	req=(R arch strapdir)
 	req+=(kernel_heads_git)
 	ckreq || return 1
 
-	func "override libdevuansdk's build_kernel_amd64"
+	func "override libdevuansdk's build_kernel_${arch}"
 
-	[[ -d $R/tmp/kernels/$arch/linux-heads ]] || {
+	[[ -d $strapdir/usr/src/linux-heads ]] || {
 		notice "cloning linux-heads..."
-		mkdir -p "$R/tmp/kernels/$arch"
-		pushd "$R/tmp/kernels/$arch"
-		git clone "$kernel_heads_git" || zerr
-		popd
+		sudo mkdir -p "$strapdir/usr/src/linux-heads"
+		sudo git clone "$kernel_heads_git" "$strapdir/usr/src/linux-heads" || zerr
 	}
 
 	notice "compiling linux-heads"
-	pushd "$R/tmp/kernels/$arch/linux-heads" || zerr
-	git pull origin master
-	cp -f "$R/../extra/heads-${arch}.config" .config || zerr
-	make $MAKEOPTS || zerr
-	sudo -E make INSTALL_MOD_PATH=$strapdir   modules_install || zerr
-	sudo -E make INSTALL_PATH=$strapdir/boot  install         || zerr
+	pushd "$strapdir/usr/src/linux-heads" || zerr
+	sudo git pull origin master
+	sudo cp -f "$R/../extra/heads-${arch}.config" .config
 	popd
+
+	#make $MAKEOPTS || zerr
+	#sudo -E make INSTALL_MOD_PATH=$strapdir   modules_install || zerr
+	#sudo -E make INSTALL_PATH=$strapdir/boot  install         || zerr
+	#popd
+
+	cat <<EOF | sudo tee ${strapdir}/install-linux-heads >/dev/null
+#!/bin/sh
+cd /usr/src/linux-heads
+make ${MAKEOPTS}     || return 1
+make modules_install || return 1
+make install         || return 1
+cd ..
+rm -rf linux-heads
+EOF
+	chroot-script install-linux-heads || zerr
 }
 
-build_kernel_i386() {
-	fn build_kernel_i386
-	req=(R arch)
-	req+=(kernel_heads_git)
-	ckreq || return 1
-
-	func "override libdevuansdk's build_kernel_i386"
-
-	[[ -d $R/tmp/kernels/$arch/linux-heads ]] || {
-		notice "cloning linux-heads..."
-		mkdir -p "$R/tmp/kernels/$arch"
-		pushd "$R/tmp/kernels/$arch"
-		git clone "$kernel_heads_git" || zerr
-		popd
-	}
-
-	notice "compiling linux-heads"
-	pushd "$R/tmp/kernels/$arch/linux-heads" || zerr
-	git pull origin master
-	cp -f "$R/../extra/heads-${arch}.config" .config || zerr
-	make $MAKEOPTS || zerr
-	sudo -E make INSTALL_MOD_PATH=$strapdir   modules_install || zerr
-	sudo -E make INSTALL_PATH=$strapdir/boot  install         || zerr
-	popd
-}
+# build_kernel_i386() {
+#	fn build_kernel_i386
+#	req=(R arch)
+#	req+=(kernel_heads_git)
+#	ckreq || return 1
+#
+#	func "override libdevuansdk's build_kernel_i386"
+#
+#	[[ -d $R/tmp/kernels/$arch/linux-heads ]] || {
+#		notice "cloning linux-heads..."
+#		mkdir -p "$R/tmp/kernels/$arch"
+#		pushd "$R/tmp/kernels/$arch"
+#		git clone "$kernel_heads_git" || zerr
+#		popd
+#	}
+#
+#	notice "compiling linux-heads"
+#	pushd "$R/tmp/kernels/$arch/linux-heads" || zerr
+#	git pull origin master
+#	cp -f "$R/../extra/heads-${arch}.config" .config || zerr
+#	make $MAKEOPTS || zerr
+#	sudo -E make INSTALL_MOD_PATH=$strapdir   modules_install || zerr
+#	sudo -E make INSTALL_PATH=$strapdir/boot  install         || zerr
+#	popd
+#}
 
 ##{{{ iso_write_isolinux_cfg()
 iso_write_isolinux_cfg() {
