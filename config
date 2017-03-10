@@ -79,6 +79,7 @@ extra_packages+=(
 	tor-arm
 	apt-transport-tor
 	openvpn
+	wicd
 
 	## misc
 	lxterminal
