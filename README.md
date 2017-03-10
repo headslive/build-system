@@ -22,5 +22,5 @@ additional dependencies
 -----------------------
 
 ```
-live-boot-initramfs-tools gcc-4.9-plugin-dev aufs-tools
+live-boot-initramfs-tools gcc-6-plugin-dev
 ```
