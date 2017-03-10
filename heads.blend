@@ -363,7 +363,7 @@ blend_finalize() {
 groupadd wheel
 chown -v :input /usr/bin/Xorg
 chmod -v g+s /usr/bin/Xorg
-for i in input video audio users plugdev wheel; do
+for i in input video audio users netdev plugdev wheel; do
 	gpasswd -a luther \${i}
 done
 
@@ -381,6 +381,7 @@ rm -rf /usr/local/share/zsh/site-functions
 sed -i -e 's/devuan/heads/' /etc/hosts
 
 update-rc.d lightdm defaults
+update-rc.d wicd defaults
 update-rc.d acpid defaults
 update-rc.d openntpd remove
 update-rc.d tor remove
