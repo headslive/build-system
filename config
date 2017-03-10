@@ -112,6 +112,7 @@ extra_packages+=(
 	ncdu
 	whois
 	nmap
+	zenmap
 	python-markdown
 	python-passlib
 	connect-proxy

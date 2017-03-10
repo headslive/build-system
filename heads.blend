@@ -44,16 +44,15 @@ blend_postinst() {
 
 	notice "grabbing rootfs-overlay"
 	pushd "$strapdir"
-	sudo git clone "$rootfs_overlay" || zerr
+	sudo git clone "$rootfs_overlay"   || zerr
 	sudo mv -v   rootfs-overlay/.git . || zerr
 	sudo cp -rav rootfs-overlay/* .    || zerr
 	sudo rm -rf  rootfs-overlay
 	popd
 
 	blend_install_sup || zerr
-
-	blend_fixpax   || zerr
-	blend_finalize || zerr
+	blend_fixpax      || zerr
+	blend_finalize    || zerr
 }
 
 build_kernel_${arch}() {
@@ -76,11 +75,6 @@ build_kernel_${arch}() {
 	sudo cp -f "$R/../extra/heads-${arch}.config" .config
 	popd
 
-	#make $MAKEOPTS || zerr
-	#sudo -E make INSTALL_MOD_PATH=$strapdir   modules_install || zerr
-	#sudo -E make INSTALL_PATH=$strapdir/boot  install         || zerr
-	#popd
-
 	cat <<EOF | sudo tee ${strapdir}/install-linux-heads >/dev/null
 #!/bin/sh
 cd /usr/src/linux-heads
@@ -90,34 +84,10 @@ make install         || return 1
 cd ..
 rm -rf linux-heads
 EOF
+	devprocsys mount $strapdir        || zerr
 	chroot-script install-linux-heads || zerr
+	devprocsys umount $strapdir       || zerr
 }
-
-# build_kernel_i386() {
-#	fn build_kernel_i386
-#	req=(R arch)
-#	req+=(kernel_heads_git)
-#	ckreq || return 1
-#
-#	func "override libdevuansdk's build_kernel_i386"
-#
-#	[[ -d $R/tmp/kernels/$arch/linux-heads ]] || {
-#		notice "cloning linux-heads..."
-#		mkdir -p "$R/tmp/kernels/$arch"
-#		pushd "$R/tmp/kernels/$arch"
-#		git clone "$kernel_heads_git" || zerr
-#		popd
-#	}
-#
-#	notice "compiling linux-heads"
-#	pushd "$R/tmp/kernels/$arch/linux-heads" || zerr
-#	git pull origin master
-#	cp -f "$R/../extra/heads-${arch}.config" .config || zerr
-#	make $MAKEOPTS || zerr
-#	sudo -E make INSTALL_MOD_PATH=$strapdir   modules_install || zerr
-#	sudo -E make INSTALL_PATH=$strapdir/boot  install         || zerr
-#	popd
-#}
 
 ##{{{ iso_write_isolinux_cfg()
 iso_write_isolinux_cfg() {
