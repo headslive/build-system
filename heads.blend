@@ -37,7 +37,7 @@ blend_postinst() {
 
 	notice "executing $blend_name postinst"
 
-	nopackage=(tomb icecat tbb)
+	nopackage=(tomb torsocks icecat tbb)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
 	done || zerr
