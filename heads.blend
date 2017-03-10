@@ -144,7 +144,7 @@ EOF
 ##}}}
 ##{{{ bootstrap_tar_unpack_()
 bootstrap_tar_unpack() {
-	fn boostrap_tar_unpack "$@" (blend override)
+	fn "boostrap_tar_unpack $@ (blend override)"
 	local unpath="$1"
 	req=(unpath bootstrap_tgz)
 	ckreq || return 1
