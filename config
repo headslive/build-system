@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 blend_name="heads"
-blend_vers="0.0.1"
+blend_vers="0.1"
 image_name="${blend_name}-${blend_vers}-${arch}"
 
 MAKEOPTS="-j$(grep -c 'processor' /proc/cpuinfo)"
@@ -10,31 +10,11 @@ kernel_heads_git="https://gogs.dyne.org/heads/linux-heads"
 
 rootfs_overlay="https://gogs.dyne.org/heads/rootfs-overlay"
 
-#ferm_version="v2.3.1"
-#ferm_url="https://gogs.dyne.org/heads/ferm"
-
-gpa_version="0.9.10"
-gpa_url="https://gnupg.org/ftp/gcrypt/gpa/gpa-${gpa_version}.tar.bz2"
-
-awesome_version="4.0"
-#awesome_url="https://github.com/awesomeWM/awesome/releases/download/v${awesome_version}/awesome-${awesome_version}.tar.bz2"
-awesome_url="https://mirror.leaseweb.com/gentoo/distfiles/awesome-${awesome_version}.tar.xz"
-
-xcb_xrm_version="1.2"
-#xcb_xrm_url="https://github.com/Airblader/xcb-util-xrm/releases/download/v${xcb_xrm_version}/xcb-util-xrm-${xcb_xrm_version}.tar.bz2"
-xcb_xrm_url="https://mirror.leaseweb.com/gentoo/distfiles/xcb-util-xrm-${xcb_xrm_version}.tar.bz2"
-
-icecat_version="45.5.1"
+icecat_version="45.7.0"
 icecat_url="https://ftp.gnu.org/gnu/gnuzilla/$icecat_version/icecat-${icecat_version}.en-US.linux-${earch}.tar.bz2"
 
-tor_version="0.3.0.4_rc"
-tor_url="https://dist.torproject.org/tor-${tor_version}.tar.gz"
-
-torsocks_version="v2.2.0"
+torsocks_version="master"
 torsocks_url="https://git.torproject.org/torsocks.git"
-
-arm_version="1.4.5.0"
-arm_url="https://www.atagar.com/arm/resources/static/arm-${arm_version}.tar.bz2"
 
 gradm_version="3.1-201608131257"
 gradm_url="https://dev.gentoo.org/~blueness/hardened-sources/gradm/gradm-${gradm_version}.tar.gz"
@@ -45,13 +25,10 @@ tomb_url="https://gogs.dyne.org/dyne/tomb.git"
 gtomb_version="0.9"
 gtomb_url="git://git.parazyd.cf/gtomb.git"
 
-electrum_version="2.7.18"
-electrum_url="https://download.electrum.org/${electrum_version}/Electrum-${electrum_version}.tar.gz"
-
 tinfoil_version="master"
 tinfoil_url="https://github.com/dyne/tinfoil.git"
 
-tbb_version="6.5"
+tbb_version="6.5.1"
 case $arch in
 	amd64) aa="64";;
 	i386)  aa="32";;
@@ -65,6 +42,10 @@ extra_packages+=(
 	xfonts-terminus
 	zenity
 	pinentry-gtk2
+	awesome
+	lightdm
+	adwaita-icon-theme
+	murrine-themes
 
 	## system
 	cryptsetup
@@ -75,35 +56,34 @@ extra_packages+=(
 	paxctl
 	rfkill
 	traceroute
+	acpi
+	acpid
+	acpi-support
 
 	## utils
 	gnupg2
 	keychain
-	wpagui
-	openvpn
 	htop
 	p7zip
 	ssss
 	monkeysphere
-	terminology
 	macchanger
 	aircrack-ng
 	reaver
-	leafpad
-	surf
-	qrencode
 	steghide
+	qrencode
+	mtr-tiny
 
-	# electrum
-	python-qt4
-	python-pip
+	## magic
+	tor
+	tor-arm
+	apt-transport-tor
+	openvpn
 
-	## misc ## TODO: sort this out
-	acpi
-	acpid
+	## misc
+	lxterminal
 	abiword
 	gnumeric
-	mtr-tiny
 	evince
 	hexchat
 	psi-plus
@@ -112,17 +92,14 @@ extra_packages+=(
 	gimp
 	icedove
 	enigmail
-	keepassx ## replace with qtpass when out of testing
 	pass
+	qtpass
 	vlc
 	tig
 	tabbed
 	imagemagick
 	libnotify-bin
 	scrot
-	adwaita-icon-theme
-	murrine-themes
-	#lxappearance
 	pcmanfm
 	dunst
 	mlocate
@@ -130,7 +107,7 @@ extra_packages+=(
 	gettext
 	arandr
 	xclip
-	i3lock # TODO: hotkey/menu
+	i3lock
 	compton
 	ncdu
 	whois
@@ -142,14 +119,8 @@ extra_packages+=(
 	usbutils
 	xarchiver
 
-	bastet
-	bsdgames
-	cavezofphear
-	curseofwar
 	gnuchess
 	xboard
-	matanza
-	nethack-console
 	hasciicam
 	jhead
 	sox
@@ -157,10 +128,10 @@ extra_packages+=(
 	## dev
 	idle-python2.7
 	bc
-	aufs-tools
 	autoconf
 	automake
 	build-essential
+	gcc-6-plugin-dev
 	ncurses-dev
 	flex
 	libbison-dev
@@ -172,30 +143,6 @@ extra_packages+=(
 	libgcrypt20-dev
 	libseccomp2
 	libseccomp-dev
-	### awesomewm
-	cmake
-	lua5.1
-	liblua5.1.0-dev
-	gir1.2-freedesktop
-	gir1.2-pango-1.0
-	libdbus-1-dev
-	libgdk-pixbuf2.0-dev
-	libcairo2-dev
-	libxcb-cursor-dev
-	libxcb-randr0-dev
-	libxcb-xtest0-dev
-	libxcb-xinerama0-dev
-	libxcb-shape0-dev
-	libxcb-util0-dev
-	libxcb-keysyms1-dev
-	libxcb-icccm4-dev
-	libxcb-xkb-dev
-	libxkbcommon-x11-dev
-	libxkbcommon-dev
-	libstartup-notification0-dev
-	libxdg-basedir-dev
-	lua-lgi-dev
-	###
 )
 
 purge_packages=(
@@ -205,12 +152,7 @@ purge_packages=(
 )
 
 finalize_purge_packages=(
-	cmake
-	autoconf
-	automake
 	flex
 	libbison-dev
-	policykit-1
-	policykit-1-gnome
-	consolekit
+	avahi-daemon
 )

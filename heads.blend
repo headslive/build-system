@@ -37,8 +37,7 @@ blend_postinst() {
 
 	notice "executing $blend_name postinst"
 
-	#nopackage=(awesome gradm tomb jaromail tor torsocks arm icecat sup)
-	nopackage=(awesome tomb tor torsocks arm icecat electrum tbb)
+	nopackage=(tomb icecat tbb)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
 	done || zerr
@@ -143,6 +142,43 @@ endtext
 EOF
 }
 ##}}}
+##{{{ bootstrap_tar_unpack_()
+bootstrap_tar_unpack() {
+	fn boostrap_tar_unpack "$@" (blend override)
+	local unpath="$1"
+	req=(unpath bootstrap_tgz)
+	ckreq || return 1
+
+	if [[ -f "${unpath}/.keep" ]]; then
+		mkdir -p "${unpath}"
+		silly
+		sudo tar xfp "$bootstrap_tgz" -C "${unpath}"
+		sudo mkdir -p "${unpath}"/{boot,dev,sys,proc,tmp}
+		sudo chmod 1777 "$unpath"/tmp
+	else
+		error "no .keep file found. exiting..."
+		zerr
+		exit 1
+	fi
+
+	cat <<EOF | sudo tee ${strapdir}/postunpack >/dev/null
+#!/bin/sh
+echo "deb http://auto.mirror.devuan.org/merged ascii main" > /etc/apt/sources.list
+echo "deb http://auto.mirror.devuan.org/merged ascii-updates main" >> /etc/apt/sources.list
+echo "deb http://auto.mirror.devuan.org/merged ascii-security main" >> /etc/apt/sources.list
+apt-get update
+apt-get --yes --force-yes upgrade
+apt-get --yes --force-yes dist-upgrade
+apt-get --yes --force-yes install ${extra_packages}
+apt-get --yes --force-yes autoremove
+apt-get clean
+EOF
+	devprocsys mount $strapdir  || zerr
+	chroot-script -d postunpack || zerr
+	devprocsys umount $strapdir || zerr
+}
+##}}}
+
 ## {{{ blend_fixpax()
 blend_fixpax() {
 	fn blend_fixpax
@@ -177,68 +213,6 @@ paxctl -c /usr/bin/python2.7
 paxctl -m /usr/bin/python2.7
 EOF
 	chroot-script fixpax
-}
-## }}}
-## {{{ blend_install_ferm()
-blend_install_ferm() {
-	fn blend_install_ferm
-	req=(strapdir ferm_version ferm_url)
-	ckreq || return 1
-
-	notice "cloning ferm git"
-	sudo git clone "$ferm_url" "$strapdir/root/ferm" || zerr
-
-	notice "installing ferm in $strapdir"
-
-	cat <<EOF | sudo tee ${strapdir}/install-ferm >/dev/null
-#!/bin/sh
-cd /root/ferm
-git checkout ${ferm_version}
-make ${MAKEOPTS}
-make install
-cd ..
-rm -rf ferm
-EOF
-	chroot-script install-ferm || zerr
-}
-## }}}
-## {{{ blend_install_awesome()
-blend_install_awesome() {
-	fn blend_install_awesome
-	req=(strapdir awesome_version awesome_url)
-	req+=(xcb_xrm_version xcb_xrm_url)
-	ckreq || return 1
-
-	notice "downloading awesomewm"
-
-	sudo curl -L -o "$strapdir/root/xrm.tbz2"     "$xcb_xrm_url" || zerr
-	sudo curl -L -o "$strapdir/root/awesome.tbz2" "$awesome_url" || zerr
-
-	notice "compiling..."
-
-	cat <<EOF | sudo tee ${strapdir}/install-awesome >/dev/null
-#!/bin/sh
-cd /root
-tar xvf xrm.tbz2
-cd xcb-util-xrm-${xcb_xrm_version}
-./configure --prefix=/usr --enable-shared --enable-static
-make
-make install
-cd /root
-tar xvf awesome.tbz2
-cd awesome-${awesome_version}
-#AWESOME_IGNORE_LGI=1 make
-#AWESOME_IGNORE_LGI=1 make package
-make
-make package
-find . -name '*.deb' | sed 1q | xargs dpkg -i || return 1
-cd /root
-sed -i /usr/local/share/awesome/themes/zenburn/theme.lua \
-	-e 's@^theme.wallpaper.*@theme.wallpaper = "/home/luther/.config/awesome/background.jpg"@' \
-	-e 's/sans/Terminus/'
-rm -rf awesome* xrm* xcb*
-EOF
-	chroot-script install-awesome || zerr
 }
 ## }}}
 ## {{{ blend_install_gradm()
@@ -305,38 +279,6 @@ blend_install_jaromail() {
 	fn blend_install_jaromail
 }
 ## }}}
-## {{{ blend_install_tor()
-blend_install_tor() {
-	fn blend_install_tor
-	req=(strapdir tor_url tor_version)
-	ckreq || return 1
-
-	notice "installing tor in $strapdir"
-
-	notice "downloading tor..."
-	sudo curl -L -o "$strapdir/root/tor.tgz" "$tor_url"
-
-	cat <<EOF | sudo tee ${strapdir}/install-tor >/dev/null
-#!/bin/sh
-cd /root
-tar xvf tor.tgz
-cd tor-${tor_version}
-
-./configure \
-	--prefix=/usr \
-	--disable-system-torrc \
-	--disable-systemd
-
-make ${MAKEOPTS}
-make install
-
-cd /root
-
-rm -rf tor*
-EOF
-	chroot-script install-tor || zerr
-}
-## }}}
 ## {{{ blend_install_torsocks()
 blend_install_torsocks() {
 	fn blend_install_torsocks
@@ -362,29 +304,6 @@ cd ..
 rm -rf torsocks
 EOF
 	chroot-script install-torsocks || zerr
-}
-## }}}
-## {{{ blend_install_arm()
-blend_install_arm() {
-	fn blend_install_arm
-	req=(strapdir arm_url arm_version)
-	ckreq || return 1
-
-	notice "installing arm in $strapdir"
-
-	notice "downloading arm..."
-	sudo curl -L -o "$strapdir/root/arm.tbz2" "$arm_url"
-
-	cat <<EOF | sudo tee ${strapdir}/install-arm >/dev/null
-#!/bin/sh
-cd /root
-tar xvf arm.tbz2
-cd arm
-./install
-cd /root
-rm -rf arm*
-EOF
-	chroot-script install-arm || zerr
 }
 ## }}}
 ## {{{ blend_install_icecat()
@@ -418,25 +337,8 @@ blend_install_tbb() {
 		sudo tar xfv tbb.txz
 		sudo chown -R 1000:1000 tor-browser_en-US
 		sudo mv tor-browser_en-US/* .
-		sudo rm -fv tbb.txz tor-browser_en-US
+		sudo rm -rfv tbb.txz tor-browser_en-US
 	popd
-}
-## }}}
-## {{{ blend_install_electrum()
-blend_install_electrum() {
-	fn blend_install_electrum
-	req=(strapdir electrum_url)
-	ckreq || return 1
-
-
-	notice "installing electrum..."
-	cat <<EOF | sudo tee ${strapdir}/install-electrum >/dev/null
-#!/bin/sh
-pip install ${electrum_url} || return 1
-EOF
-	devprocsys mount $strapdir     || zerr
-	chroot-script install-electrum || zerr
-	devprocsys umount $strapdir    || zerr
 }
 ## }}}
 ## {{{ blend_install_tinfoil()
@@ -490,29 +392,27 @@ chmod -v g+s /usr/bin/Xorg
 for i in input video audio users plugdev wheel; do
 	gpasswd -a luther \${i}
 done
+
 ## shells
 chsh -s /bin/zsh luther
 chsh -s /bin/zsh root
+
 ## perms
 chown -R 1000:1000 /home/luther
 echo "Defaults rootpw" > /etc/sudoers.d/heads
 echo "Defaults insults" >> /etc/sudoers.d/heads
 echo "luther heads = NOPASSWD: /usr/local/bin/tomb" >> /etc/sudoers.d/heads
 chmod 0440 /etc/sudoers.d/heads
+
 ## misc
 rm -rf /usr/local/share/zsh/site-functions
-adduser --system --quiet --group clearnet # for a clearnet browser
+#adduser --system --quiet --group clearnet # for a clearnet browser
 sed -i -e 's/devuan/heads/' /etc/hosts
-## tor
-groupadd -g 124 debian-tor
-useradd -u 118 -g debian-tor -M -d /var/lib/tor -s /bin/false debian-tor
-mkdir -p /var/lib/tor
-chown -R debian-tor:debian-tor /var/lib/tor
-mkdir -p /var/log/tor
-chown debian-tor:adm /var/log/tor
-#update-rc.d tor defaults
+
+update-rc.d lightdm defaults
 update-rc.d acpid defaults
 update-rc.d openntpd remove
+update-rc.d tor remove
 ## cleanup
 apt-get --yes --force-yes purge ${finalize_purge_packages}
 apt-get --yes --force-yes autoremove
