@@ -371,7 +371,7 @@ chsh -s /bin/zsh root
 chown -R 1000:1000 /home/luther
 echo "Defaults rootpw" > /etc/sudoers.d/heads
 echo "Defaults insults" >> /etc/sudoers.d/heads
-echo "luther heads = NOPASSWD: /usr/local/bin/tomb" >> /etc/sudoers.d/heads
+echo "luther heads = NOPASSWD: /usr/local/bin/tomb , /usr/sbin/pm-suspend" >> /etc/sudoers.d/heads
 chmod 0440 /etc/sudoers.d/heads
 
 ## misc
