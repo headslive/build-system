@@ -92,6 +92,7 @@ extra_packages+=(
 	gimp
 	icedove
 	enigmail
+	surf
 	pass
 	qtpass
 	vlc
