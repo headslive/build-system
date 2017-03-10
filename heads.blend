@@ -181,6 +181,10 @@ paxctl -m /usr/bin/surf
 ## python
 paxctl -c /usr/bin/python2.7
 paxctl -m /usr/bin/python2.7
+paxctl -c /usr/bin/python3.5
+paxctl -m /usr/bin/python3.5
+paxctl -c /usr/bin/python3.5m
+paxctl -m /usr/bin/python3.5m
 EOF
 	chroot-script fixpax
 }
