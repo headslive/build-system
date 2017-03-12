@@ -88,6 +88,7 @@ extra_packages+=(
 	gnumeric
 	evince
 	hexchat
+	irssi
 	psi-plus
 	psi-plus-plugins
 	sxiv #feh
@@ -166,4 +167,5 @@ finalize_purge_packages=(
 	greybird-gtk-theme
 	gnome-themes-standard
 	gnome-user-guide
+	debconf-i18n
 )
