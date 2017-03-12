@@ -56,7 +56,6 @@ extra_packages+=(
 	pax-utils
 	paxctl
 	rfkill
-	traceroute
 	acpi
 	acpid
 	acpi-support
@@ -75,7 +74,6 @@ extra_packages+=(
 	reaver
 	steghide
 	qrencode
-	mtr-tiny
 
 	## magic
 	tor
@@ -158,7 +156,14 @@ purge_packages=(
 )
 
 finalize_purge_packages=(
+	autoconf
+	automake
 	flex
 	libbison-dev
 	avahi-daemon
+	albatross-gtk-theme
+	blackbird-gtk-theme
+	greybird-gtk-theme
+	gnome-themes-standard
+	gnome-user-guide
 )
