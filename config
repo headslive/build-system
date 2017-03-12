@@ -63,6 +63,8 @@ extra_packages+=(
 
 	## utils
 	gnupg2
+	gpa
+	pcsc-tools
 	keychain
 	htop
 	p7zip
@@ -90,7 +92,7 @@ extra_packages+=(
 	hexchat
 	psi-plus
 	psi-plus-plugins
-	feh
+	sxiv #feh
 	gimp
 	icedove
 	enigmail
@@ -111,7 +113,7 @@ extra_packages+=(
 	arandr
 	xclip
 	i3lock
-	compton
+	#compton
 	ncdu
 	whois
 	nmap
