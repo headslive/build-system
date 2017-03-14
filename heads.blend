@@ -201,7 +201,7 @@ for i in \${bins}; do
 	test -f "\${i}" && {
 		paxctl -c "\${i}"
 		paxctl -m "\${i}"
-	}
+	} || return 0
 done
 EOF
 	chroot-script fixpax
