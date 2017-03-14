@@ -36,12 +36,12 @@ extra_packages+=(
 	## desktop
 	xserver-xorg
 	xinit
-	xfonts-terminus
+	#xfonts-terminus
 	zenity
 	pinentry-gtk2
 	awesome
 	lightdm
-	lightdm-gtk-greeter-settings
+	#lightdm-gtk-greeter-settings
 	adwaita-icon-theme
 	murrine-themes
 
