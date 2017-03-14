@@ -36,12 +36,10 @@ extra_packages+=(
 	## desktop
 	xserver-xorg
 	xinit
-	#xfonts-terminus
 	zenity
 	pinentry-gtk2
 	awesome
 	lightdm
-	#lightdm-gtk-greeter-settings
 	adwaita-icon-theme
 	murrine-themes
 
@@ -97,7 +95,6 @@ extra_packages+=(
 	qtpass
 	vlc
 	tig
-	tabbed
 	imagemagick
 	libnotify-bin
 	scrot
@@ -109,7 +106,6 @@ extra_packages+=(
 	arandr
 	xclip
 	i3lock
-	#compton
 	ncdu
 	whois
 	nmap
