@@ -74,6 +74,7 @@ extra_packages+=(
 	wicd
 
 	lxterminal
+	leafpad
 	abiword
 	gnumeric
 	evince
