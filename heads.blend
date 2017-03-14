@@ -99,6 +99,7 @@ iso_write_isolinux_cfg() {
 	## hope you don't mind
 
 	notice "writing isolinux configuration"
+	sudo cp -f "$R/../extra/splash.png" "$workdir/binary/isolinux/splash.png"
 	cat <<EOF | sudo tee ${workdir}/binary/isolinux/isolinux.cfg >/dev/null
 default /isolinux/vesamenu.c32
 prompt 0
