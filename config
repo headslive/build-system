@@ -128,7 +128,6 @@ extra_packages+=(
 	libbison-dev
 	libtool-bin
 	libtool
-	libevent
 	libevent-dev
 	libssl-dev
 	libgcrypt20
