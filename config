@@ -10,9 +10,6 @@ kernel_heads_git="https://gogs.dyne.org/heads/linux-heads"
 
 rootfs_overlay="https://gogs.dyne.org/heads/rootfs-overlay"
 
-icecat_version="45.7.0"
-icecat_url="https://ftp.gnu.org/gnu/gnuzilla/$icecat_version/icecat-${icecat_version}.en-US.linux-${earch}.tar.bz2"
-
 torsocks_version="master"
 torsocks_url="https://git.torproject.org/torsocks.git"
 

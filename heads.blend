@@ -37,7 +37,7 @@ blend_postinst() {
 
 	notice "executing $blend_name postinst"
 
-	nopackage=(tomb torsocks icecat tbb)
+	nopackage=(tomb torsocks tbb)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
 	done || zerr
@@ -95,18 +95,45 @@ iso_write_isolinux_cfg() {
 	req=(workdir arch)
 	ckreq || return 1
 
+	## shamelessly stolen from katolaz minimal live :p
+	## hope you don't mind
+
 	notice "writing isolinux configuration"
 	cat <<EOF | sudo tee ${workdir}/binary/isolinux/isolinux.cfg >/dev/null
-ui vesamenu.c32
+default /isolinux/vesamenu.c32
 prompt 0
-menu title heads boot menu
 timeout 30
 
+menu hshift 6
+menu width 64
+
+menu title heads boot menu
+menu background /isolinux/splash.png
+menu color title    * #ff000000 #00ffffff none
+menu color border   * #00000000 #00000000 none
+menu color sel      1;7;37;30 #ffffffff #ff000000 none
+menu color unsel    1;30;37 #ff000000 #ffffffff none
+menu color hotsel   1;7;37;40 #ffffffff #76a1d0ff *
+menu color tabmsg   1;30;37 #ff000000 #ffffffff none
+menu color cmdline  1;30;37 #ff000000 #ffffffff none
+menu color help     37;40 #ffdddd00 #00000000 none
+menu vshift 8
+menu rows 12
+#menu helpmsgrow 15
+#menu cmdlinerow 25
+#menu timeoutrow 26
+#menu tabmsgrow 14
+menu tabmsg Press ENTER to boot or TAB to edit a menu entry
+
 label live-${arch}
-menu label ^heads live (${arch})
-menu default
-linux /live/vmlinuz
-append initrd=/live/initrd boot=live net.ifnames=0 nomodeset
+	menu label ^heads live (${arch})
+	linux /live/vmlinuz
+	append initrd=/live/initrd boot=live union=overlay net.ifnames=0 vga=auto
+
+label live-${arch}-toram
+	menu label ^heads live (${arch}) (toram)
+	linux /live/vmlinuz
+	append initrd=/live/initrd boot=live union=overlay net.ifnames=0 vga=auto toram
 
 endtext
 EOF
@@ -165,10 +192,6 @@ blend_fixpax() {
 ## icedove
 paxctl -c /usr/bin/icedove
 paxctl -m /usr/bin/icedove
-
-## icecat
-paxctl -c /usr/local/icecat/icecat
-paxctl -m /usr/local/icecat/icecat
 
 ## tbb
 paxctl -c /home/luther/Browser/firefox
@@ -248,11 +271,6 @@ EOF
 	chroot-script install-tomb
 }
 ## }}}
-## {{{ blend_install_jaromail()
-blend_install_jaromail() {
-	fn blend_install_jaromail
-}
-## }}}
 ## {{{ blend_install_torsocks()
 blend_install_torsocks() {
 	fn blend_install_torsocks
@@ -278,23 +296,6 @@ cd ..
 rm -rf torsocks
 EOF
 	chroot-script install-torsocks || zerr
-}
-## }}}
-## {{{ blend_install_icecat()
-blend_install_icecat() {
-	fn blend_install_icecat
-	req=(strapdir icecat_version icecat_url)
-	ckreq || return 1
-
-
-	notice "downloading GNU Icecat..."
-	sudo curl -L -o "$strapdir/root/icecat.tbz2" "$icecat_url" || zerr
-
-	notice "installing GNU Icecat in $strapdir"
-	pushd $strapdir/usr/local
-		sudo tar xfp $strapdir/root/icecat.tbz2
-		sudo rm -f   $strapdir/root/icecat.tbz2
-	popd
 }
 ## }}}
 ## {{{ blend_install_tbb()
