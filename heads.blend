@@ -189,25 +189,20 @@ blend_fixpax() {
 	cat <<EOF | sudo tee ${strapdir}/fixpax >/dev/null
 #!/bin/sh
 
-## icedove
-paxctl -c /usr/bin/icedove
-paxctl -m /usr/bin/icedove
-
-## tbb
-paxctl -c /home/luther/Browser/firefox
-paxctl -m /home/luther/Browser/firefox
-
-## surf
-paxctl -c /usr/bin/surf
-paxctl -m /usr/bin/surf
-
-## python
-paxctl -c /usr/bin/python2.7
-paxctl -m /usr/bin/python2.7
-paxctl -c /usr/bin/python3.5
-paxctl -m /usr/bin/python3.5
-paxctl -c /usr/bin/python3.5m
-paxctl -m /usr/bin/python3.5m
+bins="
+	/usr/bin/icedove
+	/home/luther/Browser/firefox
+	/usr/bin/surf
+	/usr/bin/python2.7
+	/usr/bin/python3.5
+	/usr/bin/python3.5m
+"
+for i in \${bins}; do
+	test -f "\${i}" && {
+		paxctl -c "\${i}"
+		paxctl -m "\${i}"
+	}
+done
 EOF
 	chroot-script fixpax
 }
@@ -386,11 +381,13 @@ update-rc.d wicd defaults
 update-rc.d acpid defaults
 update-rc.d openntpd remove
 update-rc.d tor remove
+
 ## cleanup
 apt-get --yes --force-yes purge ${finalize_purge_packages}
 apt-get --yes --force-yes autoremove
 apt-get clean
 updatedb
+
 ### kill foreign manpages
 rm -rf /usr/share/man/??
 rm -rf /usr/share/man/??_*
