@@ -117,7 +117,7 @@ menu color hotsel   1;7;37;40 #ffffffff #76a1d0ff *
 menu color tabmsg   1;30;37 #ff000000 #ffffffff none
 menu color cmdline  1;30;37 #ff000000 #ffffffff none
 menu color help     37;40 #ffdddd00 #00000000 none
-menu vshift 8
+menu vshift 10
 menu rows 12
 #menu helpmsgrow 15
 #menu cmdlinerow 25
@@ -126,14 +126,14 @@ menu rows 12
 menu tabmsg Press ENTER to boot or TAB to edit a menu entry
 
 label live-${arch}
-	menu label ^heads live (${arch})
+	menu label heads live (${arch})
 	linux /live/vmlinuz
-	append initrd=/live/initrd boot=live union=overlay net.ifnames=0 vga=auto
+	append initrd=/live/initrd boot=live union=overlay net.ifnames=0 nomodeset
 
 label live-${arch}-toram
-	menu label ^heads live (${arch}) (toram)
+	menu label heads live (${arch}) (toram)
 	linux /live/vmlinuz
-	append initrd=/live/initrd boot=live union=overlay net.ifnames=0 vga=auto toram
+	append initrd=/live/initrd boot=live union=overlay net.ifnames=0 nomodeset toram
 
 endtext
 EOF

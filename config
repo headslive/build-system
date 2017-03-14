@@ -92,7 +92,7 @@ extra_packages+=(
 	gimp
 	icedove
 	enigmail
-	surf
+	#surf
 	pass
 	qtpass
 	vlc
@@ -139,6 +139,7 @@ extra_packages+=(
 	libbison-dev
 	libtool-bin
 	libtool
+	libevent
 	libevent-dev
 	libssl-dev
 	libgcrypt20
@@ -158,6 +159,11 @@ finalize_purge_packages=(
 	automake
 	flex
 	libbison-dev
+	ncurses-dev
+	libevent-dev
+	libssl-dev
+	libgcrypt20-dev
+	libseccomp-dev
 	avahi-daemon
 	albatross-gtk-theme
 	blackbird-gtk-theme
