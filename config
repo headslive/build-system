@@ -33,7 +33,6 @@ esac
 tbb_url="https://www.torproject.org/dist/torbrowser/${tbb_version}/tor-browser-linux${aa}-${tbb_version}_en-US.tar.xz"
 
 extra_packages+=(
-	## desktop
 	xserver-xorg
 	xinit
 	zenity
@@ -43,7 +42,6 @@ extra_packages+=(
 	adwaita-icon-theme
 	murrine-themes
 
-	## system
 	cryptsetup
 	curl
 	openssh-client
@@ -55,7 +53,6 @@ extra_packages+=(
 	acpid
 	acpi-support
 
-	## utils
 	gnupg2
 	gpa
 	pcsc-tools
@@ -70,14 +67,12 @@ extra_packages+=(
 	steghide
 	qrencode
 
-	## magic
 	tor
 	tor-arm
 	apt-transport-tor
 	openvpn
 	wicd
 
-	## misc
 	lxterminal
 	abiword
 	gnumeric
@@ -86,11 +81,10 @@ extra_packages+=(
 	irssi
 	psi-plus
 	psi-plus-plugins
-	sxiv #feh
+	sxiv
 	gimp
 	icedove
 	enigmail
-	#surf
 	pass
 	qtpass
 	vlc
@@ -123,7 +117,6 @@ extra_packages+=(
 	jhead
 	sox
 
-	## dev
 	idle-python2.7
 	bc
 	autoconf
