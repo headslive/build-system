@@ -7,7 +7,7 @@ initial setup
 clone the git repository with
 
 ```
-git clone https://gogs.dyne.org/heads/build-system.git --recursive
+git clone https://github.com/headslive/build-system.git --recursive
 ```
 
 
