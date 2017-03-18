@@ -84,9 +84,7 @@ make install         || return 1
 cd ..
 rm -rf linux-heads
 EOF
-	devprocsys mount $strapdir        || zerr
-	chroot-script install-linux-heads || zerr
-	devprocsys umount $strapdir       || zerr
+	chroot-script -d install-linux-heads || zerr
 }
 
 ##{{{ iso_write_isolinux_cfg()
@@ -134,7 +132,7 @@ label live-${arch}
 label live-${arch}-toram
 	menu label heads live (${arch}) (toram)
 	linux /live/vmlinuz
-	append initrd=/live/initrd boot=live union=overlay net.ifnames=0 nomodeset toram
+	append initrd=/live/initrd boot=live union=overlay net.ifnames=0 toram nomodeset
 
 endtext
 EOF
@@ -171,9 +169,7 @@ apt-get --yes --force-yes install ${extra_packages}
 apt-get --yes --force-yes autoremove
 apt-get clean
 EOF
-	devprocsys mount $strapdir  || zerr
 	chroot-script -d postunpack || zerr
-	devprocsys umount $strapdir || zerr
 }
 ##}}}
 
@@ -202,8 +198,8 @@ for i in \${bins}; do
 	test -f "\${i}" && {
 		paxctl -c "\${i}"
 		paxctl -m "\${i}"
-	} || return 0
-done
+	}
+done  || return 0
 EOF
 	chroot-script fixpax
 }
