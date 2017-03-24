@@ -372,6 +372,7 @@ chmod 0440 /etc/sudoers.d/heads
 rm -rf /usr/local/share/zsh/site-functions
 #adduser --system --quiet --group clearnet # for a clearnet browser
 sed -i -e 's/devuan/heads/' /etc/hosts
+gpg --recv-keys 0xB876CB44FA1B0274
 
 update-rc.d lightdm defaults
 update-rc.d wicd defaults
