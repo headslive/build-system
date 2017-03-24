@@ -152,6 +152,7 @@ finalize_purge_packages=(
 	autoconf
 	automake
 	flex
+	autotools-dev
 	libbison-dev
 	ncurses-dev
 	libevent-dev
@@ -160,9 +161,11 @@ finalize_purge_packages=(
 	libseccomp-dev
 	avahi-daemon
 	albatross-gtk-theme
+	bluebird-gtk-theme
 	blackbird-gtk-theme
 	greybird-gtk-theme
 	gnome-themes-standard
 	gnome-user-guide
 	debconf-i18n
+	gnome-accessibility-themes
 )
