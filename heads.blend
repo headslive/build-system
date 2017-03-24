@@ -127,12 +127,12 @@ menu tabmsg Press ENTER to boot or TAB to edit a menu entry
 label live-${arch}
 	menu label heads live (${arch})
 	linux /live/vmlinuz
-	append initrd=/live/initrd boot=live union=overlay net.ifnames=0 nomodeset
+	append initrd=/live/initrd boot=live union=overlay net.ifnames=0
 
 label live-${arch}-toram
 	menu label heads live (${arch}) (toram)
 	linux /live/vmlinuz
-	append initrd=/live/initrd boot=live union=overlay net.ifnames=0 toram nomodeset
+	append initrd=/live/initrd boot=live union=overlay net.ifnames=0 toram
 
 endtext
 EOF

@@ -25,7 +25,7 @@ gtomb_url="git://git.parazyd.cf/gtomb.git"
 tinfoil_version="master"
 tinfoil_url="https://github.com/dyne/tinfoil.git"
 
-tbb_version="6.5.1"
+tbb_version="7.0a2"
 case $arch in
 	amd64) aa="64";;
 	i386)  aa="32";;
@@ -42,6 +42,9 @@ extra_packages+=(
 	adwaita-icon-theme
 	murrine-themes
 
+	busybox-static
+	busybox-syslogd
+	openntpd
 	cryptsetup
 	curl
 	openssh-client
