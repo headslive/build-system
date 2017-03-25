@@ -35,7 +35,7 @@ tbb_url="https://www.torproject.org/dist/torbrowser/${tbb_version}/tor-browser-l
 extra_packages+=(
 	xserver-xorg
 	xinit
-	zenity
+	yad
 	pinentry-gtk2
 	awesome
 	lightdm
