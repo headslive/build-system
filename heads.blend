@@ -301,7 +301,7 @@ blend_install_ttdnsd() {
 
 	notice "cloning ttdnsd"
 	sudo mkdir -p "$strapdir/root/ttdnsd"
-	sudo git clone "$ttdnsd" "$strapdir/root/ttdnsd/ttdnsd"
+	sudo git clone "$ttdnsd_url" "$strapdir/root/ttdnsd/ttdnsd"
 
 	notice "installing ttdnsd in $strapdir"
 	cat <<EOF | sudo tee ${strapdir}/install-ttdnsd >/dev/null
