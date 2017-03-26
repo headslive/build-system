@@ -304,8 +304,8 @@ blend_install_tbb() {
 
 	cat <<EOF | sudo tee ${strapdir}/install-tbb
 #!/bin/sh
-tar xvf tbb.txz
 cd /root
+tar xvf tbb.txz
 cd tor-browser_en-US/Browser
 	cp -fv TorBrowser/Tor/libstdc++.so.6 .
 	rm -rv TorBrowser/Tor TorBrowser/Docs
