@@ -92,7 +92,7 @@ extra_packages+=(
 	psi-plus-plugins
 	sxiv
 	gimp
-	icedove
+	thunderbird
 	enigmail
 	pass
 	qtpass

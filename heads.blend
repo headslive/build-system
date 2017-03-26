@@ -187,7 +187,8 @@ blend_fixpax() {
 #!/bin/sh
 
 bins="
-	/usr/bin/icedove
+	/usr/lib/thunderbird/thunderbird
+	/usr/lib/thunderbird/thunderbird-bin
 	/home/luther/Browser/firefox
 	/usr/bin/surf
 	/usr/bin/python2.7
