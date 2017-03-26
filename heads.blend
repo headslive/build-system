@@ -355,8 +355,6 @@ mkdir -p \${TBBETC}/extensions
 for ext in \${TBBEXT}/*; do
 	ln -vs "\$ext" \${TBBETC}/extensions/
 done
-
-update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/bin/tor-browser 99
 EOF
 	chroot-script install-tbb || zerr
 }
@@ -426,6 +424,7 @@ rm -rf /usr/local/share/zsh/site-functions
 #adduser --system --quiet --group clearnet # for a clearnet browser
 sed -i -e 's/devuan/heads/' /etc/hosts
 gpg --recv-keys 0xB876CB44FA1B0274
+update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/bin/tor-browser 99
 
 update-rc.d lightdm defaults
 update-rc.d wicd defaults
