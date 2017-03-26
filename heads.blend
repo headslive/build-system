@@ -457,7 +457,7 @@ update-rc.d acpid defaults
 update-rc.d ferm defaults
 update-rc.d tor defaults
 update-rc.d ttdnsd defaults
-update-rc.d htpdate defaults
+update-rc.d htpdate remove
 
 ## cleanup
 apt-get --yes --force-yes purge ${finalize_purge_packages}
