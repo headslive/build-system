@@ -377,7 +377,6 @@ gpg --recv-keys 0xB876CB44FA1B0274
 update-rc.d lightdm defaults
 update-rc.d wicd defaults
 update-rc.d acpid defaults
-update-rc.d openntpd remove
 update-rc.d tor remove
 
 ## cleanup
@@ -389,7 +388,7 @@ updatedb
 ### kill foreign manpages
 rm -rf /usr/share/man/??
 rm -rf /usr/share/man/??_*
-rm -rf /usr/share/locale ## TODO: see if this one breaks stuff
+rm -rf /usr/share/locale
 EOF
 	chroot-script finalize || zerr
 }

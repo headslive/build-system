@@ -19,7 +19,7 @@ gradm_url="https://dev.gentoo.org/~blueness/hardened-sources/gradm/gradm-${gradm
 tomb_version="v2.3"
 tomb_url="https://github.com/dyne/tomb.git"
 
-gtomb_version="0.9"
+gtomb_version="master"
 gtomb_url="git://git.parazyd.cf/gtomb.git"
 
 tinfoil_version="master"
@@ -44,7 +44,6 @@ extra_packages+=(
 
 	busybox-static
 	busybox-syslogd
-	openntpd
 	cryptsetup
 	curl
 	openssh-client
@@ -55,6 +54,8 @@ extra_packages+=(
 	acpi
 	acpid
 	acpi-support
+	lsof
+	strace
 
 	gnupg2
 	gpa
@@ -83,6 +84,8 @@ extra_packages+=(
 	abiword
 	gnumeric
 	evince
+	gtkhash
+	rng-tools
 	hexchat
 	irssi
 	psi-plus
