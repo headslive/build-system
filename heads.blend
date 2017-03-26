@@ -189,7 +189,7 @@ blend_fixpax() {
 bins="
 	/usr/lib/thunderbird/thunderbird
 	/usr/lib/thunderbird/thunderbird-bin
-	/home/luther/Browser/firefox
+	/usr/local/lib/tor-browser/firefox
 	/usr/bin/surf
 	/usr/bin/python2.7
 	/usr/bin/python3.5
