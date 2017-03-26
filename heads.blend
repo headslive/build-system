@@ -37,7 +37,7 @@ blend_postinst() {
 
 	notice "executing $blend_name postinst"
 
-	nopackage=(tomb torsocks tbb)
+	nopackage=(tomb torsocks tbb ttdnsd)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
 	done || zerr
@@ -291,6 +291,31 @@ EOF
 	chroot-script install-torsocks || zerr
 }
 ## }}}
+## {{{ blend_install_ttdnsd()
+blend_install_ttdnsd() {
+	fn blend_install_ttndsd
+	req=(strapdir ttdnsd_version ttdnsd_url)
+	ckreq || return 1
+
+	notice "installing ttdnsd in $strapdir"
+
+	notice "cloning ttdnsd"
+	sudo mkdir -p "$strapdir/root/ttdnsd"
+	sudo git clone "$ttdnsd" "$strapdir/root/ttdnsd/ttdnsd"
+
+	notice "installing ttdnsd in $strapdir"
+	cat <<EOF | sudo tee ${strapdir}/install-ttdnsd >/dev/null
+#!/bin/sh
+cd /root/ttdnsd/ttdnsd
+dpkg-buildpackage || return 1
+cd ..
+dpkg -i *.deb || return 1
+cd /root
+rm -rf ttdnsd
+EOF
+	chroot-script -d install-ttdnsd || zerr
+}
+## }}}
 ## {{{ blend_install_tbb()
 blend_install_tbb() {
 	fn blend_install_tbb
@@ -429,12 +454,15 @@ update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/bi
 update-rc.d lightdm defaults
 update-rc.d wicd defaults
 update-rc.d acpid defaults
-update-rc.d tor remove
+update-rc.d ferm defaults
+update-rc.d tor defaults
+update-rc.d ttdnsd defaults
+update-rc.d htpdate defaults
 
 ## cleanup
 apt-get --yes --force-yes purge ${finalize_purge_packages}
 apt-get --yes --force-yes autoremove
-apt-get clean
+#apt-get clean
 updatedb
 
 ### kill foreign manpages

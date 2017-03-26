@@ -25,6 +25,9 @@ gtomb_url="git://git.parazyd.cf/gtomb.git"
 tinfoil_version="master"
 tinfoil_url="https://github.com/dyne/tinfoil.git"
 
+ttdnsd_version="master"
+ttdnsd_url="https://git.torproject.org/ioerror/ttdnsd.git"
+
 tbb_version="6.5.1"
 case $arch in
 	amd64) aa="64";;
@@ -42,6 +45,7 @@ extra_packages+=(
 	adwaita-icon-theme
 	murrine-themes
 
+	ferm
 	busybox-static
 	busybox-syslogd
 	cryptsetup
@@ -74,6 +78,8 @@ extra_packages+=(
 	tor
 	tor-arm
 	apt-transport-tor
+	tsocks
+	htpdate
 	obfsproxy
 	obfs4proxy
 	openvpn
@@ -144,6 +150,7 @@ extra_packages+=(
 	libseccomp2
 	libseccomp-dev
 	equivs
+	debhelper
 )
 
 purge_packages=(
@@ -173,4 +180,6 @@ finalize_purge_packages=(
 	debconf-i18n
 	gnome-accessibility-themes
 	equivs
+	openntpd
+	debhelper
 )
