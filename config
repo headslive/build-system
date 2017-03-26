@@ -25,7 +25,7 @@ gtomb_url="git://git.parazyd.cf/gtomb.git"
 tinfoil_version="master"
 tinfoil_url="https://github.com/dyne/tinfoil.git"
 
-tbb_version="7.0a2"
+tbb_version="6.5.1"
 case $arch in
 	amd64) aa="64";;
 	i386)  aa="32";;
@@ -143,6 +143,7 @@ extra_packages+=(
 	libgcrypt20-dev
 	libseccomp2
 	libseccomp-dev
+	equivs
 )
 
 purge_packages=(
@@ -171,4 +172,5 @@ finalize_purge_packages=(
 	gnome-user-guide
 	debconf-i18n
 	gnome-accessibility-themes
+	equivs
 )
