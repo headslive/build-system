@@ -279,7 +279,7 @@ blend_install_musl() {
 cd /root/musl
 git checkout ${musl_version}
 ./configure && \
-make && make install || exit 1
+make ${MAKEOPTS} && make install || exit 1
 cd ..
 rm -rf musl
 EOF
@@ -465,6 +465,6 @@ rm -rf /usr/share/man/??
 rm -rf /usr/share/man/??_*
 rm -rf /usr/share/locale
 EOF
-	chroot-script finalize || zerr
+	chroot-script -d finalize || zerr
 }
 ## }}}
