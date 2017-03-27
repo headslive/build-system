@@ -1,0 +1,30 @@
+# heads ChangeLog
+
+## 0.2
+### 27 March 2017
+
+Second stable release. More sophisticated and user-friendly, with some
+helpful messages and generally a nicer interface. The software list has
+been revised. Tor Browser now runs using the system-wide Tor instance
+instead of starting its own. Mozilla relaxed their redistribution policy
+and Thunderbird is back instead of Icedove. Sup is compiled on boot-time,
+musl-libc is now included in the system, and general improvements have
+been made with the firewall (iptables) setup.
+
+
+## 0.1
+### 10 March 2017
+
+First stable release. Since this release, heads is now based on Devuan
+Ascii, which allows us easier use of OverlayFS - thus avoiding the need
+to patch the kernel with aufs4. Using Linux 4.4.52, in the same manner:
+patched with Grsecurity and deblobbed with linux-libre.
+
+
+## 0.0
+### 28 February 2017
+
+Initial public release. An unstable version to preview heads and start
+looking on how it behaves and performs in real-world situations. Only a
+64-bit version is released. Using Linux 4.4.45 patched with Grsecurity,
+aufs4 and afterwards deblobbed with linux-libre. Based on Devuan Jessie.
