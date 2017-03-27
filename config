@@ -118,8 +118,6 @@ extra_packages+=(
 	i3lock
 	ncdu
 	whois
-	nmap
-	zenmap
 	python-markdown
 	python-passlib
 	connect-proxy
@@ -183,4 +181,5 @@ finalize_purge_packages=(
 	equivs
 	openntpd
 	debhelper
+	xorriso
 )
