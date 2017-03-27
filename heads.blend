@@ -412,6 +412,9 @@ blend_finalize() {
 	req=(strapdir)
 	ckreq || return 1
 
+	## XXX: torbirdy like this until we run an amprolla instance
+	sudo cp "$R/../extra/torbirdy_0.1.4.deb" "$strapdir/torbirdy.deb"
+
 	cat <<EOF | sudo tee ${strapdir}/finalize >/dev/null
 #!/bin/sh
 ## rootless xorg
@@ -429,6 +432,12 @@ chsh -s /bin/zsh root
 ## perms
 chown -R 1000:1000 /home/luther
 chmod 0440 /etc/sudoers.d/heads
+
+## torbirdy (XXX: amp)
+ar x torbirdy.deb
+tar xvf data.tar.gz
+rm -f control.tar.gz data.tar.gz debian-binary torbirdy.deb
+ln -s /usr/share/xul-ext/torbirdy /usr/lib/thunderbird/extensions/castironthunderbirdclub@torproject.org
 
 ## misc
 rm -rf /usr/local/share/zsh/site-functions
