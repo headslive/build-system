@@ -107,16 +107,16 @@ menu width 64
 
 menu title heads boot menu
 menu background /isolinux/splash.png
-menu color title    * #ff000000 #00ffffff none
+menu color title    * #00ffffff #ff000000 none
 menu color border   * #00000000 #00000000 none
-menu color sel      1;7;37;30 #ffffffff #ff000000 none
-menu color unsel    1;30;37 #ff000000 #ffffffff none
+menu color sel      1;7;37;30 #ff000000 #ffffffff none
+menu color unsel    1;30;37 #ffffffff #ff000000 none
 menu color hotsel   1;7;37;40 #ffffffff #76a1d0ff *
-menu color tabmsg   1;30;37 #ff000000 #ffffffff none
-menu color cmdline  1;30;37 #ff000000 #ffffffff none
+menu color tabmsg   1;30;37 #ffffffff #ff000000 none
+menu color cmdline  1;30;37 #ffffffff #ff000000 none
 menu color help     37;40 #ffdddd00 #00000000 none
-menu vshift 10
-menu rows 12
+menu vshift 16
+menu rows 4
 #menu helpmsgrow 15
 #menu cmdlinerow 25
 #menu timeoutrow 26
