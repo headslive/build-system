@@ -352,27 +352,6 @@ rm -rf tor-browser_en-US tbb.txz
 mv -v \${TBBLOCAL}/TorBrowser/Data/Browser/profile.default/extensions/* \${TBBEXT}
 rm -r \${TBBLOCAL}/TorBrowser/Data/Browser/profile.default/extensions
 
-tmp="\$(mktemp -d)"
-cat <<EOM > \$tmp/firefox_\${TBBVER}.control
-Section: web
-Priority: optional
-Homepage: https://heads.dyne.org/
-Standards-Version: 3.9.6
-
-Package: firefox
-Version: \${TBBVER}
-Maintainer: heads developers <heads@dyne.org>
-Architecture: all
-Description: (Fake) firefox
- Dummy package used to meet some dependencies without installing then
- real firefox package.
-EOM
-cd \$tmp
-	equivs-build firefox_\${TBBVER}.control
-	dpkg -i \$tmp/firefox_\${TBBVER}_all.deb
-cd - >/dev/null
-rm -rf \$tmp
-
 rsync -a --exclude extensions \${TBBLOCAL}/TorBrowser/Data/Browser/profile.default/ \
 	\${TBBETC}/
 sed -i '/extensions\.torlauncher\.default_bridge\./d' \${TBBETC}/preferences/extension-overrides.js
@@ -382,6 +361,7 @@ for ext in \${TBBEXT}/*; do
 done
 EOF
 	chroot-script install-tbb || zerr
+	install_fake_package "firefox" "50.1.0" "web" || zerr
 }
 ## }}}
 ## {{{ blend_install_tinfoil()
