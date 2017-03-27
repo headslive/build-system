@@ -37,7 +37,7 @@ blend_postinst() {
 
 	notice "executing $blend_name postinst"
 
-	nopackage=(tomb torsocks tbb ttdnsd)
+	nopackage=(musl tomb torsocks tbb ttdnsd)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
 	done || zerr
@@ -50,7 +50,6 @@ blend_postinst() {
 	sudo rm -rf  rootfs-overlay
 	popd
 
-	blend_install_sup || zerr
 	blend_fixpax      || zerr
 	blend_finalize    || zerr
 }
@@ -261,7 +260,30 @@ cd ..
 rm -rf tomb
 rm -rf gtomb
 EOF
-	chroot-script install-tomb
+	chroot-script install-tomb || zerr
+}
+## }}}
+## {{{ blend_install_musl()
+blend_install_musl() {
+	fn blend_install_musl
+	req=(strapdir musl_version musl_url)
+	ckreq || return 1
+
+	notice "cloning musl gits"
+	sudo git clone "$musl_url" "$strapdir/root/musl" || zerr
+
+	notice "installing musl in $strapdir"
+
+	cat <<EOF | sudo tee ${strapdir}/install-musl >/dev/null
+#!/bin/sh
+cd /root/musl
+git checkout ${musl_version}
+./configure && \
+make && make install || exit 1
+cd ..
+rm -rf musl
+EOF
+	chroot-script install-musl || zerr
 }
 ## }}}
 ## {{{ blend_install_torsocks()
@@ -382,22 +404,6 @@ cd ..
 rm -rf tinfoil
 EOF
 	chroot-script install-tinfoil
-}
-## }}}
-## {{{ blend_install_sup()
-blend_install_sup() {
-	fn blend_install_sup
-	req=(strapdir)
-	ckreq || return 1
-
-	notice "installing sup..."
-	cat <<EOF | sudo tee ${strapdir}/install-sup >/dev/null
-#!/bin/sh
-cd /usr/src/sup
-make
-make install
-EOF
-	chroot-script install-sup || zerr
 }
 ## }}}
 ## {{{ blend_finalize()

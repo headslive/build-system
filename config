@@ -28,6 +28,9 @@ tinfoil_url="https://github.com/dyne/tinfoil.git"
 ttdnsd_version="master"
 ttdnsd_url="https://git.torproject.org/ioerror/ttdnsd.git"
 
+musl_version="v1.1.16"
+musl_url="git://git.musl-libc.org/musl"
+
 tbb_version="6.5.1"
 case $arch in
 	amd64) aa="64";;
