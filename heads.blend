@@ -443,8 +443,9 @@ ln -s /usr/share/xul-ext/torbirdy /usr/lib/thunderbird/extensions/castironthunde
 rm -rf /usr/local/share/zsh/site-functions
 #adduser --system --quiet --group clearnet # for a clearnet browser
 sed -i -e 's/devuan/heads/' /etc/hosts
-gpg --recv-keys 0xB876CB44FA1B0274
+#gpg --recv-keys 0xB876CB44FA1B0274
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/bin/tor-browser 99
+sed -e 's/=false/=true/' -i /etc/default/macchanger
 
 update-rc.d lightdm defaults
 update-rc.d wicd defaults
@@ -458,6 +459,12 @@ update-rc.d htpdate remove
 apt-get --yes --force-yes purge ${finalize_purge_packages}
 apt-get --yes --force-yes autoremove
 #apt-get clean
+rm -f /var/log/bootstrap.log
+rm -f /var/log/dpkg.log
+rm -f /var/log/alternatives.log
+rm -f /var/log/fontconfig.log
+rm -rf /var/log/apt
+rm -rf /var/log/fsck
 updatedb
 
 ### kill foreign manpages
