@@ -6,6 +6,8 @@ image_name="${blend_name}-${blend_vers}-${arch}"
 
 MAKEOPTS="-j$(grep -c 'processor' /proc/cpuinfo)"
 
+kernel_heads_version="4.9.18"
+kernel_heads_flavor="gnu-grsec+"
 kernel_heads_git="https://github.com/headslive/linux-heads"
 
 rootfs_overlay="https://github.com/headslive/rootfs-overlay"

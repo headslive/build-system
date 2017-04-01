@@ -57,7 +57,7 @@ blend_postinst() {
 build_kernel_${arch}() {
 	fn build_kernel_${arch}
 	req=(R arch strapdir)
-	req+=(kernel_heads_git)
+	req+=(kernel_heads_git kernel_heads_version kernel_heads_flavor)
 	ckreq || return 1
 
 	func "override libdevuansdk's build_kernel_${arch}"
@@ -77,9 +77,51 @@ build_kernel_${arch}() {
 	cat <<EOF | sudo tee ${strapdir}/install-linux-heads >/dev/null
 #!/bin/sh
 cd /usr/src/linux-heads
-make ${MAKEOPTS}     || return 1
-make modules_install || return 1
-make install         || return 1
+make ${MAKEOPTS}     || exit 1
+make modules_install || exit 1
+make install         || exit 1
+
+## here we setup only what's needed to build kernel modules without the entire
+## kernel sources. inspired by alpine linux once again <3
+#_abi_release="${kernel_heads_version}-${kernel_heads_flavor}"
+#dir="/usr/src/linux-headers-\${_abi_release}"
+
+#mkdir "\$dir" || exit 1
+#cp .config "\$dir"/.config || exit 1
+#cp localversion-grsec "\$dir"/localversion-grsec || exit 1
+
+##make mrproper
+##cp -f "\$dir"/.config .config
+#make -j1 O="\$dir" \
+#	scripts
+
+#rm -f "\$dir"/Makefile "\$dir"/source
+
+## copy the needed stuff from real sources
+#find . -path './include/*' -prune \
+#	-o -path './scripts/*' -prune -o -type f \
+#	\( -name 'Makefile*' -o -name 'Kconfig*' \
+#	-o -name 'Kbuild*' -o -name '*.sh' \
+#	-o -name '*.pl' -o -name '*.lds' \) \
+#	-print | cpio -pdm "\$dir" || exit 1
+
+#cp -a scripts include "\$dir" || exit 1
+#find \$(find arch -name include -type d -print) -type f \
+#	| cpio -pdm "\$dir"
+
+#install -Dm644 Module.symvers "\$dir"/Module.symvers
+
+#mkdir -p "/lib/modules/\${_abi_release}"
+#rm -f \
+#	/lib/modules/${_abi_release}/build \
+#	/lib/modules/${_abi_release}/source
+#ln -sv \
+#	/usr/src/linux-headers-\${_abi_release} \
+#	/lib/modules/${_abi_release}/build
+#ln -sv \
+#	/usr/src/linux-headers-\${_abi_release} \
+#	/lib/modules/${_abi_release}/source
+
 cd ..
 rm -rf linux-heads
 EOF
