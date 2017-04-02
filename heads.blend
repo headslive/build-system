@@ -110,14 +110,14 @@ install -Dm644 Module.symvers "\$dir"/Module.symvers
 
 mkdir -p "/lib/modules/\${_abi_release}"
 rm -f \
-	/lib/modules/${_abi_release}/build \
-	/lib/modules/${_abi_release}/source
+	/lib/modules/\${_abi_release}/build \
+	/lib/modules/\${_abi_release}/source
 ln -sv \
 	/usr/src/linux-headers-\${_abi_release} \
-	/lib/modules/${_abi_release}/build
+	/lib/modules/\${_abi_release}/build
 ln -sv \
 	/usr/src/linux-headers-\${_abi_release} \
-	/lib/modules/${_abi_release}/source
+	/lib/modules/\${_abi_release}/source
 
 cd ..
 rm -rf linux-heads
