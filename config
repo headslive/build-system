@@ -18,7 +18,7 @@ torsocks_url="https://git.torproject.org/torsocks.git"
 gradm_version="3.1-201608131257"
 gradm_url="https://dev.gentoo.org/~blueness/hardened-sources/gradm/gradm-${gradm_version}.tar.gz"
 
-tomb_version="v2.3"
+tomb_version="v2.4"
 tomb_url="https://github.com/dyne/tomb.git"
 
 gtomb_version="master"
@@ -33,7 +33,7 @@ ttdnsd_url="https://git.torproject.org/ioerror/ttdnsd.git"
 musl_version="v1.1.16"
 musl_url="git://git.musl-libc.org/musl"
 
-tbb_version="6.5.1"
+tbb_version="6.5.2"
 case $arch in
 	amd64) aa="64";;
 	i386)  aa="32";;
