@@ -46,7 +46,7 @@ blend_postinst() {
 	pushd "$strapdir"
 	sudo git clone "$rootfs_overlay"   || zerr
 	sudo mv -v   rootfs-overlay/.git . || zerr
-	sudo cp -rav rootfs-overlay/* .    || zerr
+	sudo cp -rv  rootfs-overlay/* .    || zerr
 	sudo rm -rf  rootfs-overlay
 	popd
 
@@ -185,38 +185,22 @@ endtext
 EOF
 }
 ##}}}
-##{{{ bootstrap_tar_unpack_()
-bootstrap_tar_unpack() {
-	fn "boostrap_tar_unpack $@ (blend override)"
-	local unpath="$1"
-	req=(unpath bootstrap_tgz)
-	ckreq || return 1
+##{{{ conf_print_sourceslist()
+conf_print_sourceslist() {
+	fn conf_print_sourceslist "(override)"
 
-	if [[ -f "${unpath}/.keep" ]]; then
-		mkdir -p "${unpath}"
-		silly
-		sudo tar xfp "$bootstrap_tgz" -C "${unpath}"
-		sudo mkdir -p "${unpath}"/{boot,dev,sys,proc,tmp}
-		sudo chmod 1777 "$unpath"/tmp
-	else
-		error "no .keep file found. exiting..."
-		zerr
-		exit 1
-	fi
+	cat <<EOF
+## package repositories
+deb http://auto.mirror.devuan.org/merged ascii          main
+deb http://auto.mirror.devuan.org/merged ascii-updates  main
+deb http://auto.mirror.devuan.org/merged ascii-security main
+deb http://auto.mirror.devuan.org/devuan experimental   main
 
-	cat <<EOF | sudo tee ${strapdir}/postunpack >/dev/null
-#!/bin/sh
-echo "deb http://auto.mirror.devuan.org/merged ascii main" > /etc/apt/sources.list
-echo "deb http://auto.mirror.devuan.org/merged ascii-updates main" >> /etc/apt/sources.list
-echo "deb http://auto.mirror.devuan.org/merged ascii-security main" >> /etc/apt/sources.list
-apt-get update
-apt-get --yes --force-yes upgrade
-apt-get --yes --force-yes dist-upgrade
-apt-get --yes --force-yes install ${extra_packages}
-apt-get --yes --force-yes autoremove
-apt-get clean
+#deb-src http://auto.mirror.devuan.org/merged ascii          main
+#deb-src http://auto.mirror.devuan.org/merged ascii-updates  main
+#deb-src http://auto.mirror.devuan.org/merged ascii-security main
+#deb-src http://auto.mirror.devuan.org/devuan experimental   main
 EOF
-	chroot-script -d postunpack || zerr
 }
 ##}}}
 
