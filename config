@@ -50,6 +50,7 @@ extra_packages+=(
 	adwaita-icon-theme
 	murrine-themes
 
+	zsh
 	ferm
 	busybox-static
 	busybox-syslogd
@@ -73,7 +74,7 @@ extra_packages+=(
 	htop
 	p7zip
 	ssss
-	monkeysphere
+	#monkeysphere
 	macchanger
 	aircrack-ng
 	reaver
