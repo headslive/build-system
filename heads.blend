@@ -449,10 +449,11 @@ blend_finalize() {
 
 	cat <<EOF | sudo tee ${strapdir}/finalize >/dev/null
 #!/bin/sh
-## rootless xorg
+## rootless xorg # XXX: not anymore; investigate
 groupadd wheel
-chown -v :input /usr/bin/Xorg
-chmod -v g+s /usr/bin/Xorg
+apt install --no-install-recommends xserver-xorg-legacy
+#chown -v :input /usr/bin/Xorg
+#chmod -v g+s /usr/bin/Xorg
 for i in input video audio users netdev plugdev wheel; do
 	gpasswd -a luther \${i}
 done
@@ -479,7 +480,6 @@ sed -i -e 's/devuan/heads/' /etc/hosts
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/bin/tor-browser 99
 sed -e 's/=false/=true/' -i /etc/default/macchanger
 
-update-rc.d lightdm defaults
 update-rc.d wicd defaults
 update-rc.d acpid defaults
 update-rc.d ferm defaults
