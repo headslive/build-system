@@ -41,6 +41,8 @@ esac
 tbb_url="https://www.torproject.org/dist/torbrowser/${tbb_version}/tor-browser-linux${aa}-${tbb_version}_en-US.tar.xz"
 
 extra_packages+=(
+	--no-install-recommends
+
 	xserver-xorg
 	xserver-xorg-legacy
 	xserver-xorg-input-wacom
