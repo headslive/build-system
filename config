@@ -42,14 +42,21 @@ tbb_url="https://www.torproject.org/dist/torbrowser/${tbb_version}/tor-browser-l
 
 extra_packages+=(
 	xserver-xorg
+	xserver-xorg-legacy
+	xserver-xorg-input-wacom
+	xserver-xorg-video-intel
+	xserver-xorg-video-qxl
 	xinit
 	yad
 	pinentry-gtk2
 	openbox
+	lxpanel
 	adwaita-icon-theme
 	breeze-cursor-theme
 	murrine-themes
 	nitrogen
+
+	alsa-utils
 
 	zsh
 	ferm
@@ -69,6 +76,7 @@ extra_packages+=(
 	strace
 
 	gnupg2
+	dirmngr
 	gpa
 	pcsc-tools
 	keychain
@@ -85,6 +93,7 @@ extra_packages+=(
 	tor
 	tor-arm
 	apt-transport-tor
+	apt-transport-https
 	tsocks
 	htpdate
 	obfsproxy
@@ -95,11 +104,16 @@ extra_packages+=(
 	lxterminal
 	leafpad
 	abiword
+	abiword-plugin-grammar
 	gnumeric
 	evince
 	gtkhash
 	rng-tools
 	hexchat
+	hexchat-otr
+	hexchat-perl
+	hexchat-plugins
+	hexchat-python3
 	irssi
 	psi-plus
 	psi-plus-plugins
@@ -133,6 +147,7 @@ extra_packages+=(
 	xarchiver
 
 	gnuchess
+	gnuchess-book
 	xboard
 	hasciicam
 	jhead
@@ -176,17 +191,17 @@ finalize_purge_packages=(
 	libssl-dev
 	libgcrypt20-dev
 	libseccomp-dev
-	avahi-daemon
-	albatross-gtk-theme
-	bluebird-gtk-theme
-	blackbird-gtk-theme
-	greybird-gtk-theme
-	gnome-themes-standard
-	gnome-user-guide
+#	avahi-daemon
+#	albatross-gtk-theme
+#	bluebird-gtk-theme
+#	blackbird-gtk-theme
+#	greybird-gtk-theme
+#	gnome-themes-standard
+#	gnome-user-guide
 	debconf-i18n
-	gnome-accessibility-themes
+#	gnome-accessibility-themes
 	equivs
-	openntpd
+#	openntpd
 	debhelper
 	xorriso
 )
