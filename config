@@ -144,7 +144,7 @@ extra_packages+=(
 	automake
 	build-essential
 	gcc-6-plugin-dev
-	ncurses-dev
+	libncurses5-dev
 	flex
 	libbison-dev
 	libtool-bin
@@ -171,7 +171,7 @@ finalize_purge_packages=(
 	flex
 	autotools-dev
 	libbison-dev
-	ncurses-dev
+	libncurses5-dev
 	libevent-dev
 	libssl-dev
 	libgcrypt20-dev
