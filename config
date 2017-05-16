@@ -6,7 +6,7 @@ image_name="${blend_name}-${blend_vers}-${arch}"
 
 MAKEOPTS="-j$(grep -c 'processor' /proc/cpuinfo)"
 
-kernel_heads_version="4.9.18"
+kernel_heads_version="4.9.24"
 kernel_heads_flavor="gnu-grsec+"
 kernel_heads_git="https://github.com/headslive/linux-heads"
 
@@ -45,10 +45,11 @@ extra_packages+=(
 	xinit
 	yad
 	pinentry-gtk2
-	awesome
-	lightdm
+	openbox
 	adwaita-icon-theme
+	breeze-cursor-theme
 	murrine-themes
+	nitrogen
 
 	zsh
 	ferm
