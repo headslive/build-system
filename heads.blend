@@ -190,6 +190,8 @@ conf_print_sourceslist() {
 	fn conf_print_sourceslist "(override)"
 
 	cat <<EOF
+deb file:/mnt ./
+
 ## package repositories
 deb http://auto.mirror.devuan.org/merged ascii          main
 deb http://auto.mirror.devuan.org/merged ascii-updates  main
