@@ -190,8 +190,6 @@ conf_print_sourceslist() {
 	fn conf_print_sourceslist "(override)"
 
 	cat <<EOF
-deb file:/mnt ./
-
 ## package repositories
 deb http://auto.mirror.devuan.org/merged ascii          main
 deb http://auto.mirror.devuan.org/merged ascii-updates  main
@@ -454,8 +452,8 @@ blend_finalize() {
 ## rootless xorg # XXX: not anymore; investigate
 groupadd wheel
 #apt install --no-install-recommends xserver-xorg-legacy
-#chown -v :input /usr/bin/Xorg
-#chmod -v g+s /usr/bin/Xorg
+chown -v :input /usr/bin/Xorg
+chmod -v g+s /usr/bin/Xorg
 for i in input video audio users netdev plugdev wheel; do
 	gpasswd -a luther \${i}
 done
@@ -482,6 +480,7 @@ sed -i -e 's/devuan/heads/' /etc/hosts
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/bin/tor-browser 99
 sed -e 's/=false/=true/' -i /etc/default/macchanger
 
+update-rc.d lightdm defaults
 update-rc.d wicd defaults
 update-rc.d acpid defaults
 update-rc.d ferm defaults
@@ -492,7 +491,7 @@ update-rc.d htpdate remove
 ## cleanup
 apt-get --yes --force-yes purge ${finalize_purge_packages}
 apt-get --yes --force-yes autoremove
-#apt-get clean
+apt-get clean
 rm -f /var/log/bootstrap.log
 rm -f /var/log/dpkg.log
 rm -f /var/log/alternatives.log

@@ -41,14 +41,13 @@ esac
 tbb_url="https://www.torproject.org/dist/torbrowser/${tbb_version}/tor-browser-linux${aa}-${tbb_version}_en-US.tar.xz"
 
 extra_packages+=(
-	--no-install-recommends
-
 	xserver-xorg
-	xserver-xorg-legacy
+	#xserver-xorg-legacy
 	xserver-xorg-input-wacom
 	xserver-xorg-video-intel
 	xserver-xorg-video-qxl
 	xinit
+	lightdm
 	yad
 	pinentry-gtk2
 	openbox
@@ -193,17 +192,17 @@ finalize_purge_packages=(
 	libssl-dev
 	libgcrypt20-dev
 	libseccomp-dev
-#	avahi-daemon
-#	albatross-gtk-theme
-#	bluebird-gtk-theme
-#	blackbird-gtk-theme
-#	greybird-gtk-theme
-#	gnome-themes-standard
-#	gnome-user-guide
+	avahi-daemon
+	albatross-gtk-theme
+	bluebird-gtk-theme
+	blackbird-gtk-theme
+	greybird-gtk-theme
+	gnome-themes-standard
+	gnome-user-guide
 	debconf-i18n
-#	gnome-accessibility-themes
+	gnome-accessibility-themes
 	equivs
-#	openntpd
+	openntpd
 	debhelper
 	xorriso
 )
