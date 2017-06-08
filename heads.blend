@@ -65,7 +65,8 @@ build_kernel_${arch}() {
 	[[ -d $strapdir/usr/src/linux-heads ]] || {
 		notice "cloning linux-heads..."
 		sudo mkdir -p "$strapdir/usr/src/linux-heads"
-		sudo git clone "$kernel_heads_git" "$strapdir/usr/src/linux-heads" || zerr
+		sudo git clone -b "$kernel_heads_branch" "$kernel_heads_git" \
+			"$strapdir/usr/src/linux-heads" || zerr
 	}
 
 	notice "compiling linux-heads"
