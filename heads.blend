@@ -89,7 +89,7 @@ dir="/usr/src/linux-headers-\${_abi_release}"
 
 mkdir "\$dir" || exit 1
 cp .config "\$dir"/.config || exit 1
-cp localversion-grsec "\$dir"/localversion-unofficial_grsec || exit 1
+cp localversion-unofficial_grsec "\$dir"/localversion-unofficial_grsec || exit 1
 
 make -j1 O="\$dir" scripts
 
