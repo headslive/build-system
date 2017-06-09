@@ -71,7 +71,7 @@ build_kernel_${arch}() {
 
 	notice "compiling linux-heads"
 	pushd "$strapdir/usr/src/linux-heads" || zerr
-	sudo git pull origin master
+	#sudo git pull origin master
 	sudo cp -f "$R/../extra/heads-${arch}.config" .config
 	popd
 
@@ -89,7 +89,7 @@ dir="/usr/src/linux-headers-\${_abi_release}"
 
 mkdir "\$dir" || exit 1
 cp .config "\$dir"/.config || exit 1
-cp localversion-grsec "\$dir"/localversion-grsec || exit 1
+cp localversion-grsec "\$dir"/localversion-unofficial_grsec || exit 1
 
 make -j1 O="\$dir" scripts
 
@@ -222,6 +222,7 @@ bins="
 	/usr/lib/thunderbird/thunderbird
 	/usr/lib/thunderbird/thunderbird-bin
 	/usr/local/lib/tor-browser/firefox
+	/usr/local/lib/tor-browser/plugin-container
 	/usr/bin/surf
 	/usr/bin/python2.7
 	/usr/bin/python3.5
@@ -458,6 +459,7 @@ chmod -v g+s /usr/bin/Xorg
 for i in input video audio users netdev plugdev wheel; do
 	gpasswd -a luther \${i}
 done
+echo "needs_root_rights=yes" >> /etc/X11/Xwrapper.config
 
 ## shells
 chsh -s /bin/zsh luther
@@ -499,6 +501,8 @@ rm -f /var/log/alternatives.log
 rm -f /var/log/fontconfig.log
 rm -rf /var/log/apt
 rm -rf /var/log/fsck
+rm -rf /var/log/ConsoleKit
+rm -rf /var/lib/polkit-1
 
 ### kill foreign manpages
 rm -rf /usr/share/man/??
