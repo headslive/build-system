@@ -58,6 +58,7 @@ extra_packages+=(
 
 	zsh
 	ferm
+	tmux
 	busybox-static
 	busybox-syslogd
 	cryptsetup
@@ -205,5 +206,6 @@ finalize_purge_packages=(
 	consolekit
 	pulseaudio
 	pulseaudio-utils
+	pavucontrol
 	obconf
 )

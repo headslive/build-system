@@ -175,12 +175,12 @@ menu tabmsg Press ENTER to boot or TAB to edit a menu entry
 label live-${arch}
 	menu label heads live (${arch})
 	linux /live/vmlinuz
-	append initrd=/live/initrd boot=live username=luther union=overlay net.ifnames=0
+	append initrd=/live/initrd boot=live username=luther union=overlay net.ifnames=0 nocomponents=sudo
 
 label live-${arch}-toram
 	menu label heads live (${arch}) (toram)
 	linux /live/vmlinuz
-	append initrd=/live/initrd boot=live username=luther union=overlay net.ifnames=0 toram
+	append initrd=/live/initrd boot=live username=luther union=overlay net.ifnames=0 nocomponents=sudo toram
 
 endtext
 EOF
