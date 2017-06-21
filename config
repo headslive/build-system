@@ -72,6 +72,7 @@ extra_packages+=(
 	acpi
 	acpid
 	acpi-support
+	lm-sensors
 	lsof
 	strace
 
@@ -124,7 +125,9 @@ extra_packages+=(
 	electrum
 	pass
 	qtpass
-	vlc
+	mpv
+	#smplayer
+	youtube-dl
 	tig
 	imagemagick
 	libnotify-bin
