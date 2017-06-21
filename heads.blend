@@ -173,14 +173,24 @@ menu rows 4
 menu tabmsg Press ENTER to boot or TAB to edit a menu entry
 
 label live-${arch}
-	menu label heads live (${arch})
+	menu label heads live (${arch}/openbox)
 	linux /live/vmlinuz
 	append initrd=/live/initrd boot=live username=luther union=overlay quiet net.ifnames=0 nocomponents=sudo
 
 label live-${arch}-toram
-	menu label heads live (${arch}) (toram)
+	menu label heads live (${arch}/openbox) (toram)
 	linux /live/vmlinuz
 	append initrd=/live/initrd boot=live username=luther union=overlay quiet net.ifnames=0 nocomponents=sudo toram
+
+label live-${arch}
+	menu label heads live (${arch}/awesomewm)
+	linux /live/vmlinuz
+	append initrd=/live/initrd boot=live username=luther union=overlay quiet net.ifnames=0 nocomponents=sudo awesome
+
+label live-${arch}-toram
+	menu label heads live (${arch}/awesomewm) (toram)
+	linux /live/vmlinuz
+	append initrd=/live/initrd boot=live username=luther union=overlay quiet net.ifnames=0 nocomponents=sudo toram awesome
 
 endtext
 EOF

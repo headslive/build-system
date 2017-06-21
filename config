@@ -48,6 +48,7 @@ extra_packages+=(
 	eudev
 	yad
 	pinentry-gtk2
+	awesome
 	openbox
 	lxpanel
 	adwaita-icon-theme
