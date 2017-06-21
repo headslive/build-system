@@ -482,6 +482,7 @@ sed -i -e 's/devuan/heads/' /etc/hosts
 #gpg --recv-keys 0xB876CB44FA1B0274
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/bin/tor-browser 99
 sed -e 's/=false/=true/' -i /etc/default/macchanger
+sed -e 's/#LID_SLEEP=.*/LID_SLEEP=true/' -i /etc/default/acpi-support
 
 update-rc.d lightdm defaults
 update-rc.d wicd defaults

@@ -93,6 +93,7 @@ extra_packages+=(
 
 	tor
 	tor-arm
+	proxychains
 	apt-transport-tor
 	apt-transport-https
 	tsocks
@@ -103,6 +104,7 @@ extra_packages+=(
 	wicd
 
 	lxterminal
+	lxmusic
 	leafpad
 	abiword
 	abiword-plugin-grammar
