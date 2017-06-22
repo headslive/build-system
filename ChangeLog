@@ -1,5 +1,21 @@
 # heads ChangeLog
 
+## 0.3
+### 22 June 2017
+
+Introduce Openbox with lxpanel and pcmanfm as a base desktop interface
+instead of AwesomeWM. More UI/UX improvements. The kernel is now based
+on minipli's unofficial grsecurity forward port, version 4.9.33, also
+deblobbed with latest linux-libre scripts. Stripped kernel sources are
+included in the rootfs to enable compilation of kernel modules on boot
+time. Implementation of the permakey kernel module, which will wipe
+files, slam tombs and shut down the computer if the USB stick has been
+unplugged while the system is running (does not apply in "toram" mode).
+Do not provide ConsoleKit and PolicyKit, nor lightdm anymore. Use eudev
+as the default hotplugging daemon. Bump Tor Browser to 7.0.1. There is
+no more sound support in Tor Browser since we do not ship Pulseaudio.
+
+
 ## 0.2
 ### 27 March 2017
 
