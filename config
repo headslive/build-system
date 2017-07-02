@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 blend_name="heads"
-blend_vers="0.3"
+blend_vers="0.3.1"
 image_name="${blend_name}-${blend_vers}-${arch}"
 
 MAKEOPTS="-j$(grep -c 'processor' /proc/cpuinfo)"
