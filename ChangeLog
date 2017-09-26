@@ -1,5 +1,12 @@
 # heads ChangeLog
 
+## 0.3.1
+### 2 July 2017
+
+A bugfix release to disable autostarting of Xorg upon login. It is now
+required to startx manually, which is explained in the welcome message
+once the system boots into a shell.
+
 ## 0.3
 ### 22 June 2017
 

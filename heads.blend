@@ -430,26 +430,6 @@ EOF
 	install_fake_package "firefox" "50.1.0" "web" || zerr
 }
 ## }}}
-## {{{ blend_install_tinfoil()
-blend_install_tinfoil() {
-	fn blend_install_tinfoil
-	req=(strapdir tinfoil_version tinfoil_url)
-	ckreq || return 1
-
-	notice "cloning tinfoil git"
-	sudo git clone -b "$tinfoil_version" "$tinfoil_url" "$strapdir/root/tomb"  --recursive || zerr
-
-	notice "installing tinfoil in $strapdir"
-	cat <<EOF | sudo tee ${strapdir}/install-tinfoil >/dev/null
-#!/bin/sh
-cd /root/tinfoil
-make install
-cd ..
-rm -rf tinfoil
-EOF
-	chroot-script install-tinfoil
-}
-## }}}
 ## {{{ blend_finalize()
 blend_finalize() {
 	fn blend_finalize
