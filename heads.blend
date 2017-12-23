@@ -79,7 +79,7 @@ build_kernel_${arch}() {
 
 	notice "compiling linux-heads"
 	pushd "$strapdir/usr/src/linux-heads" || zerr
-	sudo git pull origin master
+	#sudo git pull origin master
 	sudo cp -f "$R/../extra/heads-${arch}.config" .config
 	popd
 
