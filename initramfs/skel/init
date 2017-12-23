@@ -1,0 +1,67 @@
+#!/bin/sh
+# heads live - copyright 2017 parazyd <parazyd@dyne.org>
+# See https://www.gnu.org/licenses for license details (GPL-3)
+
+rescue_shell() {
+	echo "$@"
+	echo " * Dropping to a shell."
+	exec /bin/sh
+}
+
+mount -t devtmpfs none /dev
+mount -t proc none /proc
+mount -t sysfs none /sys
+
+# Then check if we have booted from a cd
+if [ -b /dev/sr0 ] && [ -z "$mounted" ]; then
+	mount -t iso9660 /dev/sr0 /mnt/root || {
+		rescue_shell \
+"We have not managed to boot from /dev/sr0 either.
+Please investigate the environment, save the dmesg and file
+a bug report along with it."
+	}
+	echo " * mounted /dev/sr0"
+	mounted=yes
+fi
+
+# We failed mounting a live medium
+if [ -z "$mounted" ]; then
+	rescue_shell \
+"We have not managed to find a live medium.
+Please investigate the environment, save the dmesg and file a bug
+report along with it."
+fi
+
+mkdir -p /mnt/ro
+mkdir -p /mnt/rw
+mkdir -p /mnt/overlay
+
+echo " * mounting squashfs"
+mount -t squashfs /mnt/root/live/filesystem.squashfs /mnt/ro || rescue_shell
+
+# Decide the tmpfs size
+ram_amnt="$(free -m | awk '/^Mem: / {print $2}')"
+tmp_amnt="$(( $ram_amnt / 2 / 1000 ))"
+tmpfsje=512M
+if  [ "$tmp_amnt" -gt 16000 ]; then tmpfsje=16G;
+elif [ "$tmp_amnt" -gt 8000 ]; then tmpfsje=8G;
+elif [ "$tmp_amnt" -gt 6000 ]; then tmpfsje=6G;
+elif [ "$tmp_amnt" -gt 4000 ]; then tmpfsje=4G;
+elif [ "$tmp_amnt" -gt 2000 ]; then tmpfsje=2G;
+elif [ "$tmp_amnt" -gt 1000 ]; then tmpfsje=1G;
+fi
+
+echo " * mounting tmpfs"
+mount -t tmpfs none -o size=$tmpfsje /mnt/rw || rescue_shell
+mkdir /mnt/rw/upper
+mkdir /mnt/rw/work
+
+echo " * mounting overlayfs"
+mount -t overlay \
+	-o lowerdir=/mnt/ro,upperdir=/mnt/rw/upper,workdir=/mnt/rw/work \
+	overlay /mnt/overlay || rescue_shell
+
+mount --move /dev /mnt/overlay/dev || rescue_shell
+umount /proc /sys
+echo " * switching root"
+exec switch_root /mnt/overlay /sbin/init || rescue_shell
