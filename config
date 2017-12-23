@@ -42,7 +42,7 @@ case $arch in
 esac
 tbb_url="https://www.torproject.org/dist/torbrowser/${tbb_version}/tor-browser-linux${aa}-${tbb_version}_en-US.tar.xz"
 
-extra_packages+=(
+extra_packages=(
 	xserver-xorg
 	xserver-xorg-legacy
 	xinit
