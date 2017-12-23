@@ -144,11 +144,34 @@ EOF
 	chroot-script -d install-linux-heads || zerr
 }
 
+##{{{ iso_prepare_strap()
 iso_prepare_strap() {
 	# noop because we don't need live-boot anymore.
 	fn iso_prepare_strap "(override)"
 	return
 }
+##}}}
+##{{{ iso_setup_isolinux()
+iso_setup_isolinux() {
+	fn iso_setup_isolinux "(override)"
+	req=(workdir strapdir)
+	ckreq || return 1
+
+	notice "setting up isolinux"
+	pushd "$workdir"
+	sudo mkdir -p binary/{live,isolinux}
+	sudo cp $strapdir/boot/vmlinuz* binary/live/vmlinuz
+
+	pushd "$R/../initramfs"
+	sudo su -c 'make' || zerr
+	popd
+
+	sudo cp "$R/../initramfs/initramfs.cpio.gz" binary/live/initramfs.cpio.gz || zerr
+
+	sudo cp "$R"/extra/syslinux/isolinux.bin binary/isolinux || zerr
+	sudo cp "$R"/extra/syslinux/*.c32        binary/isolinux || zerr
+}
+##}}}
 ##{{{ iso_write_isolinux_cfg()
 iso_write_isolinux_cfg() {
 	fn iso_write_isolinux_cfg "(override)"
