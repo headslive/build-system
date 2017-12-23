@@ -45,7 +45,7 @@ blend_postinst() {
 
 	notice "executing $blend_name postinst"
 
-	nopackage=(musl tomb torsocks tbb ttdnsd)
+	nopackage=(musl tomb tbb ttdnsd)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
 	done || zerr
@@ -333,33 +333,6 @@ cd ..
 rm -rf musl
 EOF
 	chroot-script install-musl || zerr
-}
-## }}}
-## {{{ blend_install_torsocks()
-blend_install_torsocks() {
-	fn blend_install_torsocks
-	req=(strapdir torsocks_version torsocks_url)
-	ckreq || return 1
-
-	notice "installing torsocks in $strapdir"
-
-	notice "cloning torsocks"
-	sudo git clone "$torsocks_url" "$strapdir/root/torsocks"
-
-	notice "installing torsocks in $strapdir"
-	cat <<EOF | sudo tee ${strapdir}/install-torsocks >/dev/null
-#!/bin/sh
-cd /root/torsocks
-#git checkout ${torsocks_version}
-./autogen.sh
-./configure --prefix=/usr
-make ${MAKEOPTS}
-make install
-
-cd ..
-rm -rf torsocks
-EOF
-	chroot-script install-torsocks || zerr
 }
 ## }}}
 ## {{{ blend_install_ttdnsd()
