@@ -28,6 +28,14 @@ blend_preinst() {
 	notice "executing $blend_name preinst"
 
 	add-user luther luther
+	cat <<EOF | sudo tee ${strapdir}/preinst >/dev/null
+#!/bin/sh
+apt --yes --force-yes purge initramfs-tools
+apt --yes --force-yes --purge autoremove
+rm -rf /var/lib/initramfs-tools
+rm -rf /usr/share/initramfs-tools
+EOF
+	chroot-script -d preinst || zerr
 }
 
 blend_postinst() {
