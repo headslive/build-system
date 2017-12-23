@@ -184,22 +184,22 @@ menu tabmsg Press ENTER to boot or TAB to edit a menu entry
 label live-${arch}
 	menu label heads live (${arch}/openbox)
 	linux /live/vmlinuz
-	append initrd=/live/initrd boot=live username=luther union=overlay quiet net.ifnames=0 nocomponents=sudo
+	append initrd=/live/initramfs.cpio.gz verbose net.ifnames=0
 
-label live-${arch}-toram
-	menu label heads live (${arch}/openbox) (toram)
+label live-${arch}-nopermakey
+	menu label heads live (${arch}/openbox) (nopermakey)
 	linux /live/vmlinuz
-	append initrd=/live/initrd boot=live username=luther union=overlay quiet net.ifnames=0 nocomponents=sudo toram
+	append initrd=/live/initramfs.cpio.gz verbose net.ifnames=0 nopermakey
 
 label live-${arch}
 	menu label heads live (${arch}/awesomewm)
 	linux /live/vmlinuz
-	append initrd=/live/initrd boot=live username=luther union=overlay quiet net.ifnames=0 nocomponents=sudo awesome
+	append initrd=/live/initramfs.cpio.gz verbose net.ifnames=0 awesome
 
-label live-${arch}-toram
-	menu label heads live (${arch}/awesomewm) (toram)
+label live-${arch}-nopermakey
+	menu label heads live (${arch}/awesomewm) (nopermakey)
 	linux /live/vmlinuz
-	append initrd=/live/initrd boot=live username=luther union=overlay quiet net.ifnames=0 nocomponents=sudo toram awesome
+	append initrd=/live/initramfs.cpio.gz verbose net.ifnames=0 nopermakey awesome
 
 endtext
 EOF
