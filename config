@@ -5,9 +5,10 @@ blend_vers="0.3.1"
 image_name="${blend_name}-${blend_vers}-${arch}"
 
 MAKEOPTS="-j$(grep -c 'processor' /proc/cpuinfo)"
+TAR_STAGE4=true
 
-kernel_heads_version="4.9.33"
-kernel_heads_branch="linux-4.9.x-unofficial_grsec_libre"
+kernel_heads_version="4.9.70"
+kernel_heads_branch="master"
 kernel_heads_flavor="gnu-unofficial+grsec+"
 kernel_heads_git="https://github.com/headslive/linux-heads"
 
@@ -31,10 +32,10 @@ tinfoil_url="https://github.com/dyne/tinfoil.git"
 ttdnsd_version="master"
 ttdnsd_url="https://git.torproject.org/ioerror/ttdnsd.git"
 
-musl_version="v1.1.16"
+musl_version="v1.1.18"
 musl_url="git://git.musl-libc.org/musl"
 
-tbb_version="7.0.1"
+tbb_version="7.0.11"
 case $arch in
 	amd64) aa="64";;
 	i386)  aa="32";;
@@ -43,7 +44,7 @@ tbb_url="https://www.torproject.org/dist/torbrowser/${tbb_version}/tor-browser-l
 
 extra_packages+=(
 	xserver-xorg
-	#xserver-xorg-legacy
+	xserver-xorg-legacy
 	xinit
 	eudev
 	yad
@@ -51,10 +52,12 @@ extra_packages+=(
 	awesome
 	openbox
 	lxpanel
+	lximage-qt
 	adwaita-icon-theme
 	breeze-cursor-theme
 	murrine-themes
 	nitrogen
+	gcc-7-plugin-dev
 
 	alsa-utils
 
@@ -62,7 +65,6 @@ extra_packages+=(
 	ferm
 	tmux
 	busybox-static
-	busybox-syslogd
 	cryptsetup
 	curl
 	openssh-client
@@ -81,11 +83,9 @@ extra_packages+=(
 	dirmngr
 	gpa
 	pcsc-tools
-	keychain
 	htop
 	p7zip
 	ssss
-	#monkeysphere
 	macchanger
 	aircrack-ng
 	reaver
@@ -93,11 +93,10 @@ extra_packages+=(
 	qrencode
 
 	tor
-	tor-arm
-	proxychains
 	apt-transport-tor
 	apt-transport-https
 	tsocks
+	torsocks
 	htpdate
 	obfsproxy
 	obfs4proxy
@@ -110,7 +109,7 @@ extra_packages+=(
 	abiword
 	abiword-plugin-grammar
 	gnumeric
-	evince
+	zathura
 	gtkhash
 	rng-tools
 	hexchat
@@ -119,9 +118,8 @@ extra_packages+=(
 	hexchat-plugins
 	hexchat-python3
 	irssi
-	psi-plus
-	psi-plus-plugins
-	sxiv
+	net-tools
+	dnsutils
 	gimp
 	thunderbird
 	enigmail
@@ -156,25 +154,19 @@ extra_packages+=(
 	gnuchess-book
 	xboard
 	hasciicam
-	jhead
-	sox
+	exif
 
-	idle-python2.7
 	bc
 	autoconf
 	automake
 	build-essential
-	gcc-6-plugin-dev
-	libncurses5-dev
 	flex
 	libbison-dev
 	libtool-bin
 	libtool
 	libevent-dev
 	libssl-dev
-	libgcrypt20
 	libgcrypt20-dev
-	libseccomp2
 	libseccomp-dev
 	equivs
 	debhelper
@@ -183,36 +175,47 @@ extra_packages+=(
 purge_packages=(
 	openssh-server
 	openssh-sftp-server
-	rsyslog
 )
 
 finalize_purge_packages=(
+	albatross-gtk-theme
+	at-spi2-core
 	autoconf
 	automake
-	flex
 	autotools-dev
-	libbison-dev
-	libncurses5-dev
-	libevent-dev
-	libssl-dev
-	libgcrypt20-dev
-	libseccomp-dev
-	#avahi-daemon
-	albatross-gtk-theme
-	bluebird-gtk-theme
+	avahi-daemon
 	blackbird-gtk-theme
-	greybird-gtk-theme
-	#gnome-themes-standard
-	gnome-user-guide
-	debconf-i18n
-	#gnome-accessibility-themes
-	equivs
-	#openntpd
-	debhelper
-	dh-autoreconf
+	bluebird-gtk-theme
+	colord
 	consolekit
-	pulseaudio
-	pulseaudio-utils
+	cups-pk-helper
+	debconf-i18n
+	e2fsprogs-l10n
+	easy-rsa
+	eject
+	evince
+	gcc-6-base
+	gconf2
+	gir1.2-atk-1.0
+	gir1.2-gnomekeyring-1.0
+	gnome-keyring
+	greybird-gtk-theme
+	gvfs
+	gvfs-bin
+	libavahi-glib1
+	libqt5webkit5
+	libwebkit2gtk-4.0
+	libsane
+	minisat
+	ntp
+	oxygen-icon-theme
+	pcmanfm-qt
 	pavucontrol
-	obconf
+	pinentry-gnome3
+	pulseaudio
+	policykit-1
+	qps
+	tasksel
+	ttdnsd-dbgsym
+	xdg-user-dirs
 )
