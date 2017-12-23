@@ -12,25 +12,23 @@ mount -t devtmpfs none /dev
 mount -t proc none /proc
 mount -t sysfs none /sys
 
-# Then check if we have booted from a cd
-if [ -b /dev/sr0 ] && [ -z "$mounted" ]; then
-	mount -t iso9660 /dev/sr0 /mnt/root || {
-		rescue_shell \
-"We have not managed to boot from /dev/sr0 either.
-Please investigate the environment, save the dmesg and file
-a bug report along with it."
+# First check if we have booted from a cd, otherwise it's probably
+# a usb drive
+for i in /dev/sr* /dev/sd* ; do
+	mount -t iso9660 "$i" /mnt/root || continue
+	[ -f /mnt/root/live/filesystem.squashfs ] && {
+		echo " * found squashfs on $i"
+		mounted="$i"
+		break
 	}
-	echo " * mounted /dev/sr0"
-	mounted=yes
-fi
+	umount /mnt/root
+done
 
 # We failed mounting a live medium
-if [ -z "$mounted" ]; then
-	rescue_shell \
+[ -n "$mounted" ] || rescue_shell \
 "We have not managed to find a live medium.
 Please investigate the environment, save the dmesg and file a bug
 report along with it."
-fi
 
 mkdir -p /mnt/ro
 mkdir -p /mnt/rw
@@ -60,6 +58,8 @@ echo " * mounting overlayfs"
 mount -t overlay \
 	-o lowerdir=/mnt/ro,upperdir=/mnt/rw/upper,workdir=/mnt/rw/work \
 	overlay /mnt/overlay || rescue_shell
+
+echo "$mounted" > /mnt/overlay/usr/src/permakey/usbdev
 
 mount --move /dev /mnt/overlay/dev || rescue_shell
 umount /proc /sys
