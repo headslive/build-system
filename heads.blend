@@ -142,6 +142,7 @@ rm -rf include/linux/mfd
 rm -rf drivers Documentation fs sound net tools firmware
 EOF
 	chroot-script -d install-linux-heads || zerr
+	sudo chmod 755 "$strapdir/boot"
 }
 
 ##{{{ iso_prepare_strap()
