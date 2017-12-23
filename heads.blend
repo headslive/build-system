@@ -58,8 +58,8 @@ blend_postinst() {
 	sudo rm -rf  rootfs-overlay
 	popd
 
-	blend_fixpax      || zerr
-	blend_finalize    || zerr
+	blend_fixpax   || zerr
+	blend_finalize || zerr
 }
 
 build_kernel_${arch}() {
@@ -79,13 +79,14 @@ build_kernel_${arch}() {
 
 	notice "compiling linux-heads"
 	pushd "$strapdir/usr/src/linux-heads" || zerr
-	#sudo git pull origin master
+	sudo git pull origin master
 	sudo cp -f "$R/../extra/heads-${arch}.config" .config
 	popd
 
 	cat <<EOF | sudo tee ${strapdir}/install-linux-heads >/dev/null
 #!/bin/sh
 cd /usr/src/linux-heads
+make oldconfig       || exit 1
 make ${MAKEOPTS}     || exit 1
 make modules_install || exit 1
 make install         || exit 1
