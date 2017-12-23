@@ -434,7 +434,6 @@ for ext in \${TBBEXT}/*; do
 done
 EOF
 	chroot-script install-tbb || zerr
-	install_fake_package "firefox" "50.1.0" "web" || zerr
 }
 ## }}}
 ## {{{ blend_finalize()
