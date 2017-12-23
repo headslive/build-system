@@ -210,15 +210,11 @@ conf_print_sourceslist() {
 
 	cat <<EOF
 ## package repositories
-deb http://auto.mirror.devuan.org/merged ascii          main
-deb http://auto.mirror.devuan.org/merged ascii-updates  main
-deb http://auto.mirror.devuan.org/merged ascii-security main
-deb http://auto.mirror.devuan.org/devuan experimental   main
+deb http://pkgmaster.devuan.org/merged unstable     main
+deb http://pkgmaster.devuan.org/devuan experimental main
 
-#deb-src http://auto.mirror.devuan.org/merged ascii          main
-#deb-src http://auto.mirror.devuan.org/merged ascii-updates  main
-#deb-src http://auto.mirror.devuan.org/merged ascii-security main
-#deb-src http://auto.mirror.devuan.org/devuan experimental   main
+#deb-src http://pkgmaster.devuan.org/merged unstable     main
+#deb-src http://pkgmaster.devuan.org/devuan experimental main
 EOF
 }
 ##}}}
