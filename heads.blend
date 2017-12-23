@@ -144,6 +144,11 @@ EOF
 	chroot-script -d install-linux-heads || zerr
 }
 
+iso_prepare_strap() {
+	# noop because we don't need live-boot anymore.
+	fn iso_prepare_strap "(override)"
+	return
+}
 ##{{{ iso_write_isolinux_cfg()
 iso_write_isolinux_cfg() {
 	fn iso_write_isolinux_cfg "(override)"
