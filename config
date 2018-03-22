@@ -187,36 +187,45 @@ finalize_purge_packages=(
 	avahi-daemon
 	blackbird-gtk-theme
 	bluebird-gtk-theme
-	colord
-	consolekit
 	cups-pk-helper
-	debconf-i18n
-	e2fsprogs-l10n
+	debhelper
 	easy-rsa
 	eject
+	#elogind
 	evince
-	gcc-6-base
-	gconf2
-	gir1.2-atk-1.0
-	gir1.2-gnomekeyring-1.0
+	evince-common
 	gnome-keyring
+	geoclue-2.0
+	gir1.2-polkit
 	greybird-gtk-theme
-	gvfs
-	gvfs-bin
-	libavahi-glib1
-	libqt5webkit5
-	libwebkit2gtk-4.0
-	libsane
+	gstreamer1.0-plugins-base
+	gstreamer1.0-plugins-good
+	gstreamer1.0-pulseaudio
+	gstreamer1.0-x
+	#gvfs
+	kwayland-data
+	kwayland-integration
+	lxqt-policykit
 	minisat
+	modemmanager
 	ntp
+	opensc
 	oxygen-icon-theme
+	packagekit
+	packagekit-tools
 	pcmanfm-qt
-	pavucontrol
-	pinentry-gnome3
-	pulseaudio
+	pcmanfm-qt-l10n
+	phantomjs
 	policykit-1
-	qps
+	rtkit
+	sntp
+	system-config-printer
+	system-config-printer-common
+	system-conifg-printer-udev
+	sysv-rc
 	tasksel
+	tasksel-data
 	ttdnsd-dbgsym
-	xdg-user-dirs
+	upower
+	usb-modeswitch
 )
