@@ -196,7 +196,7 @@ finalize_purge_packages=(
 	evince-common
 	gnome-keyring
 	geoclue-2.0
-	gir1.2-polkit
+	gir1.2-polkit-1.0
 	greybird-gtk-theme
 	gstreamer1.0-plugins-base
 	gstreamer1.0-plugins-good
@@ -221,7 +221,7 @@ finalize_purge_packages=(
 	sntp
 	system-config-printer
 	system-config-printer-common
-	system-conifg-printer-udev
+	system-config-printer-udev
 	sysv-rc
 	tasksel
 	tasksel-data
