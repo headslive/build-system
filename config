@@ -7,7 +7,7 @@ image_name="${blend_name}-${blend_vers}-${arch}"
 MAKEOPTS="-j$(grep -c 'processor' /proc/cpuinfo)"
 TAR_STAGE4=true
 
-kernel_heads_version="4.9.70"
+kernel_heads_version="4.9.74"
 kernel_heads_branch="master"
 kernel_heads_flavor="gnu-unofficial+grsec+"
 kernel_heads_git="https://github.com/headslive/linux-heads"
