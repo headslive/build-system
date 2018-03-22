@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Copyright (c) 2016-2017 Dyne.org Foundation
+# Copyright (c) 2016-2018 Dyne.org Foundation
 #
 # heads.blend is written and maintained by Ivan J. <parazyd@dyne.org>
 #
@@ -405,6 +405,10 @@ blend_install_tbb() {
 cd /root
 tar xvf tbb.txz
 cd tor-browser_en-US/Browser
+	execs="\$(find . -executable)"
+	find . -type f | xargs chmod 644
+	echo "$execs" | xargs chmod 755
+
 	cp -fv TorBrowser/Tor/libstdc++.so.6 .
 	rm -rv TorBrowser/Tor TorBrowser/Docs
 	rm -fv TorBrowser/Data/Browser/profile.default/extensions/tor-launcher@torproject.org.xpi
@@ -420,6 +424,7 @@ TBBETC=/etc/tor-browser/profile
 mkdir -p "\${LOCALLIB}" "\${TBBEXT}" "\${TBBETC}"
 
 mv -v tor-browser_en-US/Browser "\${TBBLOCAL}"
+chmod 755 \${TBBLOCAL}
 rm -rf tor-browser_en-US tbb.txz
 
 mv -v \${TBBLOCAL}/TorBrowser/Data/Browser/profile.default/extensions/* \${TBBEXT}
@@ -502,9 +507,9 @@ rm -rf /var/log/ConsoleKit
 rm -rf /var/lib/polkit-1
 
 ### kill foreign manpages
-rm -rf /usr/share/man/??
-rm -rf /usr/share/man/??_*
-rm -rf /usr/share/locale
+#rm -rf /usr/share/man/??
+#rm -rf /usr/share/man/??_*
+#rm -rf /usr/share/locale
 
 updatedb
 EOF

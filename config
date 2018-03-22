@@ -35,7 +35,7 @@ ttdnsd_url="https://git.torproject.org/ioerror/ttdnsd.git"
 musl_version="v1.1.18"
 musl_url="git://git.musl-libc.org/musl"
 
-tbb_version="7.0.11"
+tbb_version="7.5.2"
 case $arch in
 	amd64) aa="64";;
 	i386)  aa="32";;
