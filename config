@@ -24,7 +24,7 @@ tomb_version="v2.4"
 tomb_url="https://github.com/dyne/tomb.git"
 
 gtomb_version="master"
-gtomb_url="git://git.parazyd.cf/gtomb.git"
+gtomb_url="https://git.parazyd.org/gtomb"
 
 tinfoil_version="master"
 tinfoil_url="https://github.com/dyne/tinfoil.git"
@@ -32,7 +32,7 @@ tinfoil_url="https://github.com/dyne/tinfoil.git"
 ttdnsd_version="master"
 ttdnsd_url="https://git.torproject.org/ioerror/ttdnsd.git"
 
-musl_version="v1.1.18"
+musl_version="v1.1.19"
 musl_url="git://git.musl-libc.org/musl"
 
 tbb_version="7.5.2"
