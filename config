@@ -46,6 +46,7 @@ extra_packages=(
 	xserver-xorg
 	xserver-xorg-legacy
 	xinit
+	openrc
 	eudev
 	yad
 	pinentry-gtk2
