@@ -240,10 +240,14 @@ conf_print_sourceslist() {
 
 	cat <<EOF
 ## package repositories
-deb http://pkgmaster.devuan.org/merged unstable     main
+deb http://pkgmaster.devuan.org/merged beowulf main
+deb http://pkgmaster.devuan.org/merged beowulf-updates main
+deb http://pkgmaster.devuan.org/merged beowulf-security main
 deb http://pkgmaster.devuan.org/devuan experimental main
 
-#deb-src http://pkgmaster.devuan.org/merged unstable     main
+#deb-src http://pkgmaster.devuan.org/merged beowulf main
+#deb-src http://pkgmaster.devuan.org/merged beowulf-updates main
+#deb-src http://pkgmaster.devuan.org/merged beowulf-security main
 #deb-src http://pkgmaster.devuan.org/devuan experimental main
 EOF
 }
