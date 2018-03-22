@@ -39,7 +39,8 @@ mkdir -p /mnt/rw
 mkdir -p /mnt/overlay
 
 echo " * mounting squashfs"
-mount -t squashfs /mnt/root/live/filesystem.squashfs /mnt/ro || rescue_shell
+mount -t squashfs -o ro,noatime \
+	/mnt/root/live/filesystem.squashfs /mnt/ro || rescue_shell
 
 # Decide the tmpfs size
 ram_amnt="$(free -m | awk '/^Mem: / {print $2}')"

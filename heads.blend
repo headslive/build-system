@@ -411,7 +411,7 @@ tar xvf tbb.txz
 cd tor-browser_en-US/Browser
 	execs="\$(find . -executable)"
 	find . -type f | xargs chmod 644
-	echo "$execs" | xargs chmod 755
+	echo "\${execs}" | xargs chmod 755
 
 	cp -fv TorBrowser/Tor/libstdc++.so.6 .
 	rm -rv TorBrowser/Tor TorBrowser/Docs
@@ -441,6 +441,7 @@ mkdir -p \${TBBETC}/extensions
 for ext in \${TBBEXT}/*; do
 	ln -vs "\$ext" \${TBBETC}/extensions/
 done
+find \${TBBETC} -type d | xargs chmod 755
 EOF
 	chroot-script install-tbb || zerr
 }
