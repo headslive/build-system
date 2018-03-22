@@ -7,7 +7,7 @@ BUSYBOX_VERSION = 1.27.2
 BUSYBOX_URL = https://busybox.net/downloads/busybox-$(BUSYBOX_VERSION).tar.bz2
 
 GNUPG = 1
-GNUPG_VERSION = 2.2.3-1
+GNUPG_VERSION = 2.1.18-8~deb9u1
 GNUPG_URL = https://deb.debian.org/debian/pool/main/g/gnupg2/gpgv-static_$(GNUPG_VERSION)_$(ARCH).deb
 
 all: dirs busybox gnupg initramfs.cpio.gz

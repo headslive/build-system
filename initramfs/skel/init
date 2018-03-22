@@ -1,5 +1,5 @@
 #!/bin/sh
-# heads live - copyright 2017 parazyd <parazyd@dyne.org>
+# heads live - copyright 2017-2018 Ivan J. <parazyd@dyne.org>
 # See https://www.gnu.org/licenses for license details (GPL-3)
 
 rescue_shell() {
@@ -11,6 +11,10 @@ rescue_shell() {
 mount -t devtmpfs none /dev
 mount -t proc none /proc
 mount -t sysfs none /sys
+
+# Settle down devices. The USB drive sometimes doesn't come up fast
+# enough, therefore, we need to wait a few seconds.
+sleep 3
 
 # First check if we have booted from a cd, otherwise it's probably
 # a usb drive
