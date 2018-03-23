@@ -164,7 +164,7 @@ iso_setup_isolinux() {
 	sudo cp $strapdir/boot/vmlinuz* binary/live/vmlinuz
 
 	pushd "$R/../initramfs"
-	sudo su -c 'make' || zerr
+	sudo su -c "make ARCH=$arch" || zerr
 	popd
 
 	sudo cp "$R/../initramfs/initramfs.cpio.gz" binary/live/initramfs.cpio.gz || zerr

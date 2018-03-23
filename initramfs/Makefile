@@ -30,8 +30,13 @@ ifeq ($(BUSYBOX),1)
 	tar xf $(shell basename $(BUSYBOX_URL))
 	cp -f busybox.config $(shell basename -s .tar.bz2 $(BUSYBOX_URL))/.config
 	cd $(shell basename -s .tar.bz2 $(BUSYBOX_URL)) && \
+ifeq ($(ARCH),i386)
+		make -j9 CFLAGS="-Os -static -m32" LDFLAGS="-s -static -m32" && \
+		cp -f busybox $(PWD)/build/bin
+else
 		make -j9 CFLAGS="-Os -static" LDFLAGS="-s -static" && \
 		cp -f busybox $(PWD)/build/bin
+endif
 	cd $(PWD)/build/bin && /bin/busybox --install -s .
 endif
 
