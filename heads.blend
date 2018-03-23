@@ -485,18 +485,15 @@ ln -s /usr/share/xul-ext/torbirdy /usr/lib/thunderbird/extensions/castironthunde
 rm -rf /usr/local/share/zsh/site-functions
 #adduser --system --quiet --group clearnet # for a clearnet browser
 sed -i -e 's/devuan/heads/' /etc/hosts
-#gpg --recv-keys 0xB876CB44FA1B0274
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/bin/tor-browser 99
-sed -e 's/=false/=true/' -i /etc/default/macchanger
 sed -e 's/#LID_SLEEP=.*/LID_SLEEP=true/' -i /etc/default/acpi-support
 
-update-rc.d lightdm defaults
-update-rc.d wicd defaults
-update-rc.d acpid defaults
-update-rc.d ferm defaults
-update-rc.d tor defaults
-update-rc.d ttdnsd defaults
-update-rc.d htpdate remove
+rc-update add wicd default
+rc-udpate add acpid default
+rc-update add ferm default
+rc-update add tor default
+rc-update add ttdnsd default
+rc-update del htpdate default
 
 ## cleanup
 apt-get --yes --force-yes purge ${finalize_purge_packages}
@@ -510,11 +507,6 @@ rm -rf /var/log/apt
 rm -rf /var/log/fsck
 rm -rf /var/log/ConsoleKit
 rm -rf /var/lib/polkit-1
-
-### kill foreign manpages
-#rm -rf /usr/share/man/??
-#rm -rf /usr/share/man/??_*
-#rm -rf /usr/share/locale
 
 updatedb
 EOF
