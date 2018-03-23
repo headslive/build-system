@@ -452,9 +452,6 @@ blend_finalize() {
 	req=(strapdir)
 	ckreq || return 1
 
-	## XXX: torbirdy like this until we run an amprolla instance
-	sudo cp "$R/../extra/torbirdy_0.1.4.deb" "$strapdir/torbirdy.deb"
-
 	cat <<EOF | sudo tee ${strapdir}/finalize >/dev/null
 #!/bin/sh
 ## rootless xorg # XXX: not anymore; investigate
@@ -475,18 +472,15 @@ chsh -s /bin/zsh root
 chown -R 1000:1000 /home/luther
 chmod 0440 /etc/sudoers.d/heads
 
-## torbirdy (XXX: amp)
-ar x torbirdy.deb
-tar xvf data.tar.gz
-rm -f control.tar.gz data.tar.gz debian-binary torbirdy.deb
-ln -s /usr/share/xul-ext/torbirdy /usr/lib/thunderbird/extensions/castironthunderbirdclub@torproject.org
-
 ## misc
 rm -rf /usr/local/share/zsh/site-functions
 #adduser --system --quiet --group clearnet # for a clearnet browser
 sed -i -e 's/devuan/heads/' /etc/hosts
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/bin/tor-browser 99
 sed -e 's/#LID_SLEEP=.*/LID_SLEEP=true/' -i /etc/default/acpi-support
+
+# enable torbirdy by default
+ln -s /usr/share/xul-ext/torbirdy /usr/lib/thunderbird/extensions/castironthunderbirdclub@torproject.org
 
 rc-update add wicd default
 rc-udpate add acpid default

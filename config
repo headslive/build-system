@@ -124,6 +124,7 @@ extra_packages=(
 	gimp
 	thunderbird
 	enigmail
+	xul-ext-torbirdy
 	electrum
 	pass
 	qtpass
