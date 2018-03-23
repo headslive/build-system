@@ -471,6 +471,7 @@ chsh -s /bin/zsh root
 ## perms
 chown -R 1000:1000 /home/luther
 chmod 0440 /etc/sudoers.d/heads
+sed -i -e 's/02755/02750/g' /etc/init.d/tor  # Fix permissions for ControlSocket
 
 ## misc
 rm -rf /usr/local/share/zsh/site-functions
