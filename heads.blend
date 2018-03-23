@@ -286,31 +286,6 @@ EOF
 	chroot-script fixpax
 }
 ## }}}
-## {{{ blend_install_gradm()
-blend_install_gradm() {
-	fn blend_install_gradm
-	req=(gradm_version gradm_url strapdir)
-	ckreq || return 1
-
-	notice "grabbing gradm ${gradm_version}"
-
-	sudo curl -L -o "$strapdir/root/gradm.tgz" "$gradm_url" || zerr
-
-	notice "compiling..."
-
-	cat <<EOF | sudo tee ${strapdir}/install-gradm >/dev/null
-#!/bin/sh
-cd /root
-tar xvf gradm.tgz
-cd gradm
-make ${MAKEOPTS}
-make install
-cd ..
-rm -rf gradm*
-EOF
-	chroot-script install-gradm || zerr
-}
-## }}}
 ## {{{ blend_install_tomb()
 blend_install_tomb() {
 	fn blend_install_tomb
