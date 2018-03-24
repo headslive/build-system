@@ -12,6 +12,10 @@ mount -t devtmpfs none /dev
 mount -t proc none /proc
 mount -t sysfs none /sys
 
+grep -q 'debuginitramfs' /proc/cmdline && {
+	rescue_shell "* Requested initramfs debug"
+}
+
 # Settle down devices. The USB drive sometimes doesn't come up fast
 # enough, therefore, we need to wait a few seconds.
 sleep 3
