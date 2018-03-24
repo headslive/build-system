@@ -72,6 +72,7 @@ extra_packages=(
 	lm-sensors
 	lsof
 	strace
+	acl
 	gradm2
 
 	gnupg2
