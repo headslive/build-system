@@ -50,7 +50,7 @@ extra_packages=(
 	lximage-qt
 	adwaita-icon-theme
 	breeze-cursor-theme
-	murrine-themes
+	breeze-gtk-theme
 	nitrogen
 
 	alsa-utils
