@@ -23,9 +23,6 @@ tomb_url="https://github.com/dyne/tomb.git"
 gtomb_version="master"
 gtomb_url="https://git.parazyd.org/gtomb"
 
-tinfoil_version="master"
-tinfoil_url="https://github.com/dyne/tinfoil.git"
-
 ttdnsd_version="master"
 ttdnsd_url="https://git.torproject.org/ioerror/ttdnsd.git"
 
@@ -153,6 +150,7 @@ extra_packages=(
 	pciutils
 	usbutils
 	xarchiver
+	onionshare
 
 	gnuchess
 	gnuchess-book
