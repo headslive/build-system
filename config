@@ -52,7 +52,6 @@ extra_packages=(
 	breeze-cursor-theme
 	murrine-themes
 	nitrogen
-	gcc-7-plugin-dev
 
 	alsa-utils
 
@@ -94,7 +93,6 @@ extra_packages=(
 	tsocks
 	torsocks
 	htpdate
-	obfsproxy
 	obfs4proxy
 	openvpn
 	wicd
@@ -130,6 +128,7 @@ extra_packages=(
 	tig
 	imagemagick
 	libnotify-bin
+	dunst
 	scrot
 	pcmanfm
 	#dunst
@@ -141,16 +140,12 @@ extra_packages=(
 	i3lock
 	ncdu
 	whois
-	python-markdown
-	python-passlib
-	python3-psutil
-	python3-stem
-	python3-yaml
 	connect-proxy
 	pciutils
 	usbutils
 	xarchiver
 	onionshare
+	udiskie
 
 	gnuchess
 	gnuchess-book
@@ -191,7 +186,6 @@ finalize_purge_packages=(
 	cups-pk-helper
 	debhelper
 	easy-rsa
-	eject
 	#elogind
 	evince
 	evince-common
@@ -217,7 +211,6 @@ finalize_purge_packages=(
 	pcmanfm-qt
 	pcmanfm-qt-l10n
 	phantomjs
-	policykit-1
 	rtkit
 	sntp
 	system-config-printer
