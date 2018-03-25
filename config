@@ -176,14 +176,11 @@ purge_packages=(
 )
 
 finalize_purge_packages=(
-	albatross-gtk-theme
 	at-spi2-core
 	autoconf
 	automake
 	autotools-dev
 	avahi-daemon
-	blackbird-gtk-theme
-	bluebird-gtk-theme
 	cups-pk-helper
 	debhelper
 	easy-rsa
@@ -193,7 +190,6 @@ finalize_purge_packages=(
 	gnome-keyring
 	geoclue-2.0
 	gir1.2-polkit-1.0
-	greybird-gtk-theme
 	gstreamer1.0-plugins-base
 	gstreamer1.0-plugins-good
 	gstreamer1.0-pulseaudio
