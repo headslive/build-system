@@ -218,4 +218,5 @@ finalize_purge_packages=(
 	ttdnsd-dbgsym
 	upower
 	usb-modeswitch
+	yelp
 )
