@@ -427,6 +427,7 @@ chmod -v g+s /usr/bin/Xorg
 for i in input video audio users netdev plugdev wheel; do
 	gpasswd -a luther \${i}
 done
+sed 's/^allowed_users=.*/allowed_users=anybody/' -i /etc/X11/Xwrapper.config
 echo "needs_root_rights=yes" >> /etc/X11/Xwrapper.config
 
 ## shells
