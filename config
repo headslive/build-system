@@ -74,6 +74,8 @@ extra_packages=(
 	strace
 	acl
 	gradm2
+	apparmor
+	python3-apparmor
 
 	gnupg2
 	dirmngr
@@ -89,6 +91,7 @@ extra_packages=(
 	qrencode
 
 	tor
+	nyx
 	apt-transport-tor
 	apt-transport-https
 	tsocks
