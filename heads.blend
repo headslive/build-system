@@ -213,12 +213,12 @@ menu tabmsg Press ENTER to boot or TAB to edit a menu entry
 label live-${arch}
 	menu label heads live (${arch}/openbox)
 	linux /live/vmlinuz
-	append initrd=/live/initramfs.cpio.gz verbose net.ifnames=0
+	append initrd=/live/initramfs.cpio.gz verbose net.ifnames=0 
 
 label live-${arch}
 	menu label heads live (${arch}/awesomewm)
 	linux /live/vmlinuz
-	append initrd=/live/initramfs.cpio.gz verbose net.ifnames=0 awesome
+	append initrd=/live/initramfs.cpio.gz verbose net.ifnames=0 awesome 
 
 endtext
 EOF
