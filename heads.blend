@@ -45,7 +45,7 @@ blend_postinst() {
 
 	notice "executing $blend_name postinst"
 
-	nopackage=(musl tomb tbb ttdnsd)
+	nopackage=(tomb tbb ttdnsd)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
 	done || zerr
