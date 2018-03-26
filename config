@@ -142,10 +142,12 @@ extra_packages=(
 	ncdu
 	whois
 	connect-proxy
+	proxychains
+	mat
 	pciutils
 	usbutils
 	xarchiver
-	onionshare
+	#onionshare
 	udiskie
 
 	gnuchess
