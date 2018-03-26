@@ -1,11 +1,35 @@
 # heads ChangeLog
 
+## 0.4
+### 26 March 2018
+
+Fix privesc bug with heads-update. The updates are now gpg verified and
+incoming is written in a root-only writable path. Remove the need of
+live-boot/live-config and build our own minimal initramfs instead. This
+also removes the "toram" feature. Instead, a kernel param that we call
+"nopermakey" is introduced to disable automatic compilation of permakey
+on boot. Cleaned up rootfs-overlay of obsolete files. Revise the package
+list and rebase on Devuan Beowulf. Update kernel to 4.9.74, Tor Browser
+to 7.5.2, musl to 1.1.19. Revise the kernel configuration and remove
+quite a few specific drivers, for example external soundcards. Enable
+cgroups in kernel. Implement general improvements to the build system,
+along with bumping live-sdk to latest upstream. Switch init to OpenRC.
+Implement a welcome dialog upon startx. Delete torbirdy from git and use
+the package provided in the apt repositories. Bring back Pulseaudio.
+Also ship with elogind and udisks2/udiskie. Include additional software.
+Xorg now autostarts unless "nox" is specified on the kernel cmdline.
+Replace the default GTK theme with Breeze. Enable AppArmor in-kernel.
+Do not install musl-libc anymore, as the rewritten sup can now be
+statically linked with glibc as well.
+
+
 ## 0.3.1
 ### 2 July 2017
 
 A bugfix release to disable autostarting of Xorg upon login. It is now
 required to startx manually, which is explained in the welcome message
 once the system boots into a shell.
+
 
 ## 0.3
 ### 22 June 2017
