@@ -6,6 +6,8 @@ image_name="${blend_name}-${blend_vers}-${arch}"
 
 MAKEOPTS="-j$(grep -c 'processor' /proc/cpuinfo)"
 TAR_STAGE4=true
+mkefi="yes"
+efi_work="$R/efi-files"
 
 kernel_heads_version="4.19"
 kernel_heads_url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${kernel_heads_version}.tar.xz"
@@ -39,6 +41,8 @@ tbb_url="https://www.torproject.org/dist/torbrowser/${tbb_version}/tor-browser-l
 
 extra_packages=(
 	firmware-linux-free
+	grub-efi-${arch}
+	grub-efi-ia32-bin
 	xserver-xorg
 	xserver-xorg-legacy
 	xinit
