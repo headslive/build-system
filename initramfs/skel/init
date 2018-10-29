@@ -23,7 +23,8 @@ sleep 3
 # First check if we have booted from a cd, otherwise it's probably
 # a usb drive
 for i in /dev/sr* /dev/sd?? ; do
-	mount -t iso9660 "$i" /mnt/root || continue
+	# We first try iso9660 (dd), then vfat (unetbootin)
+	mount -t iso9660 "$i" /mnt/root || mount -t vfat "$i" /mnt/root || continue
 	[ -f /mnt/root/live/filesystem.squashfs ] && {
 		echo " * found squashfs on $i"
 		mounted="$i"
