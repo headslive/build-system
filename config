@@ -7,10 +7,8 @@ image_name="${blend_name}-${blend_vers}-${arch}"
 MAKEOPTS="-j$(grep -c 'processor' /proc/cpuinfo)"
 TAR_STAGE4=true
 
-kernel_heads_version="4.9.74"
-kernel_heads_branch="master"
-kernel_heads_flavor="gnu-unofficial+grsec+"
-kernel_heads_git="https://github.com/headslive/linux-heads"
+kernel_heads_version="4.19"
+kernel_heads_url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${kernel_heads_version}.tar.xz"
 
 rootfs_overlay="https://github.com/headslive/rootfs-overlay"
 
@@ -173,6 +171,8 @@ extra_packages=(
 	libseccomp-dev
 	libx11-xcb-dev
 	libxcb-util0-dev
+	libelf-dev
+	gcc-8-plugin-dev
 	equivs
 	debhelper
 )

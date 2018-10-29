@@ -70,22 +70,20 @@ build_kernel_${arch}() {
 
 	func "override libdevuansdk's build_kernel_${arch}"
 
-	[[ -d $strapdir/usr/src/linux-heads ]] || {
-		notice "cloning linux-heads..."
-		sudo mkdir -p "$strapdir/usr/src/linux-heads"
-		sudo git clone -b "$kernel_heads_branch" "$kernel_heads_git" \
-			"$strapdir/usr/src/linux-heads" || zerr
-	}
+	notice "downloading the linux sources"
+	sudo mkdir -p "$strapdir/usr/src"
+	sudo wget -O "$strapdir/usr/src/$(basename ${kernel_heads_url})" "${kernel_heads_url}" || zerr
 
-	notice "compiling linux-heads"
-	pushd "$strapdir/usr/src/linux-heads" || zerr
-	#sudo git pull origin master
-	sudo cp -f "$R/../extra/heads-${arch}.config" .config
+	notice "extracting the linux sources"
+	pushd "$strapdir"
+	sudo tar xf "$(basename ${kernel_heads_url})" || zerr
+	sudo rm -f "$(asename ${kernel_heads_url})"
+	sudo cp "$R/../extra/heads-${arch}.config" "$(basename -s .tar.xz ${kernel_heads_url})/.config"
 	popd
 
 	cat <<EOF | sudo tee ${strapdir}/install-linux-heads >/dev/null
 #!/bin/sh
-cd /usr/src/linux-heads
+cd /usr/src/$(basename -s .tar.xz ${kernel_heads_url})
 make oldconfig       || exit 1
 make ${MAKEOPTS}     || exit 1
 make modules_install || exit 1
@@ -93,12 +91,11 @@ make install         || exit 1
 
 ## here we setup only what's needed to build kernel modules without the entire
 ## kernel sources. inspired by alpine linux once again <3
-_abi_release="${kernel_heads_version}-${kernel_heads_flavor}"
+_abi_release="${kernel_heads_version}"
 dir="/usr/src/linux-headers-\${_abi_release}"
 
 mkdir "\$dir" || exit 1
 cp .config "\$dir"/.config || exit 1
-cp localversion-unofficial_grsec "\$dir"/localversion-unofficial_grsec || exit 1
 
 make -j1 O="\$dir" scripts
 
@@ -130,7 +127,7 @@ ln -sv \
 	/lib/modules/\${_abi_release}/source
 
 cd ..
-rm -rf linux-heads
+rm -rf linux-${kernel_heads_version}
 
 ## this cuts the barebone sources to 42MB
 ## which is somewhat acceptable
@@ -139,7 +136,10 @@ find arch -mindepth 1 -maxdepth 1 -type d | grep -E -v 'x86|arm' | xargs rm -rf
 find include -mindepth 1 -maxdepth 1 -type d \
 	| grep -E 'scsi|net|dt-bindings|sound|media|drm|trace|video' | xargs rm -rf
 rm -rf include/linux/mfd
+mv tools/objtool/objtool /tmp/objtool
 rm -rf drivers Documentation fs sound net tools firmware
+mkdir -p tools/objtool
+mv /tmp/objtool tools/objtool
 EOF
 	chroot-script -d install-linux-heads || zerr
 	sudo chmod 755 "$strapdir/boot"
