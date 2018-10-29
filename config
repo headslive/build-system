@@ -29,7 +29,7 @@ ttdnsd_url="https://git.torproject.org/ioerror/ttdnsd.git"
 wmutils_version="master"
 wmutils_url="https://github.com/wmutils/core"
 
-tbb_version="7.5.2"
+tbb_version="8.0.3"
 case $arch in
 	amd64) aa="64";;
 	i386)  aa="32";;

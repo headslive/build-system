@@ -422,7 +422,7 @@ cd tor-browser_en-US/Browser
 	find . -type f | xargs chmod 644
 	echo "\${execs}" | xargs chmod 755
 
-	cp -fv TorBrowser/Tor/libstdc++.so.6 .
+	cp -fv TorBrowser/Tor/libstdc++/*.so.6 .
 	rm -rv TorBrowser/Tor TorBrowser/Docs
 	rm -fv TorBrowser/Data/Browser/profile.default/extensions/tor-launcher@torproject.org.xpi
 	mkdir -p TorBrowser/Data/Browser/Caches
