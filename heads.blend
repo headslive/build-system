@@ -498,6 +498,7 @@ rm -rf /usr/local/share/zsh/site-functions
 sed -i -e 's/devuan/heads/' /etc/hosts
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/bin/tor-browser 99
 sed -e 's/#LID_SLEEP=.*/LID_SLEEP=true/' -i /etc/default/acpi-support
+sed -e 's/synaptic-pkexec/lxqt-sudo synaptic/' -i /usr/share/applications/synaptic.desktop
 
 rc-update add wicd default
 rc-udpate add acpid default
