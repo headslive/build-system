@@ -29,6 +29,9 @@ ttdnsd_url="https://git.torproject.org/ioerror/ttdnsd.git"
 musl_version="v1.1.19"
 musl_url="git://git.musl-libc.org/musl"
 
+wmutils_version="master"
+wmutils_url="https://github.com/wmutils/core"
+
 tbb_version="7.5.2"
 case $arch in
 	amd64) aa="64";;
@@ -168,6 +171,8 @@ extra_packages=(
 	libssl-dev
 	libgcrypt20-dev
 	libseccomp-dev
+	libx11-xcb-dev
+	libxcb-util0-dev
 	equivs
 	debhelper
 )

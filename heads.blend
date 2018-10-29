@@ -45,7 +45,7 @@ blend_postinst() {
 
 	notice "executing $blend_name postinst"
 
-	nopackage=(tomb tbb ttdnsd)
+	nopackage=(tomb tbb ttdnsd wmutils)
 	for app in $nopackage; do
 		blend_install_${app} || zerr
 	done || zerr
@@ -308,6 +308,29 @@ rm -rf tomb
 rm -rf gtomb
 EOF
 	chroot-script install-tomb || zerr
+}
+## }}}
+## {{{ blend_install_wmutils()
+blend_install_wmutils() {
+	fn blend_install_wmutils
+	req=(strapdir wmutils_version vmutils_url)
+	ckreq || return 1
+
+	notice "cloning wmutils..."
+	sudo git clone "$wmutils_url" "$strapdir/root/wmutils" || zerr
+
+	notice "installing wmutils in $strapdir"
+
+	cat <<EOF | sudo tee "${strapdir}/install-wmutils" >/dev/null
+#!/bin/sh
+cd /root/wmutils
+git checkout ${wmutils_version}
+make
+make install
+cd ..
+rm -rf wmutils
+EOF
+	chroot-script install-wmutils || zerr
 }
 ## }}}
 ## {{{ blend_install_musl()
