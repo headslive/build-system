@@ -26,9 +26,6 @@ gtomb_url="https://git.parazyd.org/gtomb"
 ttdnsd_version="master"
 ttdnsd_url="https://git.torproject.org/ioerror/ttdnsd.git"
 
-musl_version="v1.1.19"
-musl_url="git://git.musl-libc.org/musl"
-
 wmutils_version="master"
 wmutils_url="https://github.com/wmutils/core"
 
@@ -138,7 +135,7 @@ extra_packages=(
 	synaptic
 	sacc
 	mpv
-	smplayer
+	gnome-mpv
 	youtube-dl
 	tig
 	imagemagick
