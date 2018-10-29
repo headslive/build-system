@@ -45,6 +45,8 @@ extra_packages=(
 	xserver-xorg-input-synaptics
 	xserver-xorg-input-libinput
 	xinit
+	sudo
+	lxqt-sudo
 	openrc
 	eudev
 	yad
@@ -208,17 +210,17 @@ finalize_purge_packages=(
 	kwayland-data
 	kwayland-integration
 	lxqt-policykit
+	lxqt-policykit-l10n
 	modemmanager
 	ntp
 	opensc
-	oxygen-icon-theme
+	papirus-icon-theme
 	packagekit
 	packagekit-tools
 	pcmanfm-qt
 	pcmanfm-qt-l10n
 	phantomjs
 	rtkit
-	sntp
 	system-config-printer
 	system-config-printer-common
 	system-config-printer-udev
