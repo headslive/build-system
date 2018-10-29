@@ -1,0 +1,3 @@
+* modules as squashfs, to enable plugging in new kernels on heads-update
+* fix onionshare (allow luther to controlport, perhaps allows onioncircuits too)
+* install grater, patch onioncircuits to use port 9051.
