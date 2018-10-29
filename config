@@ -60,6 +60,8 @@ extra_packages=(
 	laptop-detect
 
 	alsa-utils
+	pulseaudio
+	pasystray
 
 	zsh
 	ferm
