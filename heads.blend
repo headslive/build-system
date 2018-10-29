@@ -70,12 +70,20 @@ build_kernel_${arch}() {
 
 	func "override libdevuansdk's build_kernel_${arch}"
 
+	[[ -f "$R/tmp/kernel-${arch}.tgz" ]] && {
+		notice "using cached kernel tarball"
+		pushd "$strapdir"
+			sudo tar xf "$R/tmp/kernel-${arch}.tgz"
+		popd
+		return
+	}
+
 	notice "downloading the linux sources"
 	sudo mkdir -p "$strapdir/usr/src"
 	sudo wget -O "$strapdir/usr/src/$(basename ${kernel_heads_url})" "${kernel_heads_url}" || zerr
 
 	notice "extracting the linux sources"
-	pushd "$strapdir"
+	pushd "$strapdir/usr/src"
 	sudo tar xf "$(basename ${kernel_heads_url})" || zerr
 	sudo rm -f "$(asename ${kernel_heads_url})"
 	sudo cp "$R/../extra/heads-${arch}.config" "$(basename -s .tar.xz ${kernel_heads_url})/.config"
@@ -139,10 +147,14 @@ rm -rf include/linux/mfd
 mv tools/objtool/objtool /tmp/objtool
 rm -rf drivers Documentation fs sound net tools firmware
 mkdir -p tools/objtool
-mv /tmp/objtool tools/objtool
+mv /tmp/objtool tools/objtool/
+chmod 755 /boot
+
+cd /
+tar czf kernel-${arch}.tgz /boot /lib/modules /usr/src/linux-headers-*
 EOF
 	chroot-script -d install-linux-heads || zerr
-	sudo chmod 755 "$strapdir/boot"
+	mv "$strapdir/kernel-${arch}.tgz" "$R/tmp/"
 }
 
 ##{{{ iso_prepare_strap()
