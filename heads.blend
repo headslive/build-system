@@ -96,6 +96,9 @@ make oldconfig       || exit 1
 make ${MAKEOPTS}     || exit 1
 make INSTALL_MOD_STRIP=1 modules_install || exit 1
 make install         || exit 1
+cd tools/objtool && make || exit 1
+cd -
+cp -rv tools/objtool ../objtool
 
 ## here we setup only what's needed to build kernel modules without the entire
 ## kernel sources. inspired by alpine linux once again <3
@@ -144,10 +147,9 @@ find arch -mindepth 1 -maxdepth 1 -type d | grep -E -v 'x86|arm' | xargs rm -rf
 find include -mindepth 1 -maxdepth 1 -type d \
 	| grep -E 'scsi|net|dt-bindings|sound|media|drm|trace|video' | xargs rm -rf
 rm -rf include/linux/mfd
-mv tools/objtool/objtool /tmp/objtool
 rm -rf drivers Documentation fs sound net tools firmware
-mkdir -p tools/objtool
-mv /tmp/objtool tools/objtool/
+mkdir -p tools
+mv -v ../objtool tools/
 chmod 755 /boot
 
 cd /
