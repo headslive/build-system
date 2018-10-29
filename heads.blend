@@ -600,7 +600,7 @@ EOF
 	sudo cp "$tempdir"/bootx64.efi img-mnt/efi/boot/
 
 	# copy modules and font
-	cp $strapdir/usr/lib/grub/x86_64-efi/* boot/grub/x86_64-efi/
+	cp -r $strapdir/usr/lib/grub/x86_64-efi/* boot/grub/x86_64-efi/
 
 	# if this doesn't work, try another font from the same place (grub's
 	# default, unicode.pf2 is much larger)
