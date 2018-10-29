@@ -94,7 +94,7 @@ build_kernel_${arch}() {
 cd /usr/src/$(basename -s .tar.xz ${kernel_heads_url})
 make oldconfig       || exit 1
 make ${MAKEOPTS}     || exit 1
-make modules_install || exit 1
+make INSTALL_MOD_STRIP=1 modules_install || exit 1
 make install         || exit 1
 
 ## here we setup only what's needed to build kernel modules without the entire
@@ -277,6 +277,8 @@ bins="
 	/usr/bin/python2.7
 	/usr/bin/python3.5
 	/usr/bin/python3.5m
+	/usr/bin/python3.6
+	/usr/bin/python3.6m
 "
 for i in \${bins}; do
 	test -f "\${i}" && {
