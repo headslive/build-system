@@ -45,6 +45,8 @@ extra_packages=(
 	grub-efi-ia32-bin
 	xserver-xorg
 	xserver-xorg-legacy
+	xserver-xorg-input-synaptics
+	xserver-xorg-input-libinput
 	xinit
 	openrc
 	eudev
@@ -58,6 +60,7 @@ extra_packages=(
 	breeze-cursor-theme
 	breeze-gtk-theme
 	nitrogen
+	laptop-detect
 
 	alsa-utils
 
@@ -94,6 +97,7 @@ extra_packages=(
 	reaver
 	steghide
 	qrencode
+	firefox-esr
 
 	tor
 	nyx
@@ -131,6 +135,7 @@ extra_packages=(
 	keepassx
 	inkscape
 	audacity
+	synaptic
 	sacc
 	mpv
 	smplayer
